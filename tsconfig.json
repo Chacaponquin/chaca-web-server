@@ -2,6 +2,9 @@
   "compilerOptions": {
     "module": "commonjs",
     "declaration": true,
+    "paths": {
+      "@shared/*": ["src/shared/*"]
+    },
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
