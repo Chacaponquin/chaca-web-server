@@ -8,6 +8,7 @@ import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./modules/auth/auth.module";
 import { DocsModule } from './modules/docs/docs.module';
+import { DatasetModelModule } from './modules/dataset-model/dataset-model.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { DocsModule } from './modules/docs/docs.module';
     ApiModule,
     AuthModule,
     DocsModule,
+    DatasetModelModule,
   ],
   controllers: [AppController],
   providers: [AppService],

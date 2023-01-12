@@ -20,4 +20,3 @@ export class User {
   methodLogin: LOGIN_METHOD;
 }
 export const UserSchema = SchemaFactory.createForClass(User);
-export const UserSchemaName = "users";

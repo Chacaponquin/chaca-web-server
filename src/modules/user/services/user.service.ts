@@ -5,16 +5,16 @@ import {
   NO_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { UserSchemaName } from "../schema/user.schema";
 import { Model } from "mongoose";
 import { SignUpDTO } from "../../auth/dto/signUpDTO.interface";
 import { IUser } from "../interfaces/user.interface";
 import bcrypt from "bcrypt";
+import { DB_MOELS } from "@shared/constants/enums/DB_MODELS.enum";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(UserSchemaName) private readonly userModel: Model<IUser>,
+    @InjectModel(DB_MOELS.USERS) private readonly userModel: Model<IUser>,
   ) {}
 
   async createUser(user: SignUpDTO) {
@@ -22,6 +22,17 @@ export class UserService {
     const newUser = new this.userModel({ ...user, password: savePassword });
     await newUser.save();
     return newUser.id;
+  }
+
+  async getUserById(userID: string): Promise<IUser | null> {
+    return await this.userModel.findById(userID);
+  }
+
+  async deleteModelFromUser(userID: string, modelID: string): Promise<void> {
+    await this.userModel.findOneAndUpdate(
+      { _id: userID },
+      { $pull: { datasetsSchemas: modelID } },
+    );
   }
 
   noUserLimits() {

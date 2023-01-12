@@ -1,16 +1,23 @@
 import { Module } from "@nestjs/common";
 import { UserService } from "./services/user.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { UserSchema, UserSchemaName } from "./schema/user.schema";
+import { UserSchema } from "./schema/user.schema";
+import { DB_MOELS } from "@shared/constants/enums/DB_MODELS.enum";
+import { UserController } from "./controller/user.controller";
+import { JwtStrategy } from "./strategy/jwt.strategy";
+import { PassportModule } from "@nestjs/passport";
+import { DatasetModelModule } from "@modules/dataset-model/dataset-model.module";
 
 @Module({
   imports: [
     MongooseModule.forFeatureAsync([
-      { name: UserSchemaName, useFactory: () => UserSchema },
+      { name: DB_MOELS.USERS, useFactory: () => UserSchema },
     ]),
+    PassportModule,
+    DatasetModelModule,
   ],
-  controllers: [],
+  controllers: [UserController],
   exports: [UserService],
-  providers: [UserService],
+  providers: [UserService, JwtStrategy],
 })
 export class UserModule {}
