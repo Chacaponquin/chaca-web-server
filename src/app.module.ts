@@ -7,6 +7,7 @@ import { UserModule } from "./modules/user/user.module";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./modules/auth/auth.module";
+import { DocsModule } from './modules/docs/docs.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { AuthModule } from "./modules/auth/auth.module";
     UtilsModule,
     ApiModule,
     AuthModule,
+    DocsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

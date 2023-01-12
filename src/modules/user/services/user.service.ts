@@ -9,6 +9,7 @@ import { UserSchemaName } from "../schema/user.schema";
 import { Model } from "mongoose";
 import { SignUpDTO } from "../../auth/dto/signUpDTO.interface";
 import { IUser } from "../interfaces/user.interface";
+import bcrypt from "bcrypt";
 
 @Injectable()
 export class UserService {
@@ -17,7 +18,8 @@ export class UserService {
   ) {}
 
   async createUser(user: SignUpDTO) {
-    const newUser = new this.userModel(user);
+    const savePassword = await bcrypt.hash(user.password, 10);
+    const newUser = new this.userModel({ ...user, password: savePassword });
     await newUser.save();
     return newUser.id;
   }
