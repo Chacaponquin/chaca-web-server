@@ -11,6 +11,7 @@ import {
 } from "@nestjs/common";
 import { UserService } from "../services/user.service";
 import { AuthGuard } from "@nestjs/passport";
+import { Get } from "@nestjs/common";
 
 @Controller("user")
 export class UserController {
@@ -19,7 +20,14 @@ export class UserController {
     private readonly datasetModelService: DatasetModelService,
   ) {}
 
-  @Delete("deleteModel/:modelID")
+  @Get("/datasetModels")
+  @UseGuards(AuthGuard("jwt"))
+  async getUserDatasetModels(@Request() req: any) {
+    const { id } = req.user;
+    return await this.userService.getUserDatasetModels(id);
+  }
+
+  @Delete("/deleteModel/:modelID")
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard("jwt"))
   async deleteModel(

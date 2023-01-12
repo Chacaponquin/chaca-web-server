@@ -1,22 +1,23 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { DB_MOELS } from "@shared/constants/enums/DB_MODELS.enum";
 import mongoose from "mongoose";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 
 @Schema()
 export class User {
-  @Prop()
+  @Prop({ required: true, maxlength: 25, minlength: 5 })
   username: string;
-  @Prop()
+  @Prop({ default: null })
   email: string | null;
-  @Prop()
+  @Prop({ default: null })
   password: string | null;
-  @Prop()
+  @Prop({ default: false })
   isSuperUser: boolean;
-  @Prop()
-  datasetsSchemas: Array<mongoose.Types.ObjectId>;
+  @Prop({ default: [], ref: DB_MOELS.DATASET_MODEL })
+  datasetModels: Array<mongoose.Types.ObjectId>;
   @Prop()
   image: string | null;
-  @Prop()
+  @Prop({ required: true })
   methodLogin: LOGIN_METHOD;
 }
 export const UserSchema = SchemaFactory.createForClass(User);

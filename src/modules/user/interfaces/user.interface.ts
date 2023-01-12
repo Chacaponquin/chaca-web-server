@@ -6,7 +6,7 @@ export interface IUser extends Document {
   email: string | null;
   password: string | null;
   isSuperUser: boolean;
-  datasetsSchemas: Types.ObjectId[];
+  datasetModels: Types.ObjectId[];
   image: string | null;
   methodLogin: LOGIN_METHOD;
 }
