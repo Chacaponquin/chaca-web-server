@@ -16,11 +16,17 @@ export class DocsController {
     });
   }
 
+  @Get("/guides/ref")
   async getRefFormGuide(@Query("language") language: string): Promise<string> {
     return await this.docsService.readDoc({
       category: "guides",
       fileName: "RefFormDocs",
       language,
     });
+  }
+
+  @Get("/sections")
+  async getDocSections(): Promise<Array<any>> {
+    return [];
   }
 }

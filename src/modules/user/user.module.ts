@@ -4,7 +4,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { UserSchema } from "./schema/user.schema";
 import { DB_MOELS } from "@shared/constants/enums/DB_MODELS.enum";
 import { UserController } from "./controller/user.controller";
-import { JwtStrategy } from "./strategy/jwt.strategy";
+import { JwtStrategy } from "@shared/strategy/jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
 import { DatasetModelModule } from "@modules/dataset-model/dataset-model.module";
 

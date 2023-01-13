@@ -19,6 +19,10 @@ export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
   public server: Server;
 
   @SubscribeMessage(SOCKET_EVENTS.CREATE_DATASETS)
+  createDatasets() {
+    console.log(this.server);
+  }
+
   handleConnection(@ConnectedSocket() client: Socket) {
     console.log(client);
   }

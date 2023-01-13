@@ -9,6 +9,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalFilters(new ChacaExceptionFilter());
   app.useWebSocketAdapter(new SocketAdapter(app));
+  app.enableCors();
   await app.listen(process.env.PORT || 8000);
 }
 

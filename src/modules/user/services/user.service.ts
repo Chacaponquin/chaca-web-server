@@ -29,6 +29,8 @@ export class UserService {
 
     // guardar usuario
     await newUser.save();
+
+    // retornar el id del user creado
     return newUser.id;
   }
 

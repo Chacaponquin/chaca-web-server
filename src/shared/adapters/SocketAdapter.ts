@@ -1,14 +1,17 @@
 import { AuthService } from "@modules/auth/services/auth.service";
+import { UserService } from "@modules/user/services/user.service";
 import { INestApplicationContext } from "@nestjs/common";
 import { IoAdapter } from "@nestjs/platform-socket.io";
 import { Server } from "socket.io";
 
 export class SocketAdapter extends IoAdapter {
   private authService: AuthService;
+  private userService: UserService;
 
   constructor(private app: INestApplicationContext) {
     super(app);
     this.authService = this.app.get(AuthService);
+    this.userService = this.app.get(UserService);
   }
 
   createIOServer(port: number, options?: any) {
@@ -32,12 +35,13 @@ export class SocketAdapter extends IoAdapter {
 
         const user = await this.authService.authenticateToken(token);
         socket.user = user ? user.userID : null;
-
-        return next();
       } else {
         socket.user = null;
-        return next();
       }
+
+      socket.userService = this.userService;
+
+      return next();
     });
 
     return server;

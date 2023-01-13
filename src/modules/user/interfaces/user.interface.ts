@@ -9,4 +9,6 @@ export interface IUser extends Document {
   datasetModels: Types.ObjectId[];
   image: string | null;
   methodLogin: LOGIN_METHOD;
+  limitDatasets: number;
+  limitDocuments: number;
 }

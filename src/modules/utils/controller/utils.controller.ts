@@ -2,7 +2,7 @@ import { Controller, Get } from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
 import { UtilsService } from "../services/utils.service";
 
-@Controller("utils")
+@Controller("util")
 export class UtilsController {
   constructor(
     private readonly utilsServices: UtilsService,

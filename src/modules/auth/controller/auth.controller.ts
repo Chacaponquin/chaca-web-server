@@ -1,10 +1,17 @@
-import { Body } from "@nestjs/common";
-import { NotFoundException } from "@nestjs/common";
-import { Post } from "@nestjs/common";
-import { Controller } from "@nestjs/common";
+import {
+  NotFoundException,
+  Get,
+  Post,
+  Controller,
+  Req,
+  Body,
+} from "@nestjs/common";
+import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
+import { AuthGuard } from "@nestjs/passport";
 import { UserService } from "src/modules/user/services/user.service";
 import { SignInDTO } from "../dto/signInDTO.interface";
 import { SignUpDTO } from "../dto/signUpDTO.interface";
+import { IReturnUser } from "../interfaces/auth.interface";
 import { AuthService } from "../services/auth.service";
 
 @Controller("auth")
@@ -13,6 +20,12 @@ export class AuthController {
     private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
+
+  @Get("/userByToken")
+  @UseGuards(AuthGuard("jwt"))
+  async userByToken(@Req() req: any): Promise<IReturnUser | null> {
+    return await this.authService.getReturnUser(req.user);
+  }
 
   @Post("/signUp")
   async signUp(@Body() userSignUpDTO: SignUpDTO) {
