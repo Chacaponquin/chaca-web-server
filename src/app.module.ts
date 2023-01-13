@@ -7,9 +7,10 @@ import { UserModule } from "./modules/user/user.module";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "./modules/auth/auth.module";
-import { DocsModule } from './modules/docs/docs.module';
-import { DatasetModelModule } from './modules/dataset-model/dataset-model.module';
-import { UserMessageModule } from './modules/user-message/user-message.module';
+import { DocsModule } from "./modules/docs/docs.module";
+import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module";
+import { UserMessageModule } from "./modules/user-message/user-message.module";
+import { SocketGateway } from "@modules/socket/socket.gateway";
 
 @Module({
   imports: [
@@ -28,6 +29,6 @@ import { UserMessageModule } from './modules/user-message/user-message.module';
     UserMessageModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, SocketGateway],
 })
 export class AppModule {}

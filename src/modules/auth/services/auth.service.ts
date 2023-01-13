@@ -10,4 +10,13 @@ export class AuthService {
     const payload: JwtPayload = { userID };
     return this.jwtService.sign(payload);
   }
+
+  async authenticateToken(token: string): Promise<JwtPayload | null> {
+    try {
+      const user = await this.jwtService.verifyAsync<JwtPayload>(token);
+      return user;
+    } catch (error) {
+      return null;
+    }
+  }
 }
