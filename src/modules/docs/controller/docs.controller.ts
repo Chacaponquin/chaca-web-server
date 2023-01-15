@@ -1,4 +1,5 @@
-import { Get, Controller, Query } from "@nestjs/common";
+import { Get, Controller, Headers, Param } from "@nestjs/common";
+import { RespApiSection } from "../interfaces/apiSections.interface";
 import { DocsService } from "../services/docs.service";
 
 @Controller("docs")
@@ -7,26 +8,37 @@ export class DocsController {
 
   @Get("/guides/custom")
   async getCustomFormGuide(
-    @Query("language") language: string,
+    @Headers("language") language: string,
   ): Promise<string> {
     return await this.docsService.readDoc({
-      category: "guides",
-      fileName: "CustomFormDocs",
+      section: "guides",
+      document: "CustomFormDocs",
       language,
     });
   }
 
   @Get("/guides/ref")
-  async getRefFormGuide(@Query("language") language: string): Promise<string> {
+  async getRefFormGuide(
+    @Headers("language") language: string,
+  ): Promise<string> {
     return await this.docsService.readDoc({
-      category: "guides",
-      fileName: "RefFormDocs",
+      section: "guides",
+      document: "RefFormDocs",
       language,
     });
   }
 
+  @Get("/:section/:document")
+  async getApiDocument(
+    @Headers("language") language: string,
+    @Param("section") section: string,
+    @Param("document") document: string,
+  ) {
+    return await this.docsService.readDoc({ document, language, section });
+  }
+
   @Get("/sections")
-  async getDocSections(): Promise<Array<any>> {
-    return [];
+  getDocSections(@Headers("language") language: string): Array<RespApiSection> {
+    return this.docsService.getApiSections(language);
   }
 }

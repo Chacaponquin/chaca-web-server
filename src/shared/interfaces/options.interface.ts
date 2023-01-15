@@ -1,5 +1,5 @@
 import { ArgumentSchema } from "./argument.interface";
-import { ApiDescription } from "./description.interface";
+import { LanguageOptions } from "./language.interface";
 
 export interface ApiOption {
   parent: string;
@@ -14,6 +14,6 @@ export interface OptionSchema<Z = unknown, T = any> {
   name: string;
   arguments: ArgumentSchema[];
   exampleValue: Z;
-  description: ApiDescription;
+  description: LanguageOptions;
   getValue: (args: T) => Z;
 }
