@@ -1,4 +1,4 @@
-import { FILE_TYPE } from "@shared/constants/enums/FILE_TYPE.enum";
+import { FILE_TYPE } from "@shared/constants/FILE_TYPE.enum";
 import { ArgumentSchema } from "@shared/interfaces/argument.interface";
 
 export interface InputConfigSchema {

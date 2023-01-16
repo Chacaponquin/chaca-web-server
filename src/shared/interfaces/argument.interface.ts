@@ -1,4 +1,4 @@
-import { ARGUMENT_TYPE } from "@shared/constants/enums/ARGUMENT_TYPE.enum";
+import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { LanguageOptions } from "./language.interface";
 
 export type ArgumentSchema = {

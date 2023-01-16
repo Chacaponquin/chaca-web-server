@@ -9,7 +9,7 @@ import { Model } from "mongoose";
 import { SignUpDTO } from "../../auth/dto/signUpDTO.interface";
 import { IUser } from "../interfaces/user.interface";
 import * as bcrypt from "bcrypt";
-import { DB_MOELS } from "@shared/constants/enums/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 
 @Injectable()

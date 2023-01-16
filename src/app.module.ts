@@ -11,6 +11,7 @@ import { DocsModule } from "./modules/docs/docs.module";
 import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module";
 import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SocketGateway } from "@modules/socket/socket.gateway";
+import { SchemaOptionsModule } from './modules/schema-options/schema-options.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { SocketGateway } from "@modules/socket/socket.gateway";
     DocsModule,
     DatasetModelModule,
     UserMessageModule,
+    SchemaOptionsModule,
   ],
   controllers: [AppController],
   providers: [AppService, SocketGateway],

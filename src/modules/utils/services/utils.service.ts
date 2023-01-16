@@ -1,29 +1,15 @@
 import { Injectable } from "@nestjs/common";
-import { ApiOption } from "@shared/interfaces/options.interface";
-import { chaca } from "chaca";
-import ChacaOptions from "@shared/constants/options";
+import { RespApiOption } from "@modules/schema-options/interfaces/options.interface";
 import { FILE_CONFIG } from "../constants/FILE_CONFIG";
 import { ALL_FAQ } from "../constants/FAQ";
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 
 @Injectable()
 export class UtilsService {
-  apiOptions(): ApiOption[] {
-    const returnOptions = [] as ApiOption[];
+  constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
-    for (const [key, options] of Object.entries(ChacaOptions)) {
-      returnOptions.push({
-        options: options.map((el) => {
-          const parent = chaca.utils.camelCaseText(key);
-          const name = chaca.utils.camelCaseText(el.name);
-          const route = `/api/${parent}/${name}`;
-
-          return { ...el, route };
-        }),
-        parent: key,
-      });
-    }
-
-    return returnOptions;
+  apiOptions(language: string): RespApiOption[] {
+    return this.schemaOptionsService.getApiOptions(language);
   }
 
   fileConfig() {

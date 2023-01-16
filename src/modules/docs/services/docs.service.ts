@@ -1,7 +1,7 @@
 import { HttpStatus } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import { AppLanguages } from "@shared/interfaces/language.interface";
+import { SharedService } from "@shared/services/shared.service";
 import * as fs from "fs";
 import * as path from "path";
 import { API_SECTIONS } from "../constants/API_SECTIONS";
@@ -9,6 +9,8 @@ import { RespApiSection } from "../interfaces/apiSections.interface";
 
 @Injectable()
 export class DocsService {
+  constructor(private readonly sharedService: SharedService) {}
+
   async readDoc({
     section,
     document,
@@ -22,7 +24,9 @@ export class DocsService {
       const data = await fs.promises.readFile(
         path.join(
           __dirname,
-          `../docs/${section}/${this.filterLanguage(language)}/${document}.md`,
+          `../docs/${section}/${this.sharedService.filterLanguage(
+            language,
+          )}/${document}.md`,
         ),
         "utf8",
       );
@@ -36,13 +40,8 @@ export class DocsService {
     }
   }
 
-  private filterLanguage(lan: string): AppLanguages {
-    if (lan === "es" || lan === "en") return lan;
-    else return "en";
-  }
-
   public getApiSections(lan: string): Array<RespApiSection> {
-    const filtLanguage = this.filterLanguage(lan);
+    const filtLanguage = this.sharedService.filterLanguage(lan);
     return API_SECTIONS.map((s) => {
       return {
         sectionTitle: s.sectionTitle[filtLanguage],

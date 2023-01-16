@@ -1,4 +1,5 @@
 import { Module } from "@nestjs/common";
+import { SharedService } from "@shared/services/shared.service";
 import { DocsController } from "./controller/docs.controller";
 import { DocsService } from "./services/docs.service";
 
@@ -6,6 +7,6 @@ import { DocsService } from "./services/docs.service";
   controllers: [DocsController],
   imports: [],
   exports: [],
-  providers: [DocsService],
+  providers: [DocsService, SharedService],
 })
 export class DocsModule {}

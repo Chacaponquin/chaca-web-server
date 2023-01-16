@@ -1,6 +1,14 @@
-import { Controller, Get } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Headers,
+  Param,
+  StreamableFile,
+} from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
 import { UtilsService } from "../services/utils.service";
+import * as path from "path";
+import * as fs from "fs";
 
 @Controller("util")
 export class UtilsController {
@@ -9,9 +17,17 @@ export class UtilsController {
     private readonly userService: UserService,
   ) {}
 
+  @Get("/downloadData/:file")
+  downloadFile(@Param("file") fileName: string) {
+    const file = fs.createReadStream(
+      path.join(__dirname, "../../../data", fileName),
+    );
+    return new StreamableFile(file);
+  }
+
   @Get("/apiOptions")
-  getApiOptions() {
-    return this.utilsServices.apiOptions();
+  getApiOptions(@Headers("language") language: string) {
+    return this.utilsServices.apiOptions(language);
   }
 
   @Get("/fileConfig")

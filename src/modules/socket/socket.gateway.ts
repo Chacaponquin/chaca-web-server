@@ -1,33 +1,45 @@
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import {
   ConnectedSocket,
-  OnGatewayConnection,
-  OnGatewayDisconnect,
   WebSocketGateway,
   WebSocketServer,
   SubscribeMessage,
+  MessageBody,
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
+import { DatasetsGenerator, FileGenerator } from "./classes/Generators";
 import { SOCKET_EVENTS } from "./constants/SOCKET_EVENTS.enum";
+import { CreateDatasetDTO } from "./dto";
 
 @WebSocketGateway({
   cors: {
     origin: "*",
   },
 })
-export class SocketGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class SocketGateway {
+  constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
+
   @WebSocketServer()
   public server: Server;
 
   @SubscribeMessage(SOCKET_EVENTS.CREATE_DATASETS)
-  createDatasets() {
-    console.log(this.server);
-  }
+  async createDatasets(
+    @MessageBody() body: CreateDatasetDTO,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    try {
+      const data = new DatasetsGenerator(
+        socket,
+        body.datasets,
+        this.schemaOptionsService.getSchemas(),
+      ).createData();
 
-  handleConnection(@ConnectedSocket() client: Socket) {
-    console.log(client);
-  }
+      const fileURL = await new FileGenerator(data, body.config).generateFile();
 
-  handleDisconnect(@ConnectedSocket() client: Socket) {
-    console.log(client);
+      socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileURL);
+    } catch (error) {
+      console.log(error);
+      socket.emit(SOCKET_EVENTS.CREATION_ERROR, "");
+    }
   }
 }

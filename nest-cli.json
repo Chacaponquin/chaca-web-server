@@ -4,6 +4,6 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "assets": ["modules/docs/docs"]
+    "assets": ["/modules/docs/docs", "/data"]
   }
 }
