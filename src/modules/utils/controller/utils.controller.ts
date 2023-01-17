@@ -25,9 +25,9 @@ export class UtilsController {
     return new StreamableFile(file);
   }
 
-  @Get("/apiOptions")
-  getApiOptions(@Headers("language") language: string) {
-    return this.utilsServices.apiOptions(language);
+  @Get("/ApiSchemas")
+  getApiSchemas(@Headers("language") language: string) {
+    return this.utilsServices.ApiSchemas(language);
   }
 
   @Get("/fileConfig")

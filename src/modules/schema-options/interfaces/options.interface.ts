@@ -1,7 +1,7 @@
 import { ArgumentSchema } from "../../../shared/interfaces/argument.interface";
 import { LanguageOptions } from "../../../shared/interfaces/language.interface";
 
-export interface ApiOption {
+export interface ApiSchema {
   parent: string;
   options: Array<SubOption>;
 }
@@ -14,7 +14,7 @@ export interface SubOption<Z = unknown, T = any> {
   getValue: (args: T) => Z;
 }
 
-export interface RespApiOption extends Omit<ApiOption, "options"> {
+export interface RespApiSchema extends Omit<ApiSchema, "options"> {
   id: string;
   options: Array<RespSubOption>;
 }

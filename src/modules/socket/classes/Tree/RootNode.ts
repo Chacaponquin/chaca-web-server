@@ -1,4 +1,4 @@
-import { ApiOption } from "@modules/schema-options/interfaces/options.interface";
+import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
 import { InputDatasetField } from "../../dto/datasetsDTO.dto";
 import { TreeUtils } from "../../utils/TreeUtils";
 import { Node } from "./";
@@ -23,7 +23,7 @@ export class RootNode {
 
   public insertDatasetsFields(
     fields: InputDatasetField[],
-    schemas: Array<ApiOption>,
+    schemas: Array<ApiSchema>,
   ) {
     for (const f of fields) {
       const newNode = TreeUtils.createNodeByDatatype(f, schemas);

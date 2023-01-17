@@ -19,7 +19,7 @@ import {
   MixedValueNode,
   CustomValueNode,
 } from "../Tree";
-import { ApiOption } from "@modules/schema-options/interfaces/options.interface";
+import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
 import { SOCKET_EVENTS } from "@modules/socket/constants/SOCKET_EVENTS.enum";
 
 export class DatasetsGenerator {
@@ -32,7 +32,7 @@ export class DatasetsGenerator {
   constructor(
     private readonly socket: Socket,
     inputDatasets: InputDataset[],
-    private readonly schemas: Array<ApiOption>,
+    private readonly schemas: Array<ApiSchema>,
   ) {
     if (!Array.isArray(inputDatasets))
       throw new ChacaDatasetError(`Your datasets must be an array`);

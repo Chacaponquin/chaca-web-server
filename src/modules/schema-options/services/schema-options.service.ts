@@ -1,15 +1,23 @@
 import { Injectable } from "@nestjs/common";
 import ChacaOptions from "../constants";
-import { ApiOption, RespApiOption } from "../interfaces/options.interface";
+import {
+  ApiSchema,
+  RespApiSchema,
+  SubOption,
+} from "../interfaces/options.interface";
 import { chaca, schemas } from "chaca";
 import { SharedService } from "@shared/services/shared.service";
+import { NotFoundOptionError, NotFoundSchemaError } from "../errors";
 
 @Injectable()
 export class SchemaOptionsService {
   constructor(private readonly sharedService: SharedService) {}
 
-  getSchemas(): Array<ApiOption> {
-    const allSchemas = [] as ApiOption[];
+  public readonly notFoundSchemaError = NotFoundSchemaError;
+  public readonly notFoundOptionError = NotFoundOptionError;
+
+  getSchemas(): Array<ApiSchema> {
+    const allSchemas = [] as ApiSchema[];
 
     for (const [parent, options] of Object.entries(ChacaOptions)) {
       allSchemas.push({ options, parent });
@@ -18,8 +26,56 @@ export class SchemaOptionsService {
     return allSchemas;
   }
 
-  getApiOptions(language: string): Array<RespApiOption> {
-    const returnOptions = [] as RespApiOption[];
+  generateValueByConfig(option: SubOption, config: any): unknown | unknown[] {
+    const { isArray, ...args } = config;
+
+    if (
+      isArray &&
+      typeof Number(isArray) === "number" &&
+      Number(isArray) > 0 &&
+      Number(isArray) < 300
+    ) {
+      const allValues = [] as Array<unknown>;
+      const limit = Number(isArray);
+
+      for (let i = 0; i < limit; i++) {
+        allValues.push(option.getValue(args));
+      }
+
+      return allValues;
+    } else {
+      return option.getValue(args);
+    }
+  }
+
+  findOption(schema: string, option: string): SubOption {
+    const schemas = this.getSchemas();
+
+    const findSchema = schemas.find(
+      (s) =>
+        chaca.utils.camelCaseText(s.parent).toLowerCase() ===
+        chaca.utils.camelCaseText(schema).toLowerCase(),
+    );
+
+    if (findSchema) {
+      const findOption = findSchema.options.find(
+        (o) =>
+          chaca.utils.camelCaseText(o.name) ===
+          chaca.utils.camelCaseText(option),
+      );
+
+      if (findOption) {
+        return findOption;
+      } else {
+        throw new NotFoundOptionError();
+      }
+    } else {
+      throw new NotFoundSchemaError();
+    }
+  }
+
+  getApiSchemas(language: string): Array<RespApiSchema> {
+    const returnOptions = [] as RespApiSchema[];
 
     for (const [key, options] of Object.entries(ChacaOptions)) {
       returnOptions.push({

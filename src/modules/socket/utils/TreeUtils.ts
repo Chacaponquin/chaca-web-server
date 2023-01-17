@@ -9,7 +9,7 @@ import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
 import { ChacaDatasetError } from "../errors/ChacaDatasetError";
 import { InputDatasetField } from "../dto/datasetsDTO.dto";
 import {
-  ApiOption,
+  ApiSchema,
   SubOption,
 } from "@modules/schema-options/interfaces/options.interface";
 
@@ -34,7 +34,7 @@ export class TreeUtils {
 
   public static createNodeByDatatype(
     field: InputDatasetField,
-    schemas: Array<ApiOption>,
+    schemas: Array<ApiSchema>,
   ): Node {
     const fieldConfig = {
       id: field.id,
@@ -88,7 +88,7 @@ export class TreeUtils {
     fieldName: string,
     parent: string,
     option: string,
-    schemas: Array<ApiOption>,
+    schemas: Array<ApiSchema>,
   ): SubOption {
     const findParent = schemas.find((o) => {
       return o.parent === parent;

@@ -1,4 +1,4 @@
-import { ApiOption } from "@modules/schema-options/interfaces/options.interface";
+import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
 import { InputDatasetField } from "../../dto/datasetsDTO.dto";
 import { RootNode } from "./RootNode";
 
@@ -27,7 +27,7 @@ export class ChacaDatasetTree {
 
   public insertDatasetsFields(
     fields: InputDatasetField[],
-    schemas: Array<ApiOption>,
+    schemas: Array<ApiSchema>,
   ) {
     this.root.insertDatasetsFields(fields, schemas);
   }

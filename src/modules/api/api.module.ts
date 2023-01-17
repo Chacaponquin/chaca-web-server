@@ -1,10 +1,12 @@
-import { Module } from '@nestjs/common';
-import { ApiController } from './controller/api.controller';
+import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
+import { Module } from "@nestjs/common";
+import { ApiController } from "./controller/api.controller";
+import { ApiService } from "./services/api.service";
 
 @Module({
-  imports: [],
+  imports: [SchemaOptionsModule],
   controllers: [ApiController],
   exports: [],
-  providers: [],
+  providers: [ApiService],
 })
 export class ApiModule {}
