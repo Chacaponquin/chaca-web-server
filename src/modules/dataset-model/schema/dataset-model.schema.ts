@@ -1,15 +1,20 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
+import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import mongoose from "mongoose";
 
 @Schema()
 class DatasetModel {
-  @Prop()
+  @Prop({ required: true })
   name: string;
-  @Prop()
+  @Prop({ required: true })
+  descripttion: string;
+  @Prop({ required: true })
   model: string;
-  @Prop()
+  @Prop({ required: true, ref: DB_MOELS.USERS })
   author: mongoose.Types.ObjectId;
-  @Prop()
-  likes: mongoose.Types.ObjectId[];
+  @Prop({ default: [], ref: DB_MOELS.USERS })
+  likes: Array<mongoose.Types.ObjectId>;
+  @Prop({ default: [] })
+  tags: Array<string>;
 }
 export const DatasetModelSchema = SchemaFactory.createForClass(DatasetModel);

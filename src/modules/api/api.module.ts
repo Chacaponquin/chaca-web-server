@@ -6,7 +6,7 @@ import { ApiService } from "./services/api.service";
 @Module({
   imports: [SchemaOptionsModule],
   controllers: [ApiController],
-  exports: [],
+  exports: [ApiService],
   providers: [ApiService],
 })
 export class ApiModule {}

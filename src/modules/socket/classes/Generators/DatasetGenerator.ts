@@ -1,8 +1,6 @@
 import { schemas } from "chaca";
 import { Socket } from "socket.io";
 import { ChacaDatasetError } from "../../errors/ChacaDatasetError";
-import { ReturnDataset } from "../../interfaces/dataset.interface";
-import { InputDataset } from "../../dto/datasetsDTO.dto";
 import {
   ArrayResultNode,
   ChacaResultDatasetTree,
@@ -19,52 +17,29 @@ import {
   MixedValueNode,
   CustomValueNode,
 } from "../Tree";
-import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
 import { SOCKET_EVENTS } from "@modules/socket/constants/SOCKET_EVENTS.enum";
+import { ReturnDataset } from "@modules/socket/interfaces/dataset.interface";
 
 export class DatasetsGenerator {
   private resultDatasets: Array<ChacaResultDatasetTree> = [];
-  private datasetsTrees: Array<ChacaDatasetTree> = [];
 
   private documentsToCreate = 0;
   private documentsCreated = 0;
 
   constructor(
     private readonly socket: Socket,
-    inputDatasets: InputDataset[],
-    private readonly schemas: Array<ApiSchema>,
+    private readonly datasetTrees: Array<ChacaDatasetTree>,
   ) {
-    if (!Array.isArray(inputDatasets))
-      throw new ChacaDatasetError(`Your datasets must be an array`);
-
-    for (const inputDat of inputDatasets) {
-      // crear el arbol del dataset
-      const newDatTree = new ChacaDatasetTree(
-        inputDat.id,
-        inputDat.name,
-        inputDat.limit,
-      );
-
-      // insertar todos los fields del dataset dentro del arbol
-      newDatTree.insertDatasetsFields(inputDat.fields, this.schemas);
-
-      // crear y añadir el arbol de solucion del dataset
-      this.resultDatasets.push(
-        new ChacaResultDatasetTree(inputDat.id, inputDat.name),
-      );
-
-      this.datasetsTrees.push(newDatTree);
-    }
-
-    // inicializar la cantidad de documentos creados y la cantidad de documentos por crear en 0
-    this.documentsToCreate = 0;
-    this.documentsCreated = 0;
-    this.datasetsTrees.forEach((d) => (this.documentsToCreate += d.limit));
+    // crear y añadir el arbol de solucion del dataset
+    this.datasetTrees.forEach((d) => {
+      this.resultDatasets.push(new ChacaResultDatasetTree(d.id, d.name));
+      this.datasetTrees.forEach((d) => (this.documentsToCreate += d.limit));
+    });
   }
 
   public createData(): Array<ReturnDataset<unknown>> {
     // recorrer todos los datasets
-    for (const dat of this.datasetsTrees) {
+    for (const dat of this.datasetTrees) {
       // dataset solution con la misma id de la dataset actual
       const datasetSolution = this.resultDatasets.find((d) => d.id === dat.id);
 

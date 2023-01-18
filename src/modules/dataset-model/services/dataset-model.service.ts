@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { Model } from "mongoose";
+import { CreateModelDTO } from "../dto/createModel.dto";
 import { IDatasetModel } from "../interfaces/dataset-model.interface";
 
 @Injectable()
@@ -13,5 +14,9 @@ export class DatasetModelService {
 
   async deleteModel(modelID: string): Promise<void> {
     await this.model.findByIdAndDelete(modelID);
+  }
+
+  async createModel(modelDTO: CreateModelDTO) {
+    new this.model({});
   }
 }

@@ -14,7 +14,7 @@ export class CustomValueNode extends Node {
   public getValue(fields: { [key: string]: unknown }): unknown {
     const contentCode: string = this.code.slice(
       this.code.indexOf("{") + 1,
-      this.code.lastIndexOf("}")
+      this.code.lastIndexOf("}"),
     );
 
     try {
@@ -23,12 +23,12 @@ export class CustomValueNode extends Node {
 
       if (value === undefined)
         throw new ChacaDatasetError(
-          `The custom field ${this.name} returns undefined`
+          `The custom field ${this.name} returns undefined`,
         );
       else return value;
     } catch (error: any) {
       throw new ChacaDatasetError(
-        `Error in function of field ${this.name}\n ${error.message}`
+        `Error in function of field ${this.name}\n ${error.message}`,
       );
     }
   }

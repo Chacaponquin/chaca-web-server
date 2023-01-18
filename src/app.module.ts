@@ -11,7 +11,8 @@ import { DocsModule } from "./modules/docs/docs.module";
 import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module";
 import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SocketGateway } from "@modules/socket/socket.gateway";
-import { SchemaOptionsModule } from './modules/schema-options/schema-options.module';
+import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
+import { SocketService } from "@modules/socket/services/socket.service";
 
 @Module({
   imports: [
@@ -31,6 +32,6 @@ import { SchemaOptionsModule } from './modules/schema-options/schema-options.mod
     SchemaOptionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SocketGateway],
+  providers: [AppService, SocketGateway, SocketService],
 })
 export class AppModule {}

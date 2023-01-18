@@ -8,7 +8,7 @@ import { SchemaOptionsService } from "@modules/schema-options/services/schema-op
 export class UtilsService {
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
-  ApiSchemas(language: string): RespApiSchema[] {
+  getApiSchemas(language: string): RespApiSchema[] {
     return this.schemaOptionsService.getApiSchemas(language);
   }
 
