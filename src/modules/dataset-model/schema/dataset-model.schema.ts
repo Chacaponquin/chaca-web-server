@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 class DatasetModel {
   @Prop({ required: true })
   name: string;
-  @Prop({ required: true })
+  @Prop({ default: "" })
   descripttion: string;
   @Prop({ required: true })
   model: string;

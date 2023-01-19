@@ -14,6 +14,19 @@ export class MixedValueNode extends Node {
     return this.n;
   }
 
+  public getModelObject(): unknown {
+    let typeObject = {};
+
+    for (const n of this.nodes) {
+      typeObject = { ...typeObject, [n.name]: n.getModelObject() };
+    }
+
+    return {
+      dataType: typeObject,
+      ...this.getCommonModelProperties(),
+    };
+  }
+
   public insertNode(node: Node) {
     this.n.push(node);
     this.n = TreeUtils.orderFieldsByPriority(this.n);

@@ -25,6 +25,10 @@ export class ChacaDatasetTree {
     return this.root.nodes;
   }
 
+  public getDatasetModel() {
+    return this.root.getDatasetModel();
+  }
+
   public insertDatasetsFields(
     fields: InputDatasetField[],
     schemas: Array<ApiSchema>,

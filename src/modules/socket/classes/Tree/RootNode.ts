@@ -30,4 +30,14 @@ export class RootNode {
       this.insertNode(newNode);
     }
   }
+
+  public getDatasetModel() {
+    let returnObject = {};
+
+    for (const n of this.nodes) {
+      returnObject = { ...returnObject, [n.name]: n.getModelObject() };
+    }
+
+    return returnObject;
+  }
 }

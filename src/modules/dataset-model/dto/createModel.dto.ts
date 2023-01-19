@@ -3,4 +3,5 @@ export class CreateModelDTO {
   name: string;
   description: string;
   model: string;
+  author: string;
 }

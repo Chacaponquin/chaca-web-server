@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { CreateModelDTO } from "../dto/createModel.dto";
 import { IDatasetModel } from "../interfaces/dataset-model.interface";
 
@@ -16,7 +16,19 @@ export class DatasetModelService {
     await this.model.findByIdAndDelete(modelID);
   }
 
-  async createModel(modelDTO: CreateModelDTO) {
-    new this.model({});
+  async createModel(modelDTO: CreateModelDTO): Promise<Types.ObjectId> {
+    const { author, description, model, name, tags } = modelDTO;
+
+    const newModel = new this.model({
+      name,
+      author,
+      description,
+      model,
+      tags,
+    });
+
+    await newModel.save();
+
+    return newModel._id;
   }
 }

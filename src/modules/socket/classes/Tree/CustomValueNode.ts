@@ -11,6 +11,13 @@ export class CustomValueNode extends Node {
     return new CustomValueNode({ ...this.config, isArray: null }, this.code);
   }
 
+  public getModelObject(): unknown {
+    return {
+      dataType: this.code,
+      ...this.getCommonModelProperties(),
+    };
+  }
+
   public getValue(fields: { [key: string]: unknown }): unknown {
     const contentCode: string = this.code.slice(
       this.code.indexOf("{") + 1,

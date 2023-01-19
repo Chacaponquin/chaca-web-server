@@ -45,8 +45,6 @@ export class SocketGateway {
         datasetTrees,
       ).createData();
 
-      console.log(socket.user);
-
       const fileURL = await new FileGenerator(
         resultDatasets,
         body.config,
@@ -55,15 +53,16 @@ export class SocketGateway {
       if (body.config.saveSchema && socket.user) {
         const { description, name, tags } = body.config.saveSchema;
 
-        for (const dat of body.datasets) {
+        for (const dat of datasetTrees) {
           const newModelID = await this.datasetModelService.createModel({
             description,
             name,
             tags,
-            model: JSON.stringify(
-              this.socketService.createDatasetModelObject(dat),
-            ),
+            author: socket.user,
+            model: JSON.stringify(dat.getDatasetModel()),
           });
+
+          await this.userService.setNewDatasetModel(socket.user, newModelID);
         }
       }
 

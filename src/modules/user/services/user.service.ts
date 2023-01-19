@@ -5,7 +5,7 @@ import {
   NO_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { Model } from "mongoose";
+import { Model, Types } from "mongoose";
 import { SignUpDTO } from "../../auth/dto/signUpDTO.interface";
 import { IUser } from "../interfaces/user.interface";
 import * as bcrypt from "bcrypt";
@@ -50,7 +50,7 @@ export class UserService {
   async deleteModelFromUser(userID: string, modelID: string): Promise<void> {
     await this.userModel.findOneAndUpdate(
       { _id: userID },
-      { $pull: { datasetsSchemas: modelID } },
+      { $pull: { datasetsModels: modelID } },
     );
   }
 
@@ -73,6 +73,15 @@ export class UserService {
     }
 
     return login;
+  }
+
+  async setNewDatasetModel(
+    userID: string,
+    modelID: Types.ObjectId,
+  ): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userID, {
+      $push: { datasetModels: modelID },
+    });
   }
 
   noUserLimits() {

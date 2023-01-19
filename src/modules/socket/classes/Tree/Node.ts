@@ -16,6 +16,12 @@ export abstract class Node {
 
   public abstract getNoArrayNode(): Node;
 
+  public abstract getModelObject(): unknown;
+
+  protected getCommonModelProperties() {
+    return { isArray: this.isArray, isPossibleNull: this.isPosibleNull };
+  }
+
   get id() {
     return this.config.id;
   }

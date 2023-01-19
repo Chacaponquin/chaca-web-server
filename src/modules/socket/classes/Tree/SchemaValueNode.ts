@@ -1,6 +1,7 @@
 import { SubOption } from "../../../schema-options/interfaces/options.interface";
 import { Node } from "./";
 import { NodeConfig } from "./Node";
+import { chaca } from "chaca";
 
 export class SchemaValueNode extends Node {
   constructor(
@@ -19,6 +20,15 @@ export class SchemaValueNode extends Node {
       this.args,
       this.schema,
     );
+  }
+
+  public getModelObject(): unknown {
+    return {
+      ...this.getCommonModelProperties(),
+      dataType: `${chaca.utils.camelCaseText(
+        this.schemaInfo.parent,
+      )}/${chaca.utils.camelCaseText(this.schemaInfo.option)}`,
+    };
   }
 
   public getValue() {

@@ -6,8 +6,12 @@ export class RefValueNode extends Node {
     super(config);
     if (ref.length === 0)
       throw new ChacaDatasetError(
-        `The field ${this.name} no reference a field`
+        `The field ${this.name} no reference a field`,
       );
+  }
+
+  public getModelObject(): unknown {
+    return { ...this.getCommonModelProperties(), dataType: this.ref };
   }
 
   public getNoArrayNode(): Node {
