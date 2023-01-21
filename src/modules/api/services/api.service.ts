@@ -19,7 +19,7 @@ export class ApiService {
       const foundOption = this.schemaOptionsService.findOption(schema, option);
       return this.schemaOptionsService.generateValueByConfig(
         foundOption,
-        optionConfig,
+        this.generateOptionConfig(optionConfig),
       );
     } catch (error) {
       if (error instanceof this.schemaOptionsService.notFoundSchemaError) {
@@ -38,5 +38,21 @@ export class ApiService {
         throw new InternalServerErrorException();
       }
     }
+  }
+
+  private generateOptionConfig(config: any) {
+    let retObject = {};
+
+    for (const [key, value] of Object.entries(config)) {
+      let configValue = value;
+
+      if (value === "true") configValue = "true";
+      else if (value === "false") configValue = "false";
+      else if (typeof Number(value) === "number") configValue = Number(value);
+
+      retObject = { ...retObject, [key]: configValue };
+    }
+
+    return retObject;
   }
 }

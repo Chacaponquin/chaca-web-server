@@ -11,11 +11,14 @@ import { IUser } from "../interfaces/user.interface";
 import * as bcrypt from "bcrypt";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
+import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
+import { IDatasetModel } from "@modules/dataset-model/interfaces/dataset-model.interface";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(DB_MOELS.USERS) private readonly userModel: Model<IUser>,
+    private readonly datasetModelService: DatasetModelService,
   ) {}
 
   async createUser(user: SignUpDTO) {
@@ -43,8 +46,15 @@ export class UserService {
 
     if (foundUser) {
       const userPopulated = await foundUser.populate("datasetModels");
-      return userPopulated.datasetModels;
+
+      return this.datasetModelService.getModelToSendClient(
+        this.limitDatasetModelsToSend(userPopulated),
+      );
     } else return [];
+  }
+
+  private limitDatasetModelsToSend(user: IUser): Array<IDatasetModel> {
+    return user.datasetModels;
   }
 
   async deleteModelFromUser(userID: string, modelID: string): Promise<void> {

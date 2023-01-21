@@ -1,5 +1,6 @@
 <div class='flex w-full justify-center'>
-<img src='https://res.cloudinary.com/chaca-sa/image/upload/v1672701012/chaca/javascript_yaolhz.svg' width='150px'/></div>
+   <img src='https://res.cloudinary.com/chaca-sa/image/upload/v1672701012/chaca/javascript_yaolhz.svg' width='150px'/>
+</div>
 
 Hey!!! Quieres crear un valor con tus propias reglas utilizando
 Javascript? Pues este es tu sitio **Recuerda que puedes utilizar esta funcionalidad con otros lenguajes**
@@ -9,7 +10,13 @@ Javascript? Pues este es tu sitio **Recuerda que puedes utilizar esta funcionali
 - Puedes acceder a los campos que has creado en tu dataset solo utilizando **this**
 
 ```js
-console.log("Hola");
+function buenas() {
+  const hola = "Hola";
+  return {
+    buenas: "Hola",
+    array: [],
+  };
+}
 ```
 
 - Tienes a tu mano una función **oneOfArray(array)** para obtener 1 elemento de un arreglo pasado como parámetro

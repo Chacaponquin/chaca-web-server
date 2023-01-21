@@ -28,8 +28,8 @@ export class UserController {
   }
 
   @Delete("/deleteModel/:modelID")
-  @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard("jwt"))
+  @HttpCode(HttpStatus.OK)
   async deleteModel(
     @Request() req: any,
     @Param("modelID") modelID: string,
