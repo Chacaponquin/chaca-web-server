@@ -48,7 +48,11 @@ export class ApiService {
 
       if (value === "true") configValue = "true";
       else if (value === "false") configValue = "false";
-      else if (typeof Number(value) === "number") configValue = Number(value);
+      else if (
+        typeof Number(value) === "number" &&
+        !Number.isNaN(Number(value))
+      )
+        configValue = Number(value);
 
       retObject = { ...retObject, [key]: configValue };
     }
