@@ -17,10 +17,13 @@ export class ApiService {
   ): unknown | Array<unknown> {
     try {
       const foundOption = this.schemaOptionsService.findOption(schema, option);
-      return this.schemaOptionsService.generateValueByConfig(
+
+      const returnValue = this.schemaOptionsService.generateValueByConfig(
         foundOption,
         this.generateOptionConfig(optionConfig),
       );
+
+      return returnValue;
     } catch (error) {
       if (error instanceof this.schemaOptionsService.notFoundSchemaError) {
         throw new HttpException(

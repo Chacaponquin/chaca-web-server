@@ -7,7 +7,7 @@ import {
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
 
-@Schema()
+@Schema({ timestamps: true })
 export class User {
   @Prop({ required: true, maxlength: 25, minlength: 5, unique: true })
   username: string;

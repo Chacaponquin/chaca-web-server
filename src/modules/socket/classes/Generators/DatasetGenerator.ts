@@ -199,7 +199,7 @@ export class DatasetsGenerator {
       else if (field instanceof RefValueNode) {
         // se busca en los datasets creados el que coincida con el primer parametro del ref
         const findDatasetRef = this.resultDatasets.find(
-          (d) => d.id === field.ref[0],
+          (d) => d.name === field.ref[0],
         );
 
         if (findDatasetRef) {

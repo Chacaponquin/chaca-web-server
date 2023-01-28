@@ -13,6 +13,7 @@ import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SocketGateway } from "@modules/socket/socket.gateway";
 import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
 import { SocketService } from "@modules/socket/services/socket.service";
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { SocketService } from "@modules/socket/services/socket.service";
     DatasetModelModule,
     UserMessageModule,
     SchemaOptionsModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService, SocketGateway, SocketService],
