@@ -41,7 +41,9 @@ export class DatasetsGenerator {
     // recorrer todos los datasets
     for (const dat of this.datasetTrees) {
       // dataset solution con la misma id de la dataset actual
-      const datasetSolution = this.resultDatasets.find((d) => d.id === dat.id);
+      const datasetSolution = this.resultDatasets.find(
+        (d) => d.id === dat.id,
+      ) as ChacaResultDatasetTree;
 
       // segun el limite del dataset crear cada documento
       for (let indexDoc = 0; indexDoc < dat.limit; indexDoc++) {
@@ -142,30 +144,32 @@ export class DatasetsGenerator {
     field: Node,
     indexDoc: number,
   ) {
-    // limite del arreglo de valores
-    const limit = schemas.dataType
-      .int()
-      .getValue({ min: field.isArray.min, max: field.isArray.max });
+    if (field.isArray) {
+      // limite del arreglo de valores
+      const limit = schemas.dataType
+        .int()
+        .getValue({ min: field.isArray.min, max: field.isArray.max });
 
-    // resolver el field hasta llegar al limite del array
-    for (let arrayIndex = 0; arrayIndex < limit; arrayIndex++) {
-      // resolver el field y guardarlo en un nodo
-      const fieldSolutionNode = this.createSolutionNodeByType(
-        datasetSolution,
-        field.getNoArrayNode(),
-        indexDoc,
-      );
+      // resolver el field hasta llegar al limite del array
+      for (let arrayIndex = 0; arrayIndex < limit; arrayIndex++) {
+        // resolver el field y guardarlo en un nodo
+        const fieldSolutionNode = this.createSolutionNodeByType(
+          datasetSolution,
+          field.getNoArrayNode(),
+          indexDoc,
+        );
 
-      // insertar el field en el array de soluciones
-      solutionArrayNode.insertNode(fieldSolutionNode);
+        // insertar el field en el array de soluciones
+        solutionArrayNode.insertNode(fieldSolutionNode);
 
-      // resolver el field en caso de ser un mixed field
-      this.resolveArrayAndMixedFields(
-        datasetSolution,
-        field,
-        fieldSolutionNode,
-        indexDoc,
-      );
+        // resolver el field en caso de ser un mixed field
+        this.resolveArrayAndMixedFields(
+          datasetSolution,
+          field,
+          fieldSolutionNode,
+          indexDoc,
+        );
+      }
     }
   }
 

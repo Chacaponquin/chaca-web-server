@@ -1,16 +1,9 @@
 import { Module } from "@nestjs/common";
-import { MongooseModule } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { AuthModule } from "./modules/auth/auth.module";
-import { AdminUserSchema } from "./schemas/adminUser.schema";
+import { AdminUserModule } from "./modules/admin-user/admin-user.module";
 
 @Module({
-  imports: [
-    MongooseModule.forFeatureAsync([
-      { name: DB_MOELS.ADMIN_USERS, useFactory: () => AdminUserSchema },
-    ]),
-    AuthModule,
-  ],
+  imports: [AuthModule, AdminUserModule],
   exports: [],
   controllers: [],
   providers: [],

@@ -13,7 +13,7 @@ import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SocketGateway } from "@modules/socket/socket.gateway";
 import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
 import { SocketService } from "@modules/socket/services/socket.service";
-import { AdminModule } from './modules/admin/admin.module';
+import { AdminModule } from "./modules/admin/admin.module";
 
 @Module({
   imports: [
@@ -22,7 +22,7 @@ import { AdminModule } from './modules/admin/admin.module';
       isGlobal: true,
       expandVariables: true,
     }),
-    MongooseModule.forRoot(process.env.MONGO_URI, {}),
+    MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
     UserModule,
     UtilsModule,
     ApiModule,

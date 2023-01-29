@@ -71,14 +71,16 @@ export class UserService {
     const foundByEmail = await this.userModel.findOne({ email });
 
     if (foundByEmail) {
-      // comparar contraseñas
-      const isCorrectPassword = await bcrypt.compare(
-        password,
-        foundByEmail.password,
-      );
+      if (foundByEmail.password) {
+        // comparar contraseñas
+        const isCorrectPassword = await bcrypt.compare(
+          password,
+          foundByEmail.password,
+        );
 
-      if (isCorrectPassword) {
-        login = foundByEmail._id;
+        if (isCorrectPassword) {
+          login = foundByEmail._id;
+        }
       }
     }
 
