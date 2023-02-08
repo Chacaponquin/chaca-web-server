@@ -7,6 +7,16 @@ export class MixedFieldNode extends FieldNode {
     this.nodes.push(node);
   }
 
+  public getValue(): unknown {
+    let resultObject = {};
+
+    this.nodes.forEach((n) => {
+      resultObject = { ...resultObject, [n.name]: n.getValue() };
+    });
+
+    return resultObject;
+  }
+
   public getValueByLocation(location: string[]): unknown {
     if (location.length === 0) return this.getValue();
     else {
@@ -17,15 +27,5 @@ export class MixedFieldNode extends FieldNode {
       }
       return found;
     }
-  }
-
-  public getValue(): unknown {
-    let resultObject = {};
-
-    this.nodes.forEach((n) => {
-      resultObject = { ...resultObject, [n.name]: n.getValue() };
-    });
-
-    return resultObject;
   }
 }

@@ -9,19 +9,25 @@ import {
 
 @Schema({ timestamps: true })
 export class User {
-  @Prop({ required: true, maxlength: 25, minlength: 5, unique: true })
+  @Prop({
+    required: true,
+    maxlength: 25,
+    minlength: 5,
+    unique: true,
+    type: mongoose.SchemaTypes.String,
+  })
   username: string;
-  @Prop({ default: null, unique: true })
+  @Prop({ default: null, unique: true, type: mongoose.SchemaTypes.String })
   email: string | null;
-  @Prop({ default: null })
+  @Prop({ default: null, type: mongoose.SchemaTypes.String })
   password: string | null;
   @Prop({ default: false })
   isSuperUser: boolean;
   @Prop({ default: [], ref: DB_MOELS.DATASET_MODEL })
   datasetModels: Array<mongoose.Types.ObjectId>;
-  @Prop({ default: null })
+  @Prop({ default: null, type: mongoose.SchemaTypes.String })
   image: string | null;
-  @Prop({ required: true })
+  @Prop({ required: true, type: mongoose.SchemaTypes.String })
   methodLogin: LOGIN_METHOD;
 }
 const UserSchema = SchemaFactory.createForClass(User);

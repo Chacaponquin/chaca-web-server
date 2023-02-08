@@ -20,3 +20,13 @@ export interface RespApiSubSection {
   title: string;
   route: string;
 }
+
+export interface ApiDocSubSection {
+  title: LanguageOptions;
+  content: LanguageOptions;
+}
+
+export interface IApiDoc {
+  sectionTitle: string;
+  subSections: Array<ApiDocSubSection>;
+}
