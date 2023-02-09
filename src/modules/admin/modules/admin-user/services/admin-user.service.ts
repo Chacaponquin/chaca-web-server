@@ -12,6 +12,13 @@ export class AdminUserService {
     private readonly adminUserModel: Model<IAdminUser>,
   ) {}
 
+  public async getAdminUserByID(userID: string): Promise<string | null> {
+    const foundUser = await this.adminUserModel.findById(userID);
+
+    if (foundUser) return foundUser.id;
+    else return null;
+  }
+
   async findUserByEmailAndPassword(
     email: string,
     password: string,

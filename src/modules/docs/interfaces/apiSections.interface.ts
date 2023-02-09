@@ -1,4 +1,5 @@
 import { LanguageOptions } from "@shared/interfaces/language.interface";
+import { Document } from "mongoose";
 
 export interface ApiSection {
   sectionTitle: LanguageOptions;
@@ -21,12 +22,7 @@ export interface RespApiSubSection {
   route: string;
 }
 
-export interface ApiDocSubSection {
-  title: LanguageOptions;
-  content: LanguageOptions;
-}
-
-export interface IApiDoc {
+export interface IApiDoc extends Document {
   sectionTitle: string;
-  subSections: Array<ApiDocSubSection>;
+  subSections: Array<string>;
 }

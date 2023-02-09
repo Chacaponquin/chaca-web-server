@@ -1,17 +1,28 @@
 import { HttpStatus } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common/exceptions";
+import { InjectModel } from "@nestjs/mongoose";
+import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { SharedService } from "@shared/services/shared.service";
 import * as fs from "fs";
+import { Model } from "mongoose";
 import * as path from "path";
 import { API_SECTIONS } from "../constants/API_SECTIONS";
-import { RespApiSection } from "../interfaces/apiSections.interface";
+import { IApiDocSubSection } from "../interfaces/apiDocSubSection.interface";
+import { IApiDoc, RespApiSection } from "../interfaces/apiSections.interface";
 
 @Injectable()
 export class DocsService {
-  constructor(private readonly sharedService: SharedService) {}
+  constructor(
+    @InjectModel(DB_MOELS.API_DOCS)
+    private readonly apiDocModel: Model<IApiDoc>,
+    @InjectModel(DB_MOELS.API_DOCS_SUB_SECTION)
+    private readonly apiDocSubSectionModel: Model<IApiDocSubSection>,
+    private readonly sharedService: SharedService,
+  ) {}
 
-  async readDoc({
+  public async readDoc({
     section,
     document,
     language,
@@ -53,5 +64,23 @@ export class DocsService {
         }),
       };
     });
+  }
+
+  public async updateApiDoc(
+    subSectionID: string,
+    language: string,
+    title: string,
+    content: string,
+  ): Promise<void> {
+    const foundSubSection = await this.apiDocSubSectionModel.findById(
+      subSectionID,
+    );
+
+    if (foundSubSection) {
+      foundSubSection.content[language] = content;
+      foundSubSection.title[language] = title;
+    } else {
+      throw new NotFoundException();
+    }
   }
 }
