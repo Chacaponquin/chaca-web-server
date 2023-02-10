@@ -1,7 +1,6 @@
 import { HttpStatus } from "@nestjs/common";
 import { HttpException } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
-import { NotFoundException } from "@nestjs/common/exceptions";
 import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { SharedService } from "@shared/services/shared.service";
@@ -64,23 +63,5 @@ export class DocsService {
         }),
       };
     });
-  }
-
-  public async updateApiDoc(
-    subSectionID: string,
-    language: string,
-    title: string,
-    content: string,
-  ): Promise<void> {
-    const foundSubSection = await this.apiDocSubSectionModel.findById(
-      subSectionID,
-    );
-
-    if (foundSubSection) {
-      foundSubSection.content[language] = content;
-      foundSubSection.title[language] = title;
-    } else {
-      throw new NotFoundException();
-    }
   }
 }

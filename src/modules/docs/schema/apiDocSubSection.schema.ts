@@ -5,7 +5,7 @@ import {
 } from "@shared/interfaces/language.interface";
 import mongoose from "mongoose";
 
-@Schema()
+@Schema({ timestamps: true })
 class ApiDocSubSection {
   @Prop({ default: DEFAULT_LANGUAGE_OPTIONS, type: mongoose.SchemaTypes.Mixed })
   title: LanguageOptions;

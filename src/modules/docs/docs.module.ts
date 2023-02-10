@@ -5,6 +5,7 @@ import { SharedService } from "@shared/services/shared.service";
 import { DocsController } from "./controller/docs.controller";
 import { ApiDocSchema } from "./schema/apiDoc.schema";
 import { ApiDocSubSectionSchema } from "./schema/apiDocSubSection.schema";
+import { AdminDocsService } from "./services/admin-docs.service";
 import { DocsService } from "./services/docs.service";
 
 @Module({
@@ -19,6 +20,6 @@ import { DocsService } from "./services/docs.service";
     ]),
   ],
   exports: [],
-  providers: [DocsService, SharedService],
+  providers: [DocsService, SharedService, AdminDocsService],
 })
 export class DocsModule {}

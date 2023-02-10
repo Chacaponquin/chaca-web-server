@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import mongoose from "mongoose";
 
-@Schema()
+@Schema({ timestamps: true })
 class ApiDoc {
   @Prop({ required: true, type: mongoose.SchemaTypes.String })
   sectionTitle: string;
