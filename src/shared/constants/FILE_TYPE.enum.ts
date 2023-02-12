@@ -4,4 +4,5 @@ export enum FILE_TYPE {
   JAVASCRIPT = "javascript",
   TYPESCRIPT = "typescript",
   JAVA = "java",
+  YAML = "yaml",
 }

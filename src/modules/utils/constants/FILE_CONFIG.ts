@@ -16,4 +16,5 @@ export const FILE_CONFIG: FileOption[] = [
     arguments: [],
   },
   { fileType: FILE_TYPE.JAVA, arguments: [] },
+  { fileType: FILE_TYPE.YAML, arguments: [] },
 ];
