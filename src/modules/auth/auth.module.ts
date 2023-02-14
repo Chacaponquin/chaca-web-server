@@ -16,7 +16,7 @@ import { UserModule } from "@modules/user/user.module";
         return {
           secret: configService.get<string>("SECRET_WORD"),
           signOptions: {
-            expiresIn: "12h",
+            expiresIn: configService.get<string>("CURRENT_USER_TOKEN_EXPIRES"),
           },
         };
       },

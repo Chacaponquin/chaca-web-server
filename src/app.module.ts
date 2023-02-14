@@ -1,6 +1,5 @@
 import { Module } from "@nestjs/common";
 import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { UtilsModule } from "./modules/utils/utils.module";
 import { ApiModule } from "./modules/api/api.module";
 import { UserModule } from "./modules/user/user.module";
@@ -23,17 +22,18 @@ import { AdminModule } from "./modules/admin/admin.module";
       expandVariables: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
-    UserModule,
     UtilsModule,
     ApiModule,
     AuthModule,
     DocsModule,
-    DatasetModelModule,
     UserMessageModule,
-    SchemaOptionsModule,
     AdminModule,
+    AuthModule,
+    DatasetModelModule,
+    UserModule,
+    SchemaOptionsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, SocketGateway, SocketService],
+  providers: [SocketGateway, SocketService],
 })
 export class AppModule {}
