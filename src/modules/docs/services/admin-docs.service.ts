@@ -4,7 +4,8 @@ import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { SharedService } from "@shared/services/shared.service";
 import { Model } from "mongoose";
 import { IApiDocSubSection } from "../interfaces/apiDocSubSection.interface";
-import { IApiDoc, RespAdminApiDoc } from "../interfaces/apiSections.interface";
+import { IApiDoc, IApiDocPopulated } from "../interfaces/apiSections.interface";
+import { RespAdminApiDoc } from "@modules/admin/modules/docs/dto/apiDoc.dto";
 
 @Injectable()
 export class AdminDocsService {
@@ -21,6 +22,21 @@ export class AdminDocsService {
     await newApiDoc.save();
   }
 
+  public async addNewSubSection(
+    parentSectionID: string,
+    subSectionTitle: string,
+  ) {
+    const newSection = new this.apiDocSubSectionModel({
+      title: subSectionTitle,
+    });
+
+    await newSection.save();
+
+    await this.apiDocModel.findByIdAndUpdate(parentSectionID, {
+      $push: { subSections: newSection.id },
+    });
+  }
+
   public async updateApiDoc(
     subSectionID: string,
     language: string,
@@ -34,12 +50,28 @@ export class AdminDocsService {
     if (foundSubSection) {
       foundSubSection.content[language] = content;
       foundSubSection.title[language] = title;
+
+      await foundSubSection.save();
     } else {
       throw new NotFoundException();
     }
   }
 
   public async getAdminApiDocSections(): Promise<Array<RespAdminApiDoc>> {
-    return await this.apiDocModel.find().populate("subSections");
+    const apiSections = (await this.apiDocModel
+      .find()
+      .populate("subSections")) as Array<IApiDocPopulated>;
+
+    const returnApiSections: Array<RespAdminApiDoc> = apiSections.map((s) => {
+      return {
+        _id: s._id,
+        sectionTitle: s.sectionTitle["en"],
+        subSections: s.subSections.map((subS) => {
+          return { _id: subS._id, title: subS.title["en"] };
+        }),
+      };
+    });
+
+    return returnApiSections;
   }
 }

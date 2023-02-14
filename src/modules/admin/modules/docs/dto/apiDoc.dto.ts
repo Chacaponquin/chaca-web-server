@@ -1,4 +1,5 @@
 import { IsNotEmpty, IsString } from "class-validator";
+import { RespAdminApiDocSubSection } from "./apiDocSubSection.dto";
 
 export class UpdateApiDocDTO {
   @IsString()
@@ -16,4 +17,9 @@ export class CreateApiDocDTO {
   @IsString()
   @IsNotEmpty()
   sectionTitle: string;
+}
+
+export interface RespAdminApiDoc {
+  sectionTitle: string;
+  subSections: Array<RespAdminApiDocSubSection>;
 }

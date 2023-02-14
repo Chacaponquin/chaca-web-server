@@ -19,7 +19,7 @@ import { DocsService } from "./services/docs.service";
       },
     ]),
   ],
-  exports: [],
+  exports: [DocsService, AdminDocsService],
   providers: [DocsService, SharedService, AdminDocsService],
 })
 export class DocsModule {}

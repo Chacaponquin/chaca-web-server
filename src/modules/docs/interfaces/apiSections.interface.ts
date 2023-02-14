@@ -23,13 +23,11 @@ export interface RespApiSubSection {
   route: string;
 }
 
-export interface RespAdminApiDoc {
-  _id: string;
-  sectionTitle: string;
-  subSections: Array<IApiDocSubSection>;
+export interface IApiDoc extends Document {
+  sectionTitle: LanguageOptions;
+  subSections: Array<string>;
 }
 
-export interface IApiDoc extends Document {
-  sectionTitle: string;
-  subSections: Array<string>;
+export interface IApiDocPopulated extends Omit<IApiDoc, "subSections"> {
+  subSections: Array<IApiDocSubSection>;
 }

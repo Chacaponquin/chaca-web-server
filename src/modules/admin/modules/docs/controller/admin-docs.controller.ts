@@ -9,6 +9,7 @@ import {
   Put,
 } from "@nestjs/common";
 import { CreateApiDocDTO, UpdateApiDocDTO } from "../dto/apiDoc.dto";
+import { CreateApiDocSubSectionDTO } from "../dto/apiDocSubSection.dto";
 
 @Controller("admin/docs")
 export class AdminDocsController {
@@ -24,6 +25,17 @@ export class AdminDocsController {
   public async createApiDoc(@Body() createApiDocDTO: CreateApiDocDTO) {
     await this.adminDocsService.createNewApiDocSection(
       createApiDocDTO.sectionTitle,
+    );
+  }
+
+  @Post("/newApiDocSubSection")
+  @HttpCode(HttpStatus.CREATED)
+  public async createApiDocSubSection(
+    @Body() createApiDocSubSection: CreateApiDocSubSectionDTO,
+  ) {
+    await this.adminDocsService.addNewSubSection(
+      createApiDocSubSection.parentSectionID,
+      createApiDocSubSection.subSectionTitle,
     );
   }
 
