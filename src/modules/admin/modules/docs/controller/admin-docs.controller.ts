@@ -25,6 +25,7 @@ export class AdminDocsController {
   public async createApiDoc(@Body() createApiDocDTO: CreateApiDocDTO) {
     await this.adminDocsService.createNewApiDocSection(
       createApiDocDTO.sectionTitle,
+      createApiDocDTO.language,
     );
   }
 
@@ -33,10 +34,11 @@ export class AdminDocsController {
   public async createApiDocSubSection(
     @Body() createApiDocSubSection: CreateApiDocSubSectionDTO,
   ) {
-    await this.adminDocsService.addNewSubSection(
+    const newSectionID = await this.adminDocsService.addNewSubSection(
       createApiDocSubSection.parentSectionID,
-      createApiDocSubSection.subSectionTitle,
     );
+
+    return newSectionID;
   }
 
   @HttpCode(HttpStatus.OK)

@@ -12,5 +12,25 @@ class ApiDocSubSection {
   @Prop({ default: DEFAULT_LANGUAGE_OPTIONS, type: mongoose.SchemaTypes.Mixed })
   content: LanguageOptions;
 }
-export const ApiDocSubSectionSchema =
-  SchemaFactory.createForClass(ApiDocSubSection);
+const ApiDocSubSectionSchema = SchemaFactory.createForClass(ApiDocSubSection);
+
+ApiDocSubSectionSchema.set("toObject", { virtuals: true });
+ApiDocSubSectionSchema.set("toJSON", { virtuals: true });
+
+ApiDocSubSectionSchema.virtual("titleToShow").get(function () {
+  if (this.title.en) {
+    return this.title.en;
+  } else {
+    let returnTitle = "";
+
+    for (const title of Object.values(this.title)) {
+      if (title) {
+        returnTitle = title;
+      }
+    }
+
+    return returnTitle;
+  }
+});
+
+export { ApiDocSubSectionSchema };

@@ -17,6 +17,9 @@ export class CreateApiDocDTO {
   @IsString()
   @IsNotEmpty()
   sectionTitle: string;
+  @IsString()
+  @IsNotEmpty()
+  language: string;
 }
 
 export interface RespAdminApiDoc {

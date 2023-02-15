@@ -12,9 +12,32 @@ class ApiDoc {
   sectionTitle: LanguageOptions;
   @Prop({
     default: [],
-    type: Array<mongoose.Types.ObjectId>,
-    ref: DB_MOELS.API_DOCS_SUB_SECTION,
+    type: [
+      { type: mongoose.Types.ObjectId, ref: DB_MOELS.API_DOCS_SUB_SECTION },
+    ],
   })
   subSections: Array<mongoose.Types.ObjectId>;
 }
-export const ApiDocSchema = SchemaFactory.createForClass(ApiDoc);
+
+const ApiDocSchema = SchemaFactory.createForClass(ApiDoc);
+
+ApiDocSchema.set("toObject", { virtuals: true });
+ApiDocSchema.set("toJSON", { virtuals: true });
+
+ApiDocSchema.virtual("titleToShow").get(function () {
+  if (this.sectionTitle.en) {
+    return this.sectionTitle.en;
+  } else {
+    let returnTitle = "";
+
+    for (const title of Object.values(this.sectionTitle)) {
+      if (title) {
+        returnTitle = title;
+      }
+    }
+
+    return returnTitle;
+  }
+});
+
+export { ApiDocSchema };

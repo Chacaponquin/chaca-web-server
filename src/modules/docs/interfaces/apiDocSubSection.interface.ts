@@ -4,4 +4,5 @@ import { Document } from "mongoose";
 export interface IApiDocSubSection extends Document {
   title: LanguageOptions;
   content: LanguageOptions;
+  titleToShow: string;
 }

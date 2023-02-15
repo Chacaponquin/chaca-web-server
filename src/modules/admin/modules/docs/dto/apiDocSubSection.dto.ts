@@ -4,9 +4,6 @@ export class CreateApiDocSubSectionDTO {
   @IsString()
   @IsNotEmpty()
   parentSectionID: string;
-  @IsString()
-  @IsNotEmpty()
-  subSectionTitle: string;
 }
 
 export interface RespAdminApiDocSubSection {
