@@ -63,6 +63,18 @@ export class AdminDocsService {
     }
   }
 
+  public async deleteApiDocSubSection(subSectionID: string): Promise<void> {
+    await this.apiDocSubSectionModel.findByIdAndDelete(subSectionID);
+  }
+
+  public async getApiDocSubSectionByID(subSectionID: string) {
+    const foundSubSection = await this.apiDocSubSectionModel.findById(
+      subSectionID,
+    );
+
+    return foundSubSection;
+  }
+
   public async getAdminApiDocSections(): Promise<Array<RespAdminApiDoc>> {
     const apiSections = (await this.apiDocModel
       .find()

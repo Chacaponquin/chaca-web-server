@@ -2,9 +2,12 @@ import { AdminDocsService } from "@modules/docs/services/admin-docs.service";
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
+  NotFoundException,
+  Param,
   Post,
   Put,
 } from "@nestjs/common";
@@ -54,5 +57,27 @@ export class AdminDocsController {
       title,
       content,
     );
+  }
+
+  @Get("/getApiDocSubSection/:subSectionID")
+  public async getApiDocSubSection(
+    @Param("subSectionID") subSectionID: string,
+  ) {
+    const found = await this.adminDocsService.getApiDocSubSectionByID(
+      subSectionID,
+    );
+
+    if (found) {
+      return found;
+    } else {
+      throw new NotFoundException();
+    }
+  }
+
+  @Delete("/deleteApiDocSubSection/:subSectionID")
+  public async deleteApiDocSubSection(
+    @Param("subSectionID") subSectionID: string,
+  ): Promise<void> {
+    this.adminDocsService.deleteApiDocSubSection(subSectionID);
   }
 }

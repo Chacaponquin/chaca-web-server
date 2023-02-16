@@ -12,7 +12,6 @@ export class ChacaExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(ChacaExceptionFilter.name);
 
   catch(exception: any, host: ArgumentsHost) {
-    console.log(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse();
     const request = ctx.getRequest();
