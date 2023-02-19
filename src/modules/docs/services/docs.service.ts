@@ -7,9 +7,9 @@ import { SharedService } from "@shared/services/shared.service";
 import * as fs from "fs";
 import { Model } from "mongoose";
 import * as path from "path";
-import { API_SECTIONS } from "../constants/API_SECTIONS";
+import { RespApiDocSection } from "../dto/apiDocSection.dto";
 import { IApiDocSubSection } from "../interfaces/apiDocSubSection.interface";
-import { IApiDoc, RespApiSection } from "../interfaces/apiSections.interface";
+import { IApiDoc, IApiDocPopulated } from "../interfaces/apiSections.interface";
 
 @Injectable()
 export class DocsService {
@@ -50,15 +50,49 @@ export class DocsService {
     }
   }
 
-  public getApiSections(lan: string): Array<RespApiSection> {
+  private async populateApiSections(): Promise<Array<IApiDocPopulated>> {
+    return (await this.apiDocModel
+      .find()
+      .populate("subSections")) as Array<IApiDocPopulated>;
+  }
+
+  public async findSubSectionContentByParent(
+    section: string,
+    subSection: string,
+    language: string,
+  ): Promise<string | null> {
+    let returnContent: string | null = null;
+
+    const apiSections = await this.populateApiSections();
+
+    const findParent = apiSections.find((s) => s.frontRoute === section);
+
+    if (findParent) {
+      const findSubSection = findParent.subSections.find(
+        (sub) => sub.frontRoute === subSection,
+      );
+
+      if (findSubSection) {
+        const content = findSubSection.content;
+        returnContent = content[this.sharedService.filterLanguage(language)];
+      }
+    }
+
+    return returnContent;
+  }
+
+  public async getApiSections(lan: string): Promise<Array<RespApiDocSection>> {
+    const apiSections = await this.populateApiSections();
+
     const filtLanguage = this.sharedService.filterLanguage(lan);
-    return API_SECTIONS.map((s) => {
+    return apiSections.map((s) => {
       return {
         sectionTitle: s.sectionTitle[filtLanguage],
+        frontRoute: s.frontRoute,
         subSections: s.subSections.map((sub) => {
           return {
             title: sub.title[filtLanguage],
-            route: `${s.section}/${sub.document}`,
+            frontRoute: sub.frontRoute,
           };
         }),
       };

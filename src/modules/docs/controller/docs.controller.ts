@@ -1,5 +1,11 @@
-import { Get, Controller, Headers, Param } from "@nestjs/common";
-import { RespApiSection } from "../interfaces/apiSections.interface";
+import {
+  Get,
+  Controller,
+  Headers,
+  Param,
+  NotFoundException,
+} from "@nestjs/common";
+import { RespApiDocSection } from "../dto/apiDocSection.dto";
 import { DocsService } from "../services/docs.service";
 
 @Controller("docs")
@@ -28,17 +34,29 @@ export class DocsController {
     });
   }
 
-  @Get("/:section/:document")
+  @Get("subSection/:section/:subSection")
   async getApiDocument(
     @Headers("language") language: string,
     @Param("section") section: string,
-    @Param("document") document: string,
-  ) {
-    return await this.docsService.readDoc({ document, language, section });
+    @Param("subSection") subSection: string,
+  ): Promise<string> {
+    const content = await this.docsService.findSubSectionContentByParent(
+      section,
+      subSection,
+      language,
+    );
+
+    if (content) {
+      return content;
+    } else {
+      throw new NotFoundException();
+    }
   }
 
   @Get("/sections")
-  getDocSections(@Headers("language") language: string): Array<RespApiSection> {
+  public async getDocSections(
+    @Headers("language") language: string,
+  ): Promise<Array<RespApiDocSection>> {
     return this.docsService.getApiSections(language);
   }
 }

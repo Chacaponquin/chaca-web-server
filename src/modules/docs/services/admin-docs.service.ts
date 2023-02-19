@@ -6,7 +6,9 @@ import { Model } from "mongoose";
 import { IApiDocSubSection } from "../interfaces/apiDocSubSection.interface";
 import { IApiDoc, IApiDocPopulated } from "../interfaces/apiSections.interface";
 import { RespAdminApiDoc } from "@modules/admin/modules/docs/dto/apiDoc.dto";
-import { DEFAULT_LANGUAGE_OPTIONS } from "@shared/interfaces/language.interface";
+import { LanguageOptions } from "@shared/interfaces/language.interface";
+import { RepeatLanguageTitleError } from "../errors";
+import { schemas } from "chaca";
 
 @Injectable()
 export class AdminDocsService {
@@ -18,12 +20,83 @@ export class AdminDocsService {
     private readonly sharedService: SharedService,
   ) {}
 
-  public async createNewApiDocSection(
-    sectionTitle: string,
-    language: string,
+  private async populateApiSections(): Promise<Array<IApiDocPopulated>> {
+    return (await this.apiDocModel
+      .find()
+      .populate("subSections")) as Array<IApiDocPopulated>;
+  }
+
+  private async validateApiDocSubSectionTitle(
+    subSectionID: string,
+    newTitle: LanguageOptions,
   ): Promise<void> {
+    const apiSections = await this.populateApiSections();
+
+    const foundParentSection = apiSections.find((s) => {
+      let is = false;
+
+      if (s.subSections.some((sub) => sub.id === subSectionID)) {
+        is = true;
+      }
+
+      return is;
+    });
+
+    if (foundParentSection) {
+      const subSections = foundParentSection.subSections;
+
+      const languageKeys = Object.keys(newTitle);
+
+      for (let j = 0; j < languageKeys.length; j++) {
+        for (let i = 0; i < subSections.length; i++) {
+          if (subSections[i].id !== subSectionID) {
+            const sectionTitle = subSections[i].title[
+              languageKeys[j]
+            ] as string;
+            const newDocTitle = newTitle[languageKeys[j]] as string;
+
+            if (
+              sectionTitle.trim().toLowerCase() ===
+              newDocTitle.trim().toLowerCase()
+            ) {
+              throw new RepeatLanguageTitleError();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private async validateApiDocTitle(
+    newSectionTitle: LanguageOptions,
+  ): Promise<void> {
+    const apiSections = await this.populateApiSections();
+
+    const languageKeys = Object.keys(newSectionTitle);
+
+    for (let j = 0; j < languageKeys.length; j++) {
+      for (let i = 0; i < apiSections.length; i++) {
+        const sectionTitle = apiSections[i].sectionTitle[
+          languageKeys[j]
+        ] as string;
+        const newDocTitle = newSectionTitle[languageKeys[j]] as string;
+
+        if (
+          sectionTitle.trim().toLowerCase() === newDocTitle.trim().toLowerCase()
+        ) {
+          throw new RepeatLanguageTitleError();
+        }
+      }
+    }
+  }
+
+  public async createNewApiDocSection(
+    sectionTitle: LanguageOptions,
+  ): Promise<void> {
+    await this.validateApiDocTitle(sectionTitle);
+
     const newApiDoc = new this.apiDocModel({
-      sectionTitle: { ...DEFAULT_LANGUAGE_OPTIONS, [language]: sectionTitle },
+      sectionTitle,
     });
 
     await newApiDoc.save();
@@ -31,7 +104,11 @@ export class AdminDocsService {
 
   public async addNewSubSection(parentSectionID: string): Promise<string> {
     const newSection = new this.apiDocSubSectionModel({
-      title: { ...DEFAULT_LANGUAGE_OPTIONS, en: "New SubSection" },
+      title: {
+        en: "New SubSection" + schemas.id.mongodbID().getValue(),
+        es: "New SubSection" + schemas.id.mongodbID().getValue(),
+      },
+      content: { en: "New SubSection Content", es: "New SubSection Content" },
     });
 
     await newSection.save();
@@ -45,17 +122,18 @@ export class AdminDocsService {
 
   public async updateApiDoc(
     subSectionID: string,
-    language: string,
-    title: string,
-    content: string,
+    title: LanguageOptions,
+    content: LanguageOptions,
   ): Promise<void> {
     const foundSubSection = await this.apiDocSubSectionModel.findById(
       subSectionID,
     );
 
     if (foundSubSection) {
-      foundSubSection.content[language] = content;
-      foundSubSection.title[language] = title;
+      await this.validateApiDocSubSectionTitle(subSectionID, title);
+
+      foundSubSection.content = content;
+      foundSubSection.title = title;
 
       await foundSubSection.save();
     } else {

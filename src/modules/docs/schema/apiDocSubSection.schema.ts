@@ -18,19 +18,14 @@ ApiDocSubSectionSchema.set("toObject", { virtuals: true });
 ApiDocSubSectionSchema.set("toJSON", { virtuals: true });
 
 ApiDocSubSectionSchema.virtual("titleToShow").get(function () {
-  if (this.title.en) {
-    return this.title.en;
-  } else {
-    let returnTitle = "";
+  return this.title.en;
+});
 
-    for (const title of Object.values(this.title)) {
-      if (title) {
-        returnTitle = title;
-      }
-    }
+ApiDocSubSectionSchema.virtual("frontRoute").get(function () {
+  const initString = this.title.en.toLowerCase().trim();
+  const splitString = initString.split(" ").join("-");
 
-    return returnTitle;
-  }
+  return splitString;
 });
 
 export { ApiDocSubSectionSchema };

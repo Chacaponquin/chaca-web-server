@@ -5,4 +5,5 @@ export interface IApiDocSubSection extends Document {
   title: LanguageOptions;
   content: LanguageOptions;
   titleToShow: string;
+  frontRoute: string;
 }

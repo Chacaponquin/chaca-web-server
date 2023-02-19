@@ -1,3 +1,4 @@
+import { RepeatLanguageTitleError } from "@modules/docs/errors";
 import { AdminDocsService } from "@modules/docs/services/admin-docs.service";
 import {
   Body,
@@ -5,6 +6,7 @@ import {
   Delete,
   Get,
   HttpCode,
+  HttpException,
   HttpStatus,
   NotFoundException,
   Param,
@@ -25,11 +27,21 @@ export class AdminDocsController {
 
   @HttpCode(HttpStatus.CREATED)
   @Post("/newApiDoc")
-  public async createApiDoc(@Body() createApiDocDTO: CreateApiDocDTO) {
-    await this.adminDocsService.createNewApiDocSection(
-      createApiDocDTO.sectionTitle,
-      createApiDocDTO.language,
-    );
+  public async createApiDocSection(
+    @Body() createApiDocDTO: CreateApiDocDTO,
+  ): Promise<void> {
+    try {
+      await this.adminDocsService.createNewApiDocSection(
+        createApiDocDTO.sectionTitle,
+      );
+    } catch (error) {
+      if (error instanceof RepeatLanguageTitleError) {
+        throw new HttpException(
+          "That title aldready exists",
+          HttpStatus.CONFLICT,
+        );
+      } else throw error;
+    }
   }
 
   @Post("/newApiDocSubSection")
@@ -49,14 +61,18 @@ export class AdminDocsController {
   public async updateApiDoc(
     @Body() updateApiDocDTO: UpdateApiDocDTO,
   ): Promise<void> {
-    const { content, language, subSectionID, title } = updateApiDocDTO;
+    const { content, subSectionID, title } = updateApiDocDTO;
 
-    await this.adminDocsService.updateApiDoc(
-      subSectionID,
-      language,
-      title,
-      content,
-    );
+    try {
+      await this.adminDocsService.updateApiDoc(subSectionID, title, content);
+    } catch (error) {
+      if (error instanceof RepeatLanguageTitleError) {
+        throw new HttpException(
+          "That title aldready exists",
+          HttpStatus.CONFLICT,
+        );
+      } else throw error;
+    }
   }
 
   @Get("/getApiDocSubSection/:subSectionID")

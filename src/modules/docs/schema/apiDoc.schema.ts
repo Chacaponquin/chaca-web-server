@@ -25,19 +25,14 @@ ApiDocSchema.set("toObject", { virtuals: true });
 ApiDocSchema.set("toJSON", { virtuals: true });
 
 ApiDocSchema.virtual("titleToShow").get(function () {
-  if (this.sectionTitle.en) {
-    return this.sectionTitle.en;
-  } else {
-    let returnTitle = "";
+  return this.sectionTitle.en;
+});
 
-    for (const title of Object.values(this.sectionTitle)) {
-      if (title) {
-        returnTitle = title;
-      }
-    }
+ApiDocSchema.virtual("frontRoute").get(function () {
+  const initString = this.sectionTitle.en.toLowerCase().trim();
+  const splitString = initString.split(" ").join("-");
 
-    return returnTitle;
-  }
+  return splitString;
 });
 
 export { ApiDocSchema };

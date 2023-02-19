@@ -1,25 +1,40 @@
-import { IsNotEmpty, IsString } from "class-validator";
+import {
+  IsNotEmpty,
+  IsObject,
+  IsString,
+  ValidateNested,
+} from "class-validator";
+import { Type } from "class-transformer";
 import { RespAdminApiDocSubSection } from "./apiDocSubSection.dto";
+
+class LanguageOptionsDTO {
+  @IsString()
+  @IsNotEmpty()
+  en: string;
+  @IsNotEmpty()
+  @IsString()
+  es: string;
+}
 
 export class UpdateApiDocDTO {
   @IsString()
-  language: string;
-  @IsString()
   @IsNotEmpty()
   subSectionID: string;
-  @IsString()
-  title: string;
-  @IsString()
-  content: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LanguageOptionsDTO)
+  title: LanguageOptionsDTO;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LanguageOptionsDTO)
+  content: LanguageOptionsDTO;
 }
 
 export class CreateApiDocDTO {
-  @IsString()
-  @IsNotEmpty()
-  sectionTitle: string;
-  @IsString()
-  @IsNotEmpty()
-  language: string;
+  @IsObject()
+  @ValidateNested()
+  @Type(() => LanguageOptionsDTO)
+  sectionTitle: LanguageOptionsDTO;
 }
 
 export interface RespAdminApiDoc {
