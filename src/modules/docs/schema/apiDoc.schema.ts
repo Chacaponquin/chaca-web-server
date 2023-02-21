@@ -28,11 +28,4 @@ ApiDocSchema.virtual("titleToShow").get(function () {
   return this.sectionTitle.en;
 });
 
-ApiDocSchema.virtual("frontRoute").get(function () {
-  const initString = this.sectionTitle.en.toLowerCase().trim();
-  const splitString = initString.split(" ").join("-");
-
-  return splitString;
-});
-
 export { ApiDocSchema };

@@ -65,12 +65,14 @@ export class DocsService {
 
     const apiSections = await this.populateApiSections();
 
-    const findParent = apiSections.find((s) => s.frontRoute === section);
+    const findParent = apiSections.find(
+      (s) => this.getSectionFrontRoute(s.sectionTitle.en) === section,
+    );
 
     if (findParent) {
-      const findSubSection = findParent.subSections.find(
-        (sub) => sub.frontRoute === subSection,
-      );
+      const findSubSection = findParent.subSections.find((sub) => {
+        return this.getSectionFrontRoute(sub.title.en) === subSection;
+      });
 
       if (findSubSection) {
         const content = findSubSection.content;
@@ -88,14 +90,35 @@ export class DocsService {
     return apiSections.map((s) => {
       return {
         sectionTitle: s.sectionTitle[filtLanguage],
-        frontRoute: s.frontRoute,
+        frontRoute: this.getSectionFrontRoute(s.sectionTitle.en),
         subSections: s.subSections.map((sub) => {
           return {
             title: sub.title[filtLanguage],
-            frontRoute: sub.frontRoute,
+            frontRoute: this.getSectionFrontRoute(sub.title.en),
           };
         }),
       };
     });
+  }
+
+  private getSectionFrontRoute(title: string): string {
+    const splitString = title
+      .trim()
+      .toLowerCase()
+      .split(" ")
+      .map((s) => {
+        let retrStr = "";
+
+        for (let i = 0; i < s.length; i++) {
+          if (!["?"].includes(s[i])) {
+            retrStr += s[i];
+          }
+        }
+
+        return retrStr;
+      })
+      .join("-");
+
+    return splitString;
   }
 }

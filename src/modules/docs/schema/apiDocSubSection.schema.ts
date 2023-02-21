@@ -21,11 +21,4 @@ ApiDocSubSectionSchema.virtual("titleToShow").get(function () {
   return this.title.en;
 });
 
-ApiDocSubSectionSchema.virtual("frontRoute").get(function () {
-  const initString = this.title.en.toLowerCase().trim();
-  const splitString = initString.split(" ").join("-");
-
-  return splitString;
-});
-
 export { ApiDocSubSectionSchema };
