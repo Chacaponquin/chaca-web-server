@@ -13,6 +13,7 @@ import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 import { IDatasetModel } from "@modules/dataset-model/interfaces/dataset-model.interface";
+import { RepeatUserEmailError } from "../error";
 
 @Injectable()
 export class UserService {
@@ -21,12 +22,23 @@ export class UserService {
     private readonly datasetModelService: DatasetModelService,
   ) {}
 
+  private async validateUserEmail(email: string): Promise<void> {
+    const foundUser = await this.userModel.findOne({ email });
+
+    if (foundUser) {
+      throw new RepeatUserEmailError();
+    }
+  }
+
   async createUser(user: SignUpDTO) {
-    const savePassword = await bcrypt.hash(user.password, 10);
+    // validate
+    await this.validateUserEmail(user.email);
+
+    const hashedPassword = await bcrypt.hash(user.password, 10);
 
     const newUser = new this.userModel({
       ...user,
-      password: savePassword,
+      password: hashedPassword,
       methodLogin: LOGIN_METHOD.EMAIL,
     });
 
