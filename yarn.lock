@@ -1452,12 +1452,12 @@
     tslib "2.4.1"
     uuid "9.0.0"
 
-"@nestjs/jwt@^10.0.1":
-  version "10.0.1"
-  resolved "https://registry.npmjs.org/@nestjs/jwt/-/jwt-10.0.1.tgz"
-  integrity sha512-LwXBKVYHnFeX6GH/Wt0WDjsWCmNDC6tEdLlwNMAvJgYp+TkiCpEmQLkgRpifdUE29mvYSbjSnVs2kW2ob935NA==
+"@nestjs/jwt@^10.0.2":
+  version "10.0.2"
+  resolved "https://registry.yarnpkg.com/@nestjs/jwt/-/jwt-10.0.2.tgz#bc049fe1622299e456a849999ebf30cb56ab4dd1"
+  integrity sha512-MLxjCSbO7C9fN2hst5kpIhnJAgglJmrKppXAXqElB8A9ip3ZuCowMDjjmNWWJyfOzE98NV0E0iEQGE2StMUC+Q==
   dependencies:
-    "@types/jsonwebtoken" "8.5.9"
+    "@types/jsonwebtoken" "9.0.1"
     jsonwebtoken "9.0.0"
 
 "@nestjs/mongoose@^9.2.1":
@@ -1465,10 +1465,10 @@
   resolved "https://registry.npmjs.org/@nestjs/mongoose/-/mongoose-9.2.1.tgz"
   integrity sha512-tMK5kKFjQnNVhqJDw1wa352z+VsODOFznTn74xSzrziof03qS+O6rLU4q1kMx0B4AmFbADf03GOdpvBc9bMWqw==
 
-"@nestjs/passport@^9.0.0":
-  version "9.0.0"
-  resolved "https://registry.npmjs.org/@nestjs/passport/-/passport-9.0.0.tgz"
-  integrity sha512-Gnh8n1wzFPOLSS/94X1sUP4IRAoXTgG4odl7/AO5h+uwscEGXxJFercrZfqdAwkWhqkKWbsntM3j5mRy/6ZQDA==
+"@nestjs/passport@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/passport/-/passport-9.0.3.tgz#4df0e6de3176e04a5770cb432e58f129c8e49f9e"
+  integrity sha512-HplSJaimEAz1IOZEu+pdJHHJhQyBOPAYWXYHfAPQvRqWtw4FJF1VXl1Qtk9dcXQX1eKytDtH+qBzNQc19GWNEg==
 
 "@nestjs/platform-express@^9.0.0":
   version "9.2.1"
@@ -1765,10 +1765,17 @@
   resolved "https://registry.npmjs.org/@types/json-schema/-/json-schema-7.0.11.tgz"
   integrity sha512-wOuvG1SN4Us4rez+tylwwwCV1psiNVOkJeM3AUWUNWg/jDQY2+HE/444y5gc+jBmRqASOm2Oeh5c1axHobwRKQ==
 
-"@types/jsonwebtoken@*", "@types/jsonwebtoken@8.5.9":
+"@types/jsonwebtoken@*":
   version "8.5.9"
   resolved "https://registry.npmjs.org/@types/jsonwebtoken/-/jsonwebtoken-8.5.9.tgz"
   integrity sha512-272FMnFGzAVMGtu9tkr29hRL6bZj4Zs1KZNeHLnKqAvp06tAIcarTMwOh8/8bz4FmKRcMxZhZNeUAQsNLoiPhg==
+  dependencies:
+    "@types/node" "*"
+
+"@types/jsonwebtoken@9.0.1":
+  version "9.0.1"
+  resolved "https://registry.yarnpkg.com/@types/jsonwebtoken/-/jsonwebtoken-9.0.1.tgz#29b1369c4774200d6d6f63135bf3d1ba3ef997a4"
+  integrity sha512-c5ltxazpWabia/4UzhIoaDcIza4KViOQhdbjRlfcIGVnsE3c3brkz9Z+F/EeJIECOQP7W7US2hNE930cWWkPiw==
   dependencies:
     "@types/node" "*"
 
@@ -1789,19 +1796,60 @@
   resolved "https://registry.npmjs.org/@types/node/-/node-18.11.18.tgz"
   integrity sha512-DHQpWGjyQKSHj3ebjFI/wRKcqQcdR+MoFBygntYOZytCqNfkd2ZC4ARDJ2DQqhjH5p85Nnd3jhUJIXrszFX/JA==
 
+"@types/oauth@*":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@types/oauth/-/oauth-0.9.1.tgz#e17221e7f7936b0459ae7d006255dff61adca305"
+  integrity sha512-a1iY62/a3yhZ7qH7cNUsxoI3U/0Fe9+RnuFrpTKr+0WVOzbKlSLojShCKe20aOD1Sppv+i8Zlq0pLDuTJnwS4A==
+  dependencies:
+    "@types/node" "*"
+
 "@types/parse-json@^4.0.0":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/parse-json/-/parse-json-4.0.0.tgz"
   integrity sha512-//oorEZjL6sbPcKUaCdIGlIUeH26mgzimjBB77G6XRgnDl/L5wOnpyBGRe/Mmf5CVW3PwEBE1NjiMZ/ssFh4wA==
 
+"@types/passport-github2@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@types/passport-github2/-/passport-github2-1.2.5.tgz#79064e213ff33ca0a9d21af3da09a3230fac8099"
+  integrity sha512-+WLyrd8JPsCxroK34EjegR0j3FMxp6wqB9cw/sRCFkWT9qic1dymAn021gr336EpyjzdhjUd2KKrqyxvdFSvOA==
+  dependencies:
+    "@types/express" "*"
+    "@types/passport" "*"
+    "@types/passport-oauth2" "*"
+
+"@types/passport-google-oauth2@^0.1.5":
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/@types/passport-google-oauth2/-/passport-google-oauth2-0.1.5.tgz#5a001be1d02f35c33125fdb7e8347aed47074140"
+  integrity sha512-naBOrmo8IC6nVb565nKD5S3BCQTIOlGQP7HkDyLJ3taujG9O33Obi0chQa4PtXz82kPSdC7zoBd50hBVQVojtA==
+  dependencies:
+    "@types/express" "*"
+
 "@types/passport-jwt@^3.0.8":
   version "3.0.8"
-  resolved "https://registry.npmjs.org/@types/passport-jwt/-/passport-jwt-3.0.8.tgz"
+  resolved "https://registry.yarnpkg.com/@types/passport-jwt/-/passport-jwt-3.0.8.tgz#c8a95bf7d8f330f2560f1b3d07605e23ac01469a"
   integrity sha512-VKJZDJUAHFhPHHYvxdqFcc5vlDht8Q2pL1/ePvKAgqRThDaCc84lSYOTQmnx3+JIkDlN+2KfhFhXIzlcVT+Pcw==
   dependencies:
     "@types/express" "*"
     "@types/jsonwebtoken" "*"
     "@types/passport-strategy" "*"
+
+"@types/passport-local@^1.0.35":
+  version "1.0.35"
+  resolved "https://registry.yarnpkg.com/@types/passport-local/-/passport-local-1.0.35.tgz#233d370431b3f93bb43cf59154fb7519314156d9"
+  integrity sha512-K4eLTJ8R0yYW8TvCqkjB0pTKoqfUSdl5PfZdidTjV2ETV3604fQxtY6BHKjQWAx50WUS0lqzBvKv3LoI1ZBPeA==
+  dependencies:
+    "@types/express" "*"
+    "@types/passport" "*"
+    "@types/passport-strategy" "*"
+
+"@types/passport-oauth2@*":
+  version "1.4.12"
+  resolved "https://registry.yarnpkg.com/@types/passport-oauth2/-/passport-oauth2-1.4.12.tgz#c2ae0ee3b16646188d8b0b6cdbc6880a0247dc5f"
+  integrity sha512-RZg6cYTyEGinrZn/7REYQds6zrTxoBorX1/fdaz5UHzkG8xdFE7QQxkJagCr2ETzGII58FAFDmnmbTUVMrltNA==
+  dependencies:
+    "@types/express" "*"
+    "@types/oauth" "*"
+    "@types/passport" "*"
 
 "@types/passport-strategy@*":
   version "0.2.35"
@@ -2382,6 +2430,11 @@ base64id@2.0.0, base64id@~2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/base64id/-/base64id-2.0.0.tgz"
   integrity sha512-lGe34o6EHj9y3Kts9R4ZYs/Gr+6N7MCaMlIFA3F1R2O5/m7K06AxfSeO5530PEERE6/WyEg3lsuyw4GHlPZHog==
+
+base64url@3.x.x:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/base64url/-/base64url-3.0.1.tgz#6399d572e2bc3f90a9a8b22d5dbb0a32d33f788d"
+  integrity sha512-ir1UPr3dkwexU7FdV8qBBbNDRUhMmIekYMFZfi+C/sLNnRESKPl23nB9b2pltqfOQNnGzsDdId90AEtG5tCx4A==
 
 bcrypt@^5.1.0:
   version "5.1.0"
@@ -4930,6 +4983,11 @@ npmlog@^5.0.1:
     gauge "^3.0.0"
     set-blocking "^2.0.0"
 
+oauth@0.9.x:
+  version "0.9.15"
+  resolved "https://registry.yarnpkg.com/oauth/-/oauth-0.9.15.tgz#bd1fefaf686c96b75475aed5196412ff60cfb9c1"
+  integrity sha512-a5ERWK1kh38ExDEfoO6qUHJb32rd7aYmPHuyCu3Fta/cnICvYmgd2uhuKXvPD+PXB+gCEYYEaQdIRAjCOwAKNA==
+
 object-assign@^4, object-assign@^4.1.1:
   version "4.1.1"
   resolved "https://registry.npmjs.org/object-assign/-/object-assign-4.1.1.tgz"
@@ -5097,13 +5155,45 @@ parseurl@~1.3.3:
   resolved "https://registry.npmjs.org/parseurl/-/parseurl-1.3.3.tgz"
   integrity sha512-CiyeOxFT/JZyN5m0z9PfXw4SCBJ6Sygz1Dpl0wqjlhDEGGBP1GnsUVEL0p63hoG1fcj3fHynXi9NYO4nWOL+qQ==
 
+passport-github2@^0.1.12:
+  version "0.1.12"
+  resolved "https://registry.yarnpkg.com/passport-github2/-/passport-github2-0.1.12.tgz#a72ebff4fa52a35bc2c71122dcf470d1116f772c"
+  integrity sha512-3nPUCc7ttF/3HSP/k9sAXjz3SkGv5Nki84I05kSQPo01Jqq1NzJACgMblCK0fGcv9pKCG/KXU3AJRDGLqHLoIw==
+  dependencies:
+    passport-oauth2 "1.x.x"
+
+passport-google-oauth2@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/passport-google-oauth2/-/passport-google-oauth2-0.2.0.tgz#fc9ea59e7091f02e24fd16d6be9257ea982ebbc3"
+  integrity sha512-62EdPtbfVdc55nIXi0p1WOa/fFMM8v/M8uQGnbcXA4OexZWCnfsEi3wo2buag+Is5oqpuHzOtI64JpHk0Xi5RQ==
+  dependencies:
+    passport-oauth2 "^1.1.2"
+
 passport-jwt@^4.0.1:
   version "4.0.1"
-  resolved "https://registry.npmjs.org/passport-jwt/-/passport-jwt-4.0.1.tgz"
+  resolved "https://registry.yarnpkg.com/passport-jwt/-/passport-jwt-4.0.1.tgz#c443795eff322c38d173faa0a3c481479646ec3d"
   integrity sha512-UCKMDYhNuGOBE9/9Ycuoyh7vP6jpeTp/+sfMJl7nLff/t6dps+iaeE0hhNkKN8/HZHcJ7lCdOyDxHdDoxoSvdQ==
   dependencies:
     jsonwebtoken "^9.0.0"
     passport-strategy "^1.0.0"
+
+passport-local@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/passport-local/-/passport-local-1.0.0.tgz#1fe63268c92e75606626437e3b906662c15ba6ee"
+  integrity sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow==
+  dependencies:
+    passport-strategy "1.x.x"
+
+passport-oauth2@1.x.x, passport-oauth2@^1.1.2:
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/passport-oauth2/-/passport-oauth2-1.7.0.tgz#5c4766c8531ac45ffe9ec2c09de9809e2c841fc4"
+  integrity sha512-j2gf34szdTF2Onw3+76alNnaAExlUmHvkc7cL+cmaS5NzHzDP/BvFHJruueQ9XAeNOdpI+CH+PWid8RA7KCwAQ==
+  dependencies:
+    base64url "3.x.x"
+    oauth "0.9.x"
+    passport-strategy "1.x.x"
+    uid2 "0.0.x"
+    utils-merge "1.x.x"
 
 passport-strategy@1.x.x, passport-strategy@^1.0.0:
   version "1.0.0"
@@ -5112,7 +5202,7 @@ passport-strategy@1.x.x, passport-strategy@^1.0.0:
 
 passport@^0.6.0:
   version "0.6.0"
-  resolved "https://registry.npmjs.org/passport/-/passport-0.6.0.tgz"
+  resolved "https://registry.yarnpkg.com/passport/-/passport-0.6.0.tgz#e869579fab465b5c0b291e841e6cc95c005fac9d"
   integrity sha512-0fe+p3ZnrWRW74fe8+SvCyf4a3Pb2/h7gFkQ8yTJpAO50gDzlfjZUZTO1k5Eg9kUct22OxHLqDZoKUWRHOh9ug==
   dependencies:
     passport-strategy "1.x.x"
@@ -6068,6 +6158,11 @@ typescript@4.9.4, typescript@^4.7.4:
   resolved "https://registry.npmjs.org/typescript/-/typescript-4.9.4.tgz"
   integrity sha512-Uz+dTXYzxXXbsFpM86Wh3dKCxrQqUcVMxwU54orwlJjOpO3ao8L7j5lH+dWfTwgCwIuM9GQ2kvVotzYJMXTBZg==
 
+uid2@0.0.x:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/uid2/-/uid2-0.0.4.tgz#033f3b1d5d32505f5ce5f888b9f3b667123c0a44"
+  integrity sha512-IevTus0SbGwQzYh3+fRsAMTVVPOoIVufzacXcHPmdlle1jUpq7BRL+mw3dgeLanvGZdwwbWhRV6XrcFNdBmjWA==
+
 universalify@^0.1.0:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/universalify/-/universalify-0.1.2.tgz#b646f69be3942dabcecc9d6639c80dc105efaa66"
@@ -6103,7 +6198,7 @@ util-deprecate@^1.0.1, util-deprecate@~1.0.1:
   resolved "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz"
   integrity sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==
 
-utils-merge@1.0.1, utils-merge@^1.0.1:
+utils-merge@1.0.1, utils-merge@1.x.x, utils-merge@^1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz"
   integrity sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==

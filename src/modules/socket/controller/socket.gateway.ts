@@ -9,10 +9,9 @@ import {
   MessageBody,
 } from "@nestjs/websockets";
 import { Server } from "socket.io";
-import { DatasetsGenerator, FileGenerator } from "./classes/Generators";
-import { SOCKET_EVENTS } from "./constants/SOCKET_EVENTS.enum";
-import { CreateDatasetDTO } from "./dto";
-import { SocketService } from "./services/socket.service";
+import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS.enum";
+import { CreateDatasetDTO } from "../dto";
+import { SocketService } from "../services/socket.service";
 
 @WebSocketGateway({
   cors: {
@@ -36,35 +35,11 @@ export class SocketGateway {
     @ConnectedSocket() socket: any,
   ) {
     try {
-      const datasetTrees = this.socketService.createDatasetsTrees(
+      const fileURL = await this.socketService.createDatasets(
         body.datasets,
-      );
-
-      const resultDatasets = new DatasetsGenerator(
-        socket,
-        datasetTrees,
-      ).createData();
-
-      const fileURL = await new FileGenerator(
-        resultDatasets,
         body.config,
-      ).generateFile();
-
-      if (body.config.saveSchema && socket.user) {
-        const { description, name, tags } = body.config.saveSchema;
-
-        for (const dat of datasetTrees) {
-          const newModelID = await this.datasetModelService.createModel({
-            description,
-            name,
-            tags,
-            author: socket.user,
-            model: JSON.stringify(dat.getDatasetModel()),
-          });
-
-          await this.userService.setNewDatasetModel(socket.user, newModelID);
-        }
-      }
+        socket.user,
+      );
 
       socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileURL);
     } catch (error) {

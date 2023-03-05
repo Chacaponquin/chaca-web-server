@@ -1,30 +1,27 @@
-import { InputConfig } from "../../dto/configDTO.dto";
+import { InputConfig } from "@modules/socket/dto/configDTO.dto";
+import { ChacaFileError } from "@modules/socket/errors/ChacaFileError";
+import { ReturnDataset } from "@modules/socket/modules/dataset_generator/interfaces/dataset.interface";
+import { Injectable } from "@nestjs/common";
+import { FILE_TYPE } from "@shared/constants/FILE_TYPE.enum";
 import { chaca, schemas } from "chaca";
 import * as path from "path";
 import * as AdmZip from "adm-zip";
-import { ChacaFileError } from "@modules/socket/errors/ChacaFileError";
-import { FILE_TYPE } from "@shared/constants/FILE_TYPE.enum";
-import { ReturnDataset } from "../../interfaces/dataset.interface";
 
-export class FileGenerator {
+@Injectable()
+export class FileGeneratorService {
   private readonly PUBLIC_ROUTE = "../../../../data";
 
-  constructor(
-    private readonly data: ReturnDataset<unknown>[],
-    private readonly config: InputConfig,
-  ) {
-    if (!config)
-      throw new ChacaFileError(`You must pass a config object for the file`);
-  }
-
-  public async generateFile(): Promise<string> {
-    const fileType = this.config.file.fileType as FILE_TYPE;
+  public async createFile(
+    data: ReturnDataset[],
+    config: InputConfig,
+  ): Promise<string> {
+    const fileType = config.file.fileType as FILE_TYPE;
     // const args = this.config.file.arguments || {};
 
     if (Object.values(FILE_TYPE).includes(fileType)) {
       const allRoutes = [] as string[];
 
-      for (const dat of this.data) {
+      for (const dat of data) {
         const fileRoute = path.join(__dirname, this.PUBLIC_ROUTE);
 
         const route = await chaca.export(dat.documents, {

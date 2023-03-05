@@ -1,5 +1,5 @@
-import { SubOption } from "../../../schema-options/interfaces/options.interface";
-import { Node } from "./";
+import { SubOption } from "../../../../../schema-options/interfaces/options.interface";
+import { Node } from ".";
 import { NodeConfig } from "./Node";
 import { chaca } from "chaca";
 

@@ -1,9 +1,9 @@
-import { InputFieldIsArray } from "../../dto/datasetsDTO.dto";
+import { ConfigIsArray } from "../../../../../api/dto/fieldConfig.dto";
 
 export interface NodeConfig {
   id: string;
   name: string;
-  isArray: InputFieldIsArray;
+  isArray: ConfigIsArray;
   isPosibleNull: number;
 }
 

@@ -1,4 +1,4 @@
-import { ChacaDatasetError } from "../../errors/ChacaDatasetError";
+import { ChacaDatasetError } from "../../../../errors/ChacaDatasetError";
 import { Node, NodeConfig } from "./Node";
 
 export class RefValueNode extends Node {

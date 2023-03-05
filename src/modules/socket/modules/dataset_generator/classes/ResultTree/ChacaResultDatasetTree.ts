@@ -1,5 +1,5 @@
 import { chaca } from "chaca";
-import { ChacaDatasetError } from "../../errors/ChacaDatasetError";
+import { ChacaDatasetError } from "../../../../errors/ChacaDatasetError";
 import { ReturnDataset } from "../../interfaces/dataset.interface";
 import { DocumentTree } from "./DocumentTree";
 

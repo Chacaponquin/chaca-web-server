@@ -14,6 +14,7 @@ import { AuthGuard } from "@nestjs/passport";
 import { UserService } from "src/modules/user/services/user.service";
 import { SignInDTO } from "../dto/signInDTO.interface";
 import { SignUpDTO } from "../dto/signUpDTO.interface";
+import { GithubOauthGuard } from "../guards/github-oauth.guard";
 import { IReturnUser } from "../interfaces/auth.interface";
 import { AuthService } from "../services/auth.service";
 
@@ -23,6 +24,12 @@ export class AuthController {
     private readonly userService: UserService,
     private readonly authService: AuthService,
   ) {}
+
+  @Get("/github")
+  @UseGuards(GithubOauthGuard)
+  githubAuth() {
+    // Github authorization
+  }
 
   @Get("/userByToken")
   @UseGuards(AuthGuard("jwt"))

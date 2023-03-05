@@ -13,9 +13,6 @@ import { NotFoundOptionError, NotFoundSchemaError } from "../errors";
 export class SchemaOptionsService {
   constructor(private readonly sharedService: SharedService) {}
 
-  public readonly notFoundSchemaError = NotFoundSchemaError;
-  public readonly notFoundOptionError = NotFoundOptionError;
-
   getSchemas(): Array<ApiSchema> {
     const allSchemas = [] as ApiSchema[];
 
@@ -32,8 +29,8 @@ export class SchemaOptionsService {
     if (
       isArray &&
       typeof Number(isArray) === "number" &&
-      Number(isArray) > 0 &&
-      Number(isArray) < 300
+      Number(isArray) >= 0 &&
+      Number(isArray) <= 300
     ) {
       const allValues = [] as Array<unknown>;
       const limit = Number(isArray);

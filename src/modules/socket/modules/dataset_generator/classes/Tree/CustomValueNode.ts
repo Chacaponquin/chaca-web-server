@@ -1,6 +1,6 @@
 import { Node, NodeConfig } from "./Node";
 import { chaca } from "chaca";
-import { ChacaDatasetError } from "../../errors/ChacaDatasetError";
+import { ChacaDatasetError } from "../../../../errors/ChacaDatasetError";
 
 export class CustomValueNode extends Node {
   constructor(config: NodeConfig, public readonly code: string) {

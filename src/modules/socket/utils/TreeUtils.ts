@@ -4,7 +4,7 @@ import {
   RefValueNode,
   SchemaValueNode,
   Node,
-} from "../classes/Tree";
+} from "../modules/dataset_generator/classes/Tree";
 import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
 import { ChacaDatasetError } from "../errors/ChacaDatasetError";
 import { InputDatasetField } from "../dto/datasetsDTO.dto";
@@ -63,9 +63,7 @@ export class TreeUtils {
 
       case DATA_TYPES.MIXED: {
         const newNode = new MixedValueNode(fieldConfig);
-
         newNode.insertSubFields(field.dataType.object, schemas);
-
         return newNode;
       }
 

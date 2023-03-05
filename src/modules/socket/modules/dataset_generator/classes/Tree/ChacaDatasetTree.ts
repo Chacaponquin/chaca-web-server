@@ -1,5 +1,5 @@
 import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
-import { InputDatasetField } from "../../dto/datasetsDTO.dto";
+import { InputDatasetField } from "../../../../dto/datasetsDTO.dto";
 import { RootNode } from "./RootNode";
 
 export class ChacaDatasetTree {

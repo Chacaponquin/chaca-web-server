@@ -1,4 +1,8 @@
-import { FieldDataType } from "../interfaces/dataType.interface";
+import {
+  ConfigIsArray,
+  ConfigPosibleNull,
+} from "@modules/api/dto/fieldConfig.dto";
+import { FieldDataType } from "../modules/dataset_generator/interfaces/dataType.interface";
 
 export interface InputDataset {
   name: string;
@@ -7,15 +11,10 @@ export interface InputDataset {
   fields: InputDatasetField[];
 }
 
-export type InputFieldIsArray = null | {
-  min: number;
-  max: number;
-};
-
 export interface InputDatasetField<T = FieldDataType> {
   name: string;
   id: string;
   dataType: T;
-  isPosibleNull: number;
-  isArray: InputFieldIsArray;
+  isPosibleNull: ConfigPosibleNull;
+  isArray: ConfigIsArray;
 }

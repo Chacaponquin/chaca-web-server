@@ -1,5 +1,5 @@
-import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
-import { InputDatasetField } from "../dto/datasetsDTO.dto";
+import { DATA_TYPES } from "../../../constants/DATA_TYPE.enum";
+import { InputDatasetField } from "../../../dto/datasetsDTO.dto";
 
 export type FieldDataType =
   | CustomDataType

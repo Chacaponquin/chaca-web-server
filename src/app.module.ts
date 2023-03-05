@@ -9,10 +9,9 @@ import { AuthModule } from "./modules/auth/auth.module";
 import { DocsModule } from "./modules/docs/docs.module";
 import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module";
 import { UserMessageModule } from "./modules/user-message/user-message.module";
-import { SocketGateway } from "@modules/socket/socket.gateway";
 import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
-import { SocketService } from "@modules/socket/services/socket.service";
 import { AdminModule } from "./modules/admin/admin.module";
+import { SocketModule } from "./modules/socket/socket.module";
 
 @Module({
   imports: [
@@ -32,8 +31,9 @@ import { AdminModule } from "./modules/admin/admin.module";
     UserModule,
     SchemaOptionsModule,
     AdminModule,
+    SocketModule,
   ],
   controllers: [AppController],
-  providers: [SocketGateway, SocketService],
+  providers: [],
 })
 export class AppModule {}

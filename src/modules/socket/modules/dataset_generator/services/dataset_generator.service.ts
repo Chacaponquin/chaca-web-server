@@ -1,6 +1,5 @@
-import { schemas } from "chaca";
-import { Socket } from "socket.io";
-import { ChacaDatasetError } from "../../errors/ChacaDatasetError";
+import { ConfigIsArray } from "@modules/api/dto/fieldConfig.dto";
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import {
   ArrayResultNode,
   ChacaResultDatasetTree,
@@ -8,28 +7,53 @@ import {
   FieldNode,
   MixedFieldNode,
   ResultFieldNode,
-} from "../ResultTree";
+} from "@modules/socket/modules/dataset_generator/classes/ResultTree";
 import {
-  Node,
+  ChacaDatasetTree,
+  CustomValueNode,
+  MixedValueNode,
   RefValueNode,
   SchemaValueNode,
-  ChacaDatasetTree,
-  MixedValueNode,
-  CustomValueNode,
-} from "../Tree";
-import { SOCKET_EVENTS } from "@modules/socket/constants/SOCKET_EVENTS.enum";
-import { ReturnDataset } from "@modules/socket/interfaces/dataset.interface";
+  Node,
+} from "@modules/socket/modules/dataset_generator/classes/Tree";
+import { InputDataset } from "@modules/socket/dto/datasetsDTO.dto";
+import { ChacaDatasetError } from "@modules/socket/errors/ChacaDatasetError";
+import { ReturnDataset } from "@modules/socket/modules/dataset_generator/interfaces/dataset.interface";
+import { Injectable } from "@nestjs/common";
+import { chaca, schemas } from "chaca";
+import { FIELD_MAX_ARRAY_LIMIT } from "../constants/FIELD_LIMITS";
 
-export class DatasetsGenerator {
-  private resultDatasets: Array<ChacaResultDatasetTree> = [];
-
+@Injectable()
+export class DatasetGeneratorService {
   private documentsToCreate = 0;
   private documentsCreated = 0;
 
-  constructor(
-    private readonly socket: Socket,
-    private readonly datasetTrees: Array<ChacaDatasetTree>,
-  ) {
+  private datasetTrees: Array<ChacaDatasetTree> = [];
+  private resultDatasets: Array<ChacaResultDatasetTree> = [];
+
+  constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
+
+  createDatasetsTrees(inputDatasets: Array<InputDataset>): void {
+    if (!Array.isArray(inputDatasets))
+      throw new ChacaDatasetError(`Your datasets must be an array`);
+
+    for (const inputDat of inputDatasets) {
+      // crear el arbol del dataset
+      const newDatTree = new ChacaDatasetTree(
+        inputDat.id,
+        inputDat.name,
+        inputDat.limit,
+      );
+
+      // insertar todos los fields del dataset dentro del arbol
+      newDatTree.insertDatasetsFields(
+        inputDat.fields,
+        this.schemaOptionsService.getSchemas(),
+      );
+
+      this.datasetTrees.push(newDatTree);
+    }
+
     // crear y añadir el arbol de solucion del dataset
     this.datasetTrees.forEach((d) => {
       this.resultDatasets.push(new ChacaResultDatasetTree(d.id, d.name));
@@ -37,7 +61,11 @@ export class DatasetsGenerator {
     });
   }
 
-  public createData(): Array<ReturnDataset<unknown>> {
+  public createData(
+    inputDatasets: Array<InputDataset>,
+  ): [Array<ReturnDataset>, Array<ChacaDatasetTree>] {
+    this.createDatasetsTrees(inputDatasets);
+
     // recorrer todos los datasets
     for (const dat of this.datasetTrees) {
       // dataset solution con la misma id de la dataset actual
@@ -47,7 +75,7 @@ export class DatasetsGenerator {
 
       // segun el limite del dataset crear cada documento
       for (let indexDoc = 0; indexDoc < dat.limit; indexDoc++) {
-        // create new document
+        // create empty new document
         const newDocument = new DocumentTree();
 
         // insertar el nuevo documento en la datasetSolution
@@ -78,7 +106,10 @@ export class DatasetsGenerator {
       }
     }
 
-    return this.resultDatasets.map((d) => d.getDatasetObject());
+    return [
+      this.resultDatasets.map((d) => d.getDatasetObject()),
+      this.datasetTrees,
+    ];
   }
 
   private resolveArrayAndMixedFields(
@@ -146,9 +177,7 @@ export class DatasetsGenerator {
   ) {
     if (field.isArray) {
       // limite del arreglo de valores
-      const limit = schemas.dataType
-        .int()
-        .getValue({ min: field.isArray.min, max: field.isArray.max });
+      const limit = this.validateFieldIsArrayLimit(field.isArray);
 
       // resolver el field hasta llegar al limite del array
       for (let arrayIndex = 0; arrayIndex < limit; arrayIndex++) {
@@ -171,6 +200,38 @@ export class DatasetsGenerator {
         );
       }
     }
+  }
+
+  public validateFieldIsArrayLimit(isArray: ConfigIsArray): number {
+    let limit = schemas.dataType.int().getValue({ min: 0, max: 10 });
+
+    if (isArray) {
+      const max =
+        isArray.max <= FIELD_MAX_ARRAY_LIMIT
+          ? isArray.max
+          : FIELD_MAX_ARRAY_LIMIT;
+
+      limit = schemas.dataType.int().getValue({ min: isArray.min, max });
+    }
+
+    return limit;
+  }
+
+  public nullPosibility(isPosibleNull: number): boolean {
+    const arrayValues = [] as Array<boolean>;
+
+    let posibleNull = isPosibleNull;
+
+    for (let i = 0; i < 100; i++) {
+      if (posibleNull > 0) {
+        arrayValues.push(true);
+        posibleNull--;
+      } else {
+        arrayValues.push(false);
+      }
+    }
+
+    return chaca.utils.oneOfArray(arrayValues);
   }
 
   private createSolutionNodeByType(
@@ -234,10 +295,10 @@ export class DatasetsGenerator {
 
   private updateFinishPorcent(): void {
     // calcular el porciento de completado
-    const porcent = (this.documentsCreated * 100) / this.documentsToCreate;
+    //const porcent = (this.documentsCreated * 100) / this.documentsToCreate;
 
     // enviar porciento al cliente
-    this.socket.emit(SOCKET_EVENTS.DOCUMENT_CREATED, porcent);
+    // this.socket.emit(SOCKET_EVENTS.DOCUMENT_CREATED, porcent);
 
     // incrementar el contador de documentos creados
     this.documentsCreated += 1;
