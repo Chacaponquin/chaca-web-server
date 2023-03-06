@@ -1,3 +1,4 @@
+import { ChacaDatasetError } from "@modules/socket/errors/ChacaDatasetError";
 import {
   Controller,
   Get,
@@ -22,9 +23,12 @@ export class ApiController {
     try {
       return this.apiService.getApiSchemaObject(schemaConfig);
     } catch (error) {
-      if (error instanceof DefinitionFieldSchemaError) {
+      if (
+        error instanceof DefinitionFieldSchemaError ||
+        error instanceof ChacaDatasetError
+      ) {
         throw new HttpException(
-          "Incorrect schema pattern",
+          error.message,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
       } else {

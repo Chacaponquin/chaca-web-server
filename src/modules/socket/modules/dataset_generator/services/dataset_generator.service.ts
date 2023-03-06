@@ -242,21 +242,42 @@ export class DatasetGeneratorService {
     }
   }
 
-  public validateFieldIsArrayLimit(isArray: ConfigIsArray): number {
+  public validateFieldIsArrayLimit(isArray?: ConfigIsArray): number {
     let limit = schemas.dataType.int().getValue({ min: 0, max: 10 });
 
     if (isArray) {
-      const max =
-        isArray.max <= FIELD_MAX_ARRAY_LIMIT
-          ? isArray.max
-          : FIELD_MAX_ARRAY_LIMIT;
+      if (
+        typeof isArray === "number" &&
+        isArray >= 0 &&
+        isArray <= FIELD_MAX_ARRAY_LIMIT
+      ) {
+        limit = isArray;
+      } else if (typeof isArray === "object") {
+        const max =
+          isArray.max <= FIELD_MAX_ARRAY_LIMIT
+            ? isArray.max
+            : FIELD_MAX_ARRAY_LIMIT;
 
-      limit = schemas.dataType.int().getValue({ min: isArray.min, max });
+        limit = schemas.dataType.int().getValue({ min: isArray.min, max });
+      }
     }
 
     return limit;
   }
 
+  public validateIsPosibleNull(isPosibleNull?: number): number {
+    let is = 0;
+
+    if (
+      typeof isPosibleNull === "number" &&
+      isPosibleNull >= 0 &&
+      isPosibleNull <= 100
+    ) {
+      is = isPosibleNull;
+    }
+
+    return is;
+  }
   public nullPosibility(isPosibleNull: number): boolean {
     const arrayValues = [] as Array<boolean>;
 

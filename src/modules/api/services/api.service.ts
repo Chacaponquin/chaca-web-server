@@ -65,16 +65,6 @@ export class ApiService {
     }
   }
 
-  private validateSchemaLimit(limit?: number): number {
-    let returnLimit = -1;
-
-    if (typeof limit === "number" && limit >= 0 && limit <= 100) {
-      returnLimit = limit;
-    }
-
-    return returnLimit;
-  }
-
   private transformApiSchemaObjectFields(
     schema: ApiSchemaConfigObject,
   ): Array<InputDatasetField> {
@@ -82,7 +72,7 @@ export class ApiService {
 
     Object.entries(schema).forEach(([name, fieldConfig]) => {
       if (typeof fieldConfig === "string") {
-        const schemaParsed = this.resolveFieldSchemaString(fieldConfig);
+        const schemaParsed = this.resolveFieldSchemaString(name, fieldConfig);
 
         fields.push({
           id: schemas.id.uuid().getValue(),
@@ -92,41 +82,64 @@ export class ApiService {
           dataType: { type: DATA_TYPES.SINGLE_VALUE, fieldType: schemaParsed },
         });
       } else {
-        if (typeof fieldConfig.schema === "string") {
-          const schemaParsed = this.resolveFieldSchemaString(
-            fieldConfig.schema,
-          );
+        if ("schema" in fieldConfig) {
+          if (typeof fieldConfig.schema === "string") {
+            const schemaParsed = this.resolveFieldSchemaString(
+              name,
+              fieldConfig.schema,
+            );
 
-          fields.push({
-            id: schemas.id.uuid().getValue(),
-            name,
-            isArray: null,
-            isPosibleNull: 0,
-            dataType: {
-              type: DATA_TYPES.SINGLE_VALUE,
-              fieldType: schemaParsed,
-            },
-          });
+            fields.push({
+              id: schemas.id.uuid().getValue(),
+              name,
+              isArray: null,
+              isPosibleNull: 0,
+              dataType: {
+                type: DATA_TYPES.SINGLE_VALUE,
+                fieldType: schemaParsed,
+              },
+            });
+          } else {
+            const schemaSubFields = this.transformApiSchemaObjectFields(
+              fieldConfig.schema,
+            );
+
+            fields.push({
+              id: schemas.id.uuid().getValue(),
+              name,
+              isArray: fieldConfig.isArray
+                ? this.datasetGeneratorService.validateFieldIsArrayLimit(
+                    fieldConfig.isArray,
+                  )
+                : null,
+              isPosibleNull: this.datasetGeneratorService.validateIsPosibleNull(
+                fieldConfig.isPosibleNull,
+              ),
+              dataType: {
+                type: DATA_TYPES.MIXED,
+                object: schemaSubFields,
+              },
+            });
+          }
         } else {
-          const schemaSubFields = this.transformApiSchemaObjectFields(
-            fieldConfig.schema,
+          throw new DefinitionFieldSchemaError(
+            `You must provide a schema in the field ${name}`,
           );
-
-          fields.push({
-            id: schemas.id.uuid().getValue(),
-            name,
-            isArray: null,
-            isPosibleNull: 0,
-            dataType: {
-              type: DATA_TYPES.MIXED,
-              object: schemaSubFields,
-            },
-          });
         }
       }
     });
 
     return fields;
+  }
+
+  private validateSchemaLimit(limit?: number): number {
+    let returnLimit = -1;
+
+    if (typeof limit === "number" && limit >= 0 && limit <= 100) {
+      returnLimit = limit;
+    }
+
+    return returnLimit;
   }
 
   private getArgsFromString(argsString: string) {
@@ -148,7 +161,7 @@ export class ApiService {
     return args;
   }
 
-  private resolveFieldSchemaString(schemaString: string) {
+  private resolveFieldSchemaString(fieldName: string, schemaString: string) {
     const initSchemaDefinitionPos = schemaString.indexOf("{{");
     const finishSchemaDefinitionPos = schemaString.indexOf("}}");
 
@@ -166,10 +179,14 @@ export class ApiService {
 
         return { parent, args, type: option };
       } else {
-        throw new DefinitionFieldSchemaError();
+        throw new DefinitionFieldSchemaError(
+          `Incorrect schema pattern in field '${fieldName}'`,
+        );
       }
     } else {
-      throw new DefinitionFieldSchemaError();
+      throw new DefinitionFieldSchemaError(
+        `Incorrect schema pattern in field '${fieldName}'`,
+      );
     }
   }
 
