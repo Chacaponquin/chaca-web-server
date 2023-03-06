@@ -9,7 +9,7 @@ export class ArrayResultNode extends FieldNode {
   }
 
   public getValue(): unknown[] {
-    return this.arrayNodes.map((n) => n.getValue());
+    return this.arrayNodes.map((n) => n.getNodeValue());
   }
 
   public insertNode(n: FieldNode) {

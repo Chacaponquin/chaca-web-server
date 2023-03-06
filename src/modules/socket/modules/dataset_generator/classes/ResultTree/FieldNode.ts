@@ -1,3 +1,5 @@
+import { chaca } from "chaca";
+
 export interface FieldNodeProps {
   id: string;
   name: string;
@@ -5,7 +7,11 @@ export interface FieldNodeProps {
 }
 
 export abstract class FieldNode {
-  constructor(protected readonly config: FieldNodeProps) {}
+  public isNull: boolean;
+
+  constructor(protected readonly config: FieldNodeProps) {
+    this.isNull = this.nullPosibility();
+  }
 
   get id() {
     return this.config.id;
@@ -15,6 +21,27 @@ export abstract class FieldNode {
     return this.config.name;
   }
 
-  public abstract getValue(): unknown | unknown[];
+  protected abstract getValue(): unknown | unknown[];
   public abstract getValueByLocation(location: string[]): unknown | unknown[];
+
+  public getNodeValue() {
+    return this.isNull ? null : this.getValue();
+  }
+
+  private nullPosibility(): boolean {
+    const arrayValues = [] as Array<boolean>;
+
+    let posibleNull = this.config.isPosibleNull;
+
+    for (let i = 0; i < 100; i++) {
+      if (posibleNull > 0) {
+        arrayValues.push(true);
+        posibleNull--;
+      } else {
+        arrayValues.push(false);
+      }
+    }
+
+    return chaca.utils.oneOfArray(arrayValues);
+  }
 }

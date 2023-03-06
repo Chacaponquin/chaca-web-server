@@ -20,7 +20,7 @@ import { InputDataset } from "@modules/socket/dto/datasetsDTO.dto";
 import { ChacaDatasetError } from "@modules/socket/errors/ChacaDatasetError";
 import { ReturnDataset } from "@modules/socket/modules/dataset_generator/interfaces/dataset.interface";
 import { Injectable } from "@nestjs/common";
-import { chaca, schemas } from "chaca";
+import { schemas } from "chaca";
 import { FIELD_MAX_ARRAY_LIMIT } from "../constants/FIELD_LIMITS";
 
 @Injectable()
@@ -277,22 +277,6 @@ export class DatasetGeneratorService {
     }
 
     return is;
-  }
-  public nullPosibility(isPosibleNull: number): boolean {
-    const arrayValues = [] as Array<boolean>;
-
-    let posibleNull = isPosibleNull;
-
-    for (let i = 0; i < 100; i++) {
-      if (posibleNull > 0) {
-        arrayValues.push(true);
-        posibleNull--;
-      } else {
-        arrayValues.push(false);
-      }
-    }
-
-    return chaca.utils.oneOfArray(arrayValues);
   }
 
   private createSolutionNodeByType(

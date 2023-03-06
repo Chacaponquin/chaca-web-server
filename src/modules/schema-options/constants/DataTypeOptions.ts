@@ -58,7 +58,7 @@ export const DataTypeOptions: SubOption[] = [
       },
       {
         argument: "precision",
-        inputType: ARGUMENT_TYPE.FLOAT,
+        inputType: ARGUMENT_TYPE.NUMBER,
         description: { en: "", es: "" },
       },
     ],

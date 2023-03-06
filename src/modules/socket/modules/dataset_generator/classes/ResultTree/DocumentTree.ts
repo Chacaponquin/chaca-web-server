@@ -11,7 +11,7 @@ export class DocumentTree {
     let returnObject = {};
 
     this.fields.forEach((f) => {
-      returnObject = { ...returnObject, [f.name]: f.getValue() };
+      returnObject = { ...returnObject, [f.name]: f.getNodeValue() };
     });
 
     return returnObject;
