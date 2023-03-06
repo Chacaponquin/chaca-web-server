@@ -1,6 +1,3 @@
-import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
-import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { UserService } from "@modules/user/services/user.service";
 import {
   ConnectedSocket,
   WebSocketGateway,
@@ -19,12 +16,7 @@ import { SocketService } from "../services/socket.service";
   },
 })
 export class SocketGateway {
-  constructor(
-    private readonly schemaOptionsService: SchemaOptionsService,
-    private readonly userService: UserService,
-    private readonly datasetModelService: DatasetModelService,
-    private readonly socketService: SocketService,
-  ) {}
+  constructor(private readonly socketService: SocketService) {}
 
   @WebSocketServer()
   public server: Server;

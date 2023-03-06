@@ -27,8 +27,8 @@ export type CustomDataType = {
   code: string;
 };
 
-export interface TypeSchema {
+export type TypeSchema = {
   parent: string;
   type: string;
   args: { [key: string]: unknown };
-}
+};

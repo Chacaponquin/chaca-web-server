@@ -16,7 +16,7 @@ export class ChacaResultDatasetTree {
     return this.resultDocuments.map((d) => d.getDataObject());
   }
 
-  public getDatasetObject(): ReturnDataset<unknown> {
+  public getDatasetObject(): ReturnDataset {
     return {
       id: this.id,
       name: this.name,

@@ -3,6 +3,11 @@ import {
   NotFoundSchemaError,
 } from "@modules/schema-options/errors";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
+import { DATA_TYPES } from "@modules/socket/constants/DATA_TYPE.enum";
+import {
+  InputDataset,
+  InputDatasetField,
+} from "@modules/socket/dto/datasetsDTO.dto";
 import { DatasetGeneratorService } from "@modules/socket/modules/dataset_generator/services/dataset_generator.service";
 import {
   Injectable,
@@ -10,13 +15,10 @@ import {
   HttpException,
   InternalServerErrorException,
 } from "@nestjs/common";
-import {
-  ApiCompleteConfigFieldSchema,
-  ApiFieldConfig,
-} from "../dto/fieldConfig.dto";
+import { schemas } from "chaca";
 import {
   ApiSchemaConfigCompleteObject,
-  ApiSchemaConfigSimpleObject,
+  ApiSchemaConfigObject,
   SchemaConfigDTO,
 } from "../dto/schemaConfig.dto";
 import { DefinitionFieldSchemaError } from "../errors";
@@ -28,31 +30,103 @@ export class ApiService {
     private readonly datasetGeneratorService: DatasetGeneratorService,
   ) {}
 
-  getApiSchemaObject(schemaConfig: SchemaConfigDTO): unknown {
-    let schema: ApiSchemaConfigSimpleObject;
-    let limit = 0;
+  public getApiSchemaObject(schemaConfig: SchemaConfigDTO): unknown {
+    const inputDataset = this.transformApiSchemaObjectToDataset(schemaConfig);
 
+    const data = this.datasetGeneratorService.createDataset(inputDataset);
+
+    if (inputDataset.limit === -1) {
+      return data[0];
+    } else {
+      return data;
+    }
+  }
+
+  private transformApiSchemaObjectToDataset(
+    schemaConfig: SchemaConfigDTO,
+  ): InputDataset {
     if ("schema" in schemaConfig) {
       const config = schemaConfig as ApiSchemaConfigCompleteObject;
-      schema = config.schema;
-      limit = this.validateSchemaLimit(config.limit);
+      const limit = this.validateSchemaLimit(config.limit);
+
+      return {
+        id: schemas.id.uuid().getValue(),
+        limit,
+        fields: this.transformApiSchemaObjectFields(config.schema),
+        name: schemas.id.mongodbID().getValue(),
+      };
     } else {
-      limit = 0;
-      schema = schemaConfig;
+      return {
+        id: schemas.id.uuid().getValue(),
+        limit: -1,
+        fields: this.transformApiSchemaObjectFields(schemaConfig),
+        name: schemas.id.mongodbID().getValue(),
+      };
+    }
+  }
+
+  private validateSchemaLimit(limit?: number): number {
+    let returnLimit = -1;
+
+    if (typeof limit === "number" && limit >= 0 && limit <= 100) {
+      returnLimit = limit;
     }
 
-    if (limit === 0) {
-      const returnObject = this.resolveApiSchema(schema);
-      return returnObject;
-    } else {
-      const returnArray = [] as Array<unknown>;
+    return returnLimit;
+  }
 
-      for (let i = 0; i < limit; i++) {
-        returnArray.push(this.resolveApiSchema(schema));
+  private transformApiSchemaObjectFields(
+    schema: ApiSchemaConfigObject,
+  ): Array<InputDatasetField> {
+    const fields = [] as Array<InputDatasetField>;
+
+    Object.entries(schema).forEach(([name, fieldConfig]) => {
+      if (typeof fieldConfig === "string") {
+        const schemaParsed = this.resolveFieldSchemaString(fieldConfig);
+
+        fields.push({
+          id: schemas.id.uuid().getValue(),
+          name,
+          isArray: null,
+          isPosibleNull: 0,
+          dataType: { type: DATA_TYPES.SINGLE_VALUE, fieldType: schemaParsed },
+        });
+      } else {
+        if (typeof fieldConfig.schema === "string") {
+          const schemaParsed = this.resolveFieldSchemaString(
+            fieldConfig.schema,
+          );
+
+          fields.push({
+            id: schemas.id.uuid().getValue(),
+            name,
+            isArray: null,
+            isPosibleNull: 0,
+            dataType: {
+              type: DATA_TYPES.SINGLE_VALUE,
+              fieldType: schemaParsed,
+            },
+          });
+        } else {
+          const schemaSubFields = this.transformApiSchemaObjectFields(
+            fieldConfig.schema,
+          );
+
+          fields.push({
+            id: schemas.id.uuid().getValue(),
+            name,
+            isArray: null,
+            isPosibleNull: 0,
+            dataType: {
+              type: DATA_TYPES.MIXED,
+              object: schemaSubFields,
+            },
+          });
+        }
       }
+    });
 
-      return returnArray;
-    }
+    return fields;
   }
 
   private getArgsFromString(argsString: string) {
@@ -75,41 +149,22 @@ export class ApiService {
   }
 
   private resolveFieldSchemaString(schemaString: string) {
-    const initSchemaDefinitionPos = schemaString.indexOf("}}");
+    const initSchemaDefinitionPos = schemaString.indexOf("{{");
     const finishSchemaDefinitionPos = schemaString.indexOf("}}");
 
     if (initSchemaDefinitionPos !== -1 && finishSchemaDefinitionPos !== -1) {
       const separatedSchema = schemaString
         .slice(initSchemaDefinitionPos + 2, finishSchemaDefinitionPos)
-        .split(".");
+        .split("/");
 
       if (separatedSchema.length === 2) {
         const parent = separatedSchema[0];
         const option = separatedSchema[1];
 
-        try {
-          const foundOption = this.schemaOptionsService.findOption(
-            parent,
-            option,
-          );
+        const argsString = schemaString.slice(finishSchemaDefinitionPos + 2);
+        const args = this.getArgsFromString(argsString);
 
-          const argsString = schemaString.slice(finishSchemaDefinitionPos + 2);
-          const args = this.getArgsFromString(argsString);
-
-          return foundOption.getValue(args);
-        } catch (error) {
-          if (error instanceof NotFoundSchemaError) {
-            throw new DefinitionFieldSchemaError(
-              `The schema ${parent} do not exists`,
-            );
-          } else if (error instanceof NotFoundOptionError) {
-            throw new DefinitionFieldSchemaError(
-              `The option ${option} do not exists in schema ${parent}`,
-            );
-          } else {
-            throw new DefinitionFieldSchemaError();
-          }
-        }
+        return { parent, args, type: option };
       } else {
         throw new DefinitionFieldSchemaError();
       }
@@ -118,47 +173,7 @@ export class ApiService {
     }
   }
 
-  private resolveApiSchema(schema: ApiSchemaConfigSimpleObject): unknown {
-    let returnObject = {};
-
-    Object.entries(schema).forEach(([key, schemaConfig]) => {
-      if (typeof schemaConfig === "string") {
-        returnObject = {
-          ...returnObject,
-          [key]: this.resolveFieldSchemaString(schemaConfig),
-        };
-      } else {
-        this.resolveSchemaFieldByConfig(schemaConfig);
-      }
-    });
-
-    return returnObject;
-  }
-
-  private resolveSchemaFieldByConfig(
-    schemaConfig: ApiCompleteConfigFieldSchema,
-  ) {
-    let retValue = this.resolveFieldSchemaString(schemaConfig.schema);
-
-    if (schemaConfig.isArray) {
-      const limit = this.datasetGeneratorService.validateFieldIsArrayLimit(
-        schemaConfig.isArray,
-      );
-
-      for (let i = 0; i < limit; i++) {}
-    }
-
-    if (schemaConfig.posibleNull) {
-      if (
-        this.datasetGeneratorService.nullPosibility(schemaConfig.posibleNull)
-      ) {
-        retValue = null;
-      } else {
-      }
-    }
-  }
-
-  getValueBySchemaOption(
+  public getValueBySchemaOption(
     schema: string,
     option: string,
     optionConfig: any,
@@ -187,16 +202,6 @@ export class ApiService {
         throw new InternalServerErrorException();
       }
     }
-  }
-
-  private validateSchemaLimit(limit?: number): number {
-    let returnLimit = 0;
-
-    if (typeof limit === "number" && limit >= 0 && limit <= 100) {
-      returnLimit = limit;
-    }
-
-    return returnLimit;
   }
 
   private generateOptionConfig(config: any) {

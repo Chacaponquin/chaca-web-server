@@ -1,5 +1,16 @@
-import { Controller, Get, Param, Req, Post, Body } from "@nestjs/common";
+import {
+  Controller,
+  Get,
+  Param,
+  Req,
+  Post,
+  Body,
+  InternalServerErrorException,
+  HttpException,
+  HttpStatus,
+} from "@nestjs/common";
 import { SchemaConfigDTO } from "../dto/schemaConfig.dto";
+import { DefinitionFieldSchemaError } from "../errors";
 import { ApiService } from "../services/api.service";
 
 @Controller("api")
@@ -8,7 +19,18 @@ export class ApiController {
 
   @Post("")
   getSchemaByConfig(@Body() schemaConfig: SchemaConfigDTO) {
-    return this.apiService.getApiSchemaObject(schemaConfig);
+    try {
+      return this.apiService.getApiSchemaObject(schemaConfig);
+    } catch (error) {
+      if (error instanceof DefinitionFieldSchemaError) {
+        throw new HttpException(
+          "Incorrect schema pattern",
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 
   @Get("/:schema/:option")

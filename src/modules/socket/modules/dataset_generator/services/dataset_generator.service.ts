@@ -33,9 +33,54 @@ export class DatasetGeneratorService {
 
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
-  createDatasetsTrees(inputDatasets: Array<InputDataset>): void {
-    if (!Array.isArray(inputDatasets))
+  public createData(
+    inputDatasets: Array<InputDataset>,
+  ): [Array<ReturnDataset>, Array<ChacaDatasetTree>] {
+    this.createDatasetsTrees(inputDatasets);
+
+    // recorrer todos los datasets
+    for (const dat of this.datasetTrees) {
+      // dataset solution con la misma id de la dataset actual
+      const datasetSolution = this.resultDatasets.find(
+        (d) => d.id === dat.id,
+      ) as ChacaResultDatasetTree;
+
+      // resolve dataset
+      this.resolveDataset(datasetSolution, dat);
+    }
+
+    return [
+      this.resultDatasets.map((d) => d.getDatasetObject()),
+      this.datasetTrees,
+    ];
+  }
+
+  public createDataset(inputDat: InputDataset): Array<unknown> {
+    const resultDataset = new ChacaResultDatasetTree(
+      inputDat.id,
+      inputDat.name,
+    );
+
+    const newDatTree = new ChacaDatasetTree(
+      inputDat.id,
+      inputDat.name,
+      inputDat.limit,
+    );
+
+    newDatTree.insertDatasetsFields(
+      inputDat.fields,
+      this.schemaOptionsService.getSchemas(),
+    );
+
+    this.resolveDataset(resultDataset, newDatTree);
+
+    return resultDataset.getDatasetObject().documents;
+  }
+
+  private createDatasetsTrees(inputDatasets: Array<InputDataset>): void {
+    if (!Array.isArray(inputDatasets)) {
       throw new ChacaDatasetError(`Your datasets must be an array`);
+    }
 
     for (const inputDat of inputDatasets) {
       // crear el arbol del dataset
@@ -61,55 +106,50 @@ export class DatasetGeneratorService {
     });
   }
 
-  public createData(
-    inputDatasets: Array<InputDataset>,
-  ): [Array<ReturnDataset>, Array<ChacaDatasetTree>] {
-    this.createDatasetsTrees(inputDatasets);
+  private validateDatasetLimitDocs(lim: number): number {
+    let limit = 1;
 
-    // recorrer todos los datasets
-    for (const dat of this.datasetTrees) {
-      // dataset solution con la misma id de la dataset actual
-      const datasetSolution = this.resultDatasets.find(
-        (d) => d.id === dat.id,
-      ) as ChacaResultDatasetTree;
-
-      // segun el limite del dataset crear cada documento
-      for (let indexDoc = 0; indexDoc < dat.limit; indexDoc++) {
-        // create empty new document
-        const newDocument = new DocumentTree();
-
-        // insertar el nuevo documento en la datasetSolution
-        datasetSolution.insertDocument(newDocument);
-
-        // recorrer los fields del dataset actual para crear cada uno en el documento que le pertenece
-        for (const datField of dat.fields) {
-          const fieldSolutionNode = this.createSolutionNodeByType(
-            datasetSolution,
-            datField,
-            indexDoc,
-          );
-
-          // insertar la solucion del field en el documento
-          newDocument.insertNode(fieldSolutionNode);
-
-          // resolver el field actual en caso de ser un array o un mixed
-          this.resolveArrayAndMixedFields(
-            datasetSolution,
-            datField,
-            fieldSolutionNode,
-            indexDoc,
-          );
-        }
-
-        // actualizar el porciento de documentos por terminar y enviarlo al cliente
-        this.updateFinishPorcent();
-      }
+    if (typeof lim === "number" && lim > 0 && lim <= 300) {
+      limit = lim;
     }
 
-    return [
-      this.resultDatasets.map((d) => d.getDatasetObject()),
-      this.datasetTrees,
-    ];
+    return limit;
+  }
+
+  private resolveDataset(
+    datasetSolution: ChacaResultDatasetTree,
+    dat: ChacaDatasetTree,
+  ): void {
+    const limit = this.validateDatasetLimitDocs(dat.limit);
+
+    // segun el limite del dataset crear cada documento
+    for (let indexDoc = 0; indexDoc < limit; indexDoc++) {
+      // create empty new document
+      const newDocument = new DocumentTree();
+
+      // insertar el nuevo documento en la datasetSolution
+      datasetSolution.insertDocument(newDocument);
+
+      // recorrer los fields del dataset actual para crear cada uno en el documento que le pertenece
+      for (const datField of dat.fields) {
+        const fieldSolutionNode = this.createSolutionNodeByType(
+          datasetSolution,
+          datField,
+          indexDoc,
+        );
+
+        // insertar la solucion del field en el documento
+        newDocument.insertNode(fieldSolutionNode);
+
+        // resolver el field actual en caso de ser un array o un mixed
+        this.resolveArrayAndMixedFields(
+          datasetSolution,
+          datField,
+          fieldSolutionNode,
+          indexDoc,
+        );
+      }
+    }
   }
 
   private resolveArrayAndMixedFields(

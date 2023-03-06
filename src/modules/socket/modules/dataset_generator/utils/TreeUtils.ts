@@ -4,14 +4,15 @@ import {
   RefValueNode,
   SchemaValueNode,
   Node,
-} from "../modules/dataset_generator/classes/Tree";
-import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
-import { ChacaDatasetError } from "../errors/ChacaDatasetError";
-import { InputDatasetField } from "../dto/datasetsDTO.dto";
+} from "../classes/Tree";
+import { DATA_TYPES } from "../../../constants/DATA_TYPE.enum";
+import { ChacaDatasetError } from "../../../errors/ChacaDatasetError";
+import { InputDatasetField } from "../../../dto/datasetsDTO.dto";
 import {
   ApiSchema,
   SubOption,
 } from "@modules/schema-options/interfaces/options.interface";
+import { chaca } from "chaca";
 
 export class TreeUtils {
   public static orderFieldsByPriority(nodes: Array<Node>): Array<Node> {
@@ -45,6 +46,13 @@ export class TreeUtils {
 
     switch (field.dataType.type) {
       case DATA_TYPES.SINGLE_VALUE: {
+        const subOption = TreeUtils.filterOption(
+          fieldConfig.name,
+          field.dataType.fieldType.parent,
+          field.dataType.fieldType.type,
+          schemas,
+        );
+
         return new SchemaValueNode(
           fieldConfig,
           {
@@ -52,12 +60,7 @@ export class TreeUtils {
             parent: field.dataType.fieldType.parent,
           },
           field.dataType.fieldType.args,
-          TreeUtils.filterOption(
-            fieldConfig.name,
-            field.dataType.fieldType.parent,
-            field.dataType.fieldType.type,
-            schemas,
-          ),
+          subOption,
         );
       }
 
@@ -89,11 +92,19 @@ export class TreeUtils {
     schemas: Array<ApiSchema>,
   ): SubOption {
     const findParent = schemas.find((o) => {
-      return o.parent === parent;
+      return (
+        chaca.utils.camelCaseText(o.parent).toLowerCase() ===
+        chaca.utils.camelCaseText(parent).toLowerCase()
+      );
     });
 
     if (findParent) {
-      const findSchema = findParent.options.find((o) => o.name === option);
+      const findSchema = findParent.options.find((o) => {
+        return (
+          chaca.utils.camelCaseText(o.name).toLowerCase() ===
+          chaca.utils.camelCaseText(option).toLowerCase()
+        );
+      });
 
       if (findSchema) return findSchema;
       else

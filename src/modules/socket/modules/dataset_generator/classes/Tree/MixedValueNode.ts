@@ -1,6 +1,6 @@
 import { ApiSchema } from "@modules/schema-options/interfaces/options.interface";
 import { InputDatasetField } from "../../../../dto/datasetsDTO.dto";
-import { TreeUtils } from "../../../../utils/TreeUtils";
+import { TreeUtils } from "../../utils/TreeUtils";
 import { Node, NodeConfig } from "./Node";
 
 export class MixedValueNode extends Node {

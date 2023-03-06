@@ -5,6 +5,6 @@ import { FileGeneratorService } from "./services/file_generator.service";
   imports: [],
   controllers: [],
   providers: [FileGeneratorService],
-  exports: [],
+  exports: [FileGeneratorService],
 })
 export class FileGeneratorModule {}

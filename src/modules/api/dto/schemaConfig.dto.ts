@@ -1,12 +1,12 @@
-import { ApiFieldConfig } from "./fieldConfig.dto";
-
 export type SchemaConfigDTO =
-  | ApiSchemaConfigSimpleObject
+  | ApiSchemaConfigObject
   | ApiSchemaConfigCompleteObject;
 
-export type ApiSchemaConfigSimpleObject = { [key: string]: ApiFieldConfig };
+export type ApiSchemaConfigObject = {
+  [key: string]: string | ApiSchemaConfigObject;
+};
 
 export type ApiSchemaConfigCompleteObject = {
-  schema: ApiSchemaConfigSimpleObject;
+  schema: ApiSchemaConfigObject;
   limit?: number;
 };
