@@ -1,4 +1,4 @@
-import { SubOption } from "../../../modules/schema-options/interfaces/options.interface";
+import { SubOption } from "@modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { schemas } from "chaca";
 
@@ -8,7 +8,7 @@ export const DataTypeOptions: SubOption[] = [
     getValue: (a) => schemas.dataType.boolean().getValue(a),
     name: "Boolean",
     arguments: [],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve un valor boolean. (true o false)" },
   },
   {
     exampleValue: schemas.dataType.int().getValue(),
@@ -18,15 +18,15 @@ export const DataTypeOptions: SubOption[] = [
       {
         argument: "min",
         inputType: ARGUMENT_TYPE.NUMBER,
-        description: { en: "", es: "" },
+        description: { en: "", es: "Valor mínimo que puede tomar el número" },
       },
       {
         argument: "max",
         inputType: ARGUMENT_TYPE.NUMBER,
-        description: { en: "", es: "" },
+        description: { en: "", es: "Valor máximo que puede tomar el número" },
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve un número entero" },
   },
   {
     exampleValue: schemas.dataType.hexadecimal().getValue(),
@@ -39,7 +39,7 @@ export const DataTypeOptions: SubOption[] = [
         description: { en: "", es: "" },
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve un valor hexadecimal" },
   },
   {
     exampleValue: schemas.dataType.float().getValue(),
@@ -49,20 +49,23 @@ export const DataTypeOptions: SubOption[] = [
       {
         argument: "min",
         inputType: ARGUMENT_TYPE.FLOAT,
-        description: { en: "", es: "" },
+        description: { en: "", es: "Valor mínimo que puede tomar el número" },
       },
       {
         argument: "max",
         inputType: ARGUMENT_TYPE.FLOAT,
-        description: { en: "", es: "" },
+        description: { en: "", es: "Valor máximo que puede tomar el número" },
       },
       {
         argument: "precision",
         inputType: ARGUMENT_TYPE.NUMBER,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Precisión decimal del número. Debe ser un valor entre 0 y 20",
+        },
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve un número decimal o flotante" },
   },
   {
     exampleValue: schemas.dataType.matriz().getValue(),
@@ -72,29 +75,44 @@ export const DataTypeOptions: SubOption[] = [
       {
         argument: "x_size",
         inputType: ARGUMENT_TYPE.NUMBER,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Cantidad de columnas que debe tener la matriz",
+        },
       },
       {
         argument: "y_size",
         inputType: ARGUMENT_TYPE.NUMBER,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Cantidad de filas que debe tener la matriz",
+        },
       },
       {
         argument: "precision",
         inputType: ARGUMENT_TYPE.FLOAT,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Precisión decimal de los números en la matriz",
+        },
       },
       {
         argument: "min",
         inputType: ARGUMENT_TYPE.FLOAT,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Valor mínimo que pueden tener los números de la matriz",
+        },
       },
       {
         argument: "max",
         inputType: ARGUMENT_TYPE.FLOAT,
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Valor máximo que pueden tener los números de la matriz",
+        },
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve una matriz de números" },
   },
 ];

@@ -10,25 +10,31 @@ export const AddressOptions: SubOption[] = [
     arguments: [
       {
         argument: "format",
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Formato del código postal. Escribe un símbolo de número para indicar la cantidad de números que debe tener el código. Ejemplo: #### -> 5261",
+        },
         inputType: ARGUMENT_TYPE.TEXT,
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve un código postal" },
   },
   {
     name: "Time Zone",
     exampleValue: schemas.address.timeZone().getValue(),
     getValue: (a) => schemas.address.timeZone().getValue(a),
     arguments: [],
-    description: { en: "", es: "" },
+    description: {
+      en: "",
+      es: "Devuelve una zona horaria de una región geográfica",
+    },
   },
   {
     name: "Cardinal Direction",
     exampleValue: schemas.address.cardinalDirection().getValue(),
     getValue: (a) => schemas.address.cardinalDirection().getValue(a),
     arguments: [],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve una dirección cardinal" },
   },
   {
     name: "Country",
@@ -37,7 +43,10 @@ export const AddressOptions: SubOption[] = [
     arguments: [
       {
         argument: "continent",
-        description: { en: "", es: "" },
+        description: {
+          en: "",
+          es: "Continente al que pertenece el país a devolver",
+        },
         inputType: ARGUMENT_TYPE.SELECT,
         selectValues: [
           "Asia",
@@ -50,7 +59,7 @@ export const AddressOptions: SubOption[] = [
         ],
       },
     ],
-    description: { en: "", es: "" },
+    description: { en: "", es: "Devuelve el nombre de un país" },
   },
   {
     name: "Country Code",

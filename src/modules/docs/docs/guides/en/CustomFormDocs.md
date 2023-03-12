@@ -1,24 +1,52 @@
 <div class='flex w-full justify-center'>
-<img src='https://res.cloudinary.com/chaca-sa/image/upload/v1672701012/chaca/javascript_yaolhz.svg' width='150px'/></div>
+  <img src='https://res.cloudinary.com/chaca-sa/image/upload/v1672701012/chaca/javascript_yaolhz.svg' width='150px'/>
+</div>
 
-Hey!!! Quieres crear un valor con tus propias reglas utilizando
-Javascript? Pues este es tu sitio **Recuerda que puedes utilizar esta funcionalidad con otros lenguajes**
+Si ninguno de los schemas existentes te es útil puedes crear tu propia lógica para cada campo del schema
 
-### Qué tienes a mano ?
+## ¿ Para qué funciona ?
 
-- Puedes acceder a los campos que has creado en tu dataset solo utilizando **this**
+Supongamos que se está creando una serie de usuarios que parten del mismo schema **User** que contiene:
+
+- id
+- nombre (name)
+- edad (age)
+
+Y se quiere añadir un campo que informe si el usuario es mayor o menor de edad. Se puede ver que este campo depende de la edad del registro de usuario que se este creando. ¿ De qué forma se podría acceder a la edad del usuario para poder utilizarla en nuestra lógica ?
 
 ```js
-console.log("Hola");
+function getValue(fields, utils) {
+  if (fields.age >= 18) {
+    return true;
+  } else {
+    return false;
+  }
+}
 ```
 
-- Tienes a tu mano una función **oneOfArray(array)** para obtener 1 elemento de un arreglo pasado como parámetro
+Esto traeria consigo registros de la siguinte forma:
 
 ```js
-oneOfArray([1, "Hola", { hola: "Buenas" }]); //'Hola'
+[
+  {
+    id: "4136cd0b-d90b-4af7-b485-5d1ded8db252",
+    name: "Juan",
+    age: 23,
+    isOlder: false,
+  },
+  {
+    id: "4136cd0b-d90b-4af7-b485-5d1ded8db2650",
+    name: "Camila",
+    age: 67,
+    isOlder: true,
+  },
+];
 ```
 
-### Indicaciones
+## ¿ Qué tienes a mano ?
 
-- Tu función debe devolver un valor. Evita usar devolver valores **undefined**
-- En caso de acceder a un campo con un nombre compuesto puedes hacerlo de esta forma **this["Field Name"]** para evitar un error en la ejecución
+- **fields**
+  Se puede tener acceso a los campos del registro que se este creando
+
+- **utils**
+  Tienes acceso a funciones de la libreria **Chaca** para que puedas modificar datos. Leer más
