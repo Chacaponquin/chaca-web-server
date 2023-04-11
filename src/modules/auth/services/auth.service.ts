@@ -4,17 +4,25 @@ import { JwtService } from "@nestjs/jwt";
 import { IReturnUser, JwtPayload } from "../interfaces/auth.interface";
 import { SignUpDTO } from "../dto/signUpDTO.interface";
 import { UserService } from "@modules/user/services/user.service";
-import { GoogleUser } from "../interfaces/google.interface";
+import { GoogleUser } from "../../user/interfaces/googleUser.interface";
+import { ConfigService } from "@nestjs/config";
+import { GithubUser } from "@modules/user/interfaces/githubUser.interface";
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
+    private configService: ConfigService,
   ) {}
 
   async googleSignUp(googleUser: GoogleUser): Promise<string> {
     const newUserID = await this.userService.createGoogleUser(googleUser);
+    return this.generateAccessToken(newUserID);
+  }
+
+  async githubSignUp(githubUser: GithubUser): Promise<string> {
+    const newUserID = await this.userService.createGithubUser(githubUser);
     return this.generateAccessToken(newUserID);
   }
 
@@ -45,5 +53,11 @@ export class AuthService {
     } catch (error) {
       return null;
     }
+  }
+
+  public getOAuthRedirectURL(oauth: "google" | "github"): string {
+    const serverURL = this.configService.get("SERVER_URL") as string;
+
+    return serverURL + `/auth/${oauth}/redirect`;
   }
 }

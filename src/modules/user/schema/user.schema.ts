@@ -11,8 +11,6 @@ import {
 export class User {
   @Prop({
     required: true,
-    maxlength: 25,
-    minlength: 5,
     unique: true,
     type: mongoose.SchemaTypes.String,
   })

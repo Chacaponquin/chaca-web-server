@@ -15,7 +15,6 @@ import { AuthGuard } from "@nestjs/passport";
 import { UserService } from "src/modules/user/services/user.service";
 import { SignInDTO } from "../dto/signInDTO.interface";
 import { SignUpDTO } from "../dto/signUpDTO.interface";
-import { GithubOauthGuard } from "../guards/github-oauth.guard";
 import { IReturnUser } from "../interfaces/auth.interface";
 import { AuthService } from "../services/auth.service";
 import { Response } from "express";
@@ -31,28 +30,28 @@ export class AuthController {
 
   @Get("/google")
   @UseGuards(AuthGuard("google"))
-  async googleAuth(@Req() req) {}
+  async googleAuth() {
+    // Google Auth
+  }
 
   @Get("/google/redirect")
   @UseGuards(AuthGuard("google"))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
     const token = await this.userService.createGoogleUser(req.user);
-
-    res
-      .cookie("access_token", token, {
-        httpOnly: true,
-        secure: false,
-        sameSite: "lax",
-      })
-      .redirect(
-        this.configService.get<string>("CLIENT_REDIRECT_URL") as string,
-      );
+    this.sendAuthCookies(res, token);
   }
 
   @Get("/github")
-  @UseGuards(GithubOauthGuard)
-  githubAuth() {
-    // Github authorization
+  @UseGuards(AuthGuard("github"))
+  async login() {
+    // Github Auth
+  }
+
+  @Get("/github/redirect")
+  @UseGuards(AuthGuard("github"))
+  async authCallback(@Req() req, @Res() res: Response) {
+    const token = await this.authService.githubSignUp(req.user);
+    this.sendAuthCookies(res, token);
   }
 
   @Get("/userByToken")
@@ -89,5 +88,13 @@ export class AuthController {
     } else {
       throw new NotFoundException();
     }
+  }
+
+  private sendAuthCookies(response: Response, token: string): void {
+    response
+      .cookie("access_token", token, {})
+      .redirect(
+        this.configService.get<string>("CLIENT_REDIRECT_URL") as string,
+      );
   }
 }

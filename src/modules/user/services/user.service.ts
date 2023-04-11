@@ -14,7 +14,8 @@ import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 import { IDatasetModel } from "@modules/dataset-model/interfaces/dataset-model.interface";
 import { RepeatUserEmailError } from "../error";
-import { GoogleUser } from "@modules/auth/interfaces/google.interface";
+import { GoogleUser } from "@modules/user/interfaces/googleUser.interface";
+import { GithubUser } from "../interfaces/githubUser.interface";
 
 @Injectable()
 export class UserService {
@@ -31,12 +32,41 @@ export class UserService {
     }
   }
 
+  async findUserByEmail(email: string) {
+    return await this.userModel.findOne({ email });
+  }
+
+  async createGithubUser(githubUser: GithubUser): Promise<string> {
+    const foundUser = await this.findUserByEmail(githubUser.email);
+
+    if (foundUser) {
+      foundUser.methodLogin = LOGIN_METHOD.GITHUB;
+      await foundUser.save();
+
+      return foundUser.id;
+    } else {
+      const newGithubUser = new this.userModel({
+        methodLogin: LOGIN_METHOD.GOOGLE,
+        image: githubUser.picture,
+        password: null,
+        email: githubUser.email,
+        username: githubUser.username,
+      });
+      await newGithubUser.save();
+
+      return newGithubUser.id;
+    }
+  }
+
   async createGoogleUser(googleUser: GoogleUser): Promise<string> {
     // buscar si existe el email
     // si existe se devuelve ese ID
-    const foundUser = await this.userModel.findOne({ email: googleUser.email });
+    const foundUser = await this.findUserByEmail(googleUser.email);
 
     if (foundUser) {
+      foundUser.methodLogin = LOGIN_METHOD.GOOGLE;
+      await foundUser.save();
+
       return foundUser.id;
     } else {
       const newGoogleUser = new this.userModel({
@@ -46,7 +76,6 @@ export class UserService {
         email: googleUser.email,
         username: googleUser.username,
       });
-
       await newGoogleUser.save();
 
       return newGoogleUser.id;
