@@ -8,6 +8,7 @@ import {
   Body,
   HttpException,
   HttpStatus,
+  Res,
 } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
 import { AuthGuard } from "@nestjs/passport";
@@ -17,13 +18,36 @@ import { SignUpDTO } from "../dto/signUpDTO.interface";
 import { GithubOauthGuard } from "../guards/github-oauth.guard";
 import { IReturnUser } from "../interfaces/auth.interface";
 import { AuthService } from "../services/auth.service";
+import { Response } from "express";
+import { ConfigService } from "@nestjs/config";
 
 @Controller("auth")
 export class AuthController {
   constructor(
     private readonly userService: UserService,
     private readonly authService: AuthService,
+    private configService: ConfigService,
   ) {}
+
+  @Get("/google")
+  @UseGuards(AuthGuard("google"))
+  async googleAuth(@Req() req) {}
+
+  @Get("/google/redirect")
+  @UseGuards(AuthGuard("google"))
+  async googleAuthRedirect(@Req() req, @Res() res: Response) {
+    const token = await this.userService.createGoogleUser(req.user);
+
+    res
+      .cookie("access_token", token, {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      })
+      .redirect(
+        this.configService.get<string>("CLIENT_REDIRECT_URL") as string,
+      );
+  }
 
   @Get("/github")
   @UseGuards(GithubOauthGuard)
@@ -38,10 +62,9 @@ export class AuthController {
   }
 
   @Post("/signUp")
-  async signUp(@Body() userSignUpDTO: SignUpDTO) {
+  async signUp(@Body() userSignUpDTO: SignUpDTO): Promise<string> {
     try {
-      const newUserID = await this.userService.createUser(userSignUpDTO);
-      return this.authService.generateAccessToken(newUserID);
+      return this.authService.signUp(userSignUpDTO);
     } catch (error) {
       if (error instanceof RepeatUserEmailError) {
         throw new HttpException(

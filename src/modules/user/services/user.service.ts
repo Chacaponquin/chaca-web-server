@@ -14,6 +14,7 @@ import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 import { IDatasetModel } from "@modules/dataset-model/interfaces/dataset-model.interface";
 import { RepeatUserEmailError } from "../error";
+import { GoogleUser } from "@modules/auth/interfaces/google.interface";
 
 @Injectable()
 export class UserService {
@@ -27,6 +28,28 @@ export class UserService {
 
     if (foundUser) {
       throw new RepeatUserEmailError();
+    }
+  }
+
+  async createGoogleUser(googleUser: GoogleUser): Promise<string> {
+    // buscar si existe el email
+    // si existe se devuelve ese ID
+    const foundUser = await this.userModel.findOne({ email: googleUser.email });
+
+    if (foundUser) {
+      return foundUser.id;
+    } else {
+      const newGoogleUser = new this.userModel({
+        methodLogin: LOGIN_METHOD.GOOGLE,
+        image: googleUser.picture,
+        password: null,
+        email: googleUser.email,
+        username: googleUser.username,
+      });
+
+      await newGoogleUser.save();
+
+      return newGoogleUser.id;
     }
   }
 

@@ -19,7 +19,7 @@ export class User {
   username: string;
   @Prop({ default: null, unique: true, type: mongoose.SchemaTypes.String })
   email: string | null;
-  @Prop({ default: null, type: mongoose.SchemaTypes.String })
+  @Prop({ type: mongoose.SchemaTypes.String })
   password: string | null;
   @Prop({ default: false })
   isSuperUser: boolean;
