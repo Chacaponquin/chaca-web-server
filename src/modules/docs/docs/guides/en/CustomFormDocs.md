@@ -1,9 +1,3 @@
-<div class='flex w-full justify-center'>
-  <img src='https://res.cloudinary.com/chaca-sa/image/upload/v1672701012/chaca/javascript_yaolhz.svg' width='150px'/>
-</div>
-
-Si ninguno de los schemas existentes te es útil puedes crear tu propia lógica para cada campo del schema
-
 ## ¿ Para qué funciona ?
 
 Supongamos que se está creando una serie de usuarios que parten del mismo schema **User** que contiene:
@@ -46,7 +40,6 @@ Esto traeria consigo registros de la siguinte forma:
 ## ¿ Qué tienes a mano ?
 
 - **fields**
-  Se puede tener acceso a los campos del registro que se este creando
-
+   Se puede tener acceso a los campos del registro que se este creando
 - **utils**
-  Tienes acceso a funciones de la libreria **Chaca** para que puedas modificar datos. Leer más
+   Tienes acceso a funciones de la libreria **Chaca** para que puedas modificar datos. Leer más

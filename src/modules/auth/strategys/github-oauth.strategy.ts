@@ -1,33 +1,37 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
-import { Profile, Strategy } from "passport-github2";
+import { Strategy } from "passport-github2";
+import { AuthService } from "../services/auth.service";
+import { GithubUser } from "@modules/user/interfaces/githubUser.interface";
 
 @Injectable()
-export class GithubOauthStrategy extends PassportStrategy(Strategy, "github") {
-  constructor(private configService: ConfigService) {
+export class GithubOAuthStrategy extends PassportStrategy(Strategy, "github") {
+  constructor(
+    private configService: ConfigService,
+    private authService: AuthService,
+  ) {
     super({
-      clientID: configService.get<string>("auth.github.clientId"),
-      clientSecret: configService.get<string>("auth.github.clientSecret"),
-      callbackURL: configService.get<string>("auth.github.callbackURL"),
+      clientID: configService.get<string>("GITHUB_CLIENT_ID"),
+      clientSecret: configService.get<string>("GITHUB_CLIENT_SECRET"),
+      callbackURL: authService.getOAuthRedirectURL("github"),
       scope: ["public_profile"],
     });
   }
 
-  async validate(accessToken: string, _refreshToken: string, profile: Profile) {
-    // For each strategy, Passport will call the verify function (implemented with this
-    // `validate()` method in @nestjs/passport) using an appropriate strategy-specific set of
-    // parameters. For the passport-github strategy Passport expects a `validate()` method with
-    // the following signature:
-    //   `validate(accessToken: string, refreshToken: string, profile: Profile): any`
-    // As you can see from this, `validate()` receives the access token and optional refresh
-    // token, as well as profile which contains the authenticated user's GitHub profile.
-    // We can pass these information to find or create the user in our system.
-    // The Passport library expects this method to return a full user if the validation
-    // succeeds, or a null if it fails. When returning a user, Passport will complete its tasks
-    // (e.g., creating the user property on the Request object), and the request
-    // handling pipeline can continue.
+  async validate(
+    accessToken: string,
+    _refreshToken: string,
+    profile: any,
+  ): Promise<GithubUser> {
+    const { email, avatar_url, login } = profile._json;
 
-    return null;
+    const user: GithubUser = {
+      email,
+      picture: avatar_url || null,
+      username: login,
+    };
+
+    return user;
   }
 }
