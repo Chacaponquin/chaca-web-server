@@ -66,6 +66,9 @@ export const AddressOptions: SubOption[] = [
     exampleValue: schemas.address.countryCode().getValue(),
     getValue: (a) => schemas.address.countryCode().getValue(a),
     arguments: [],
-    description: { en: "", es: "" },
+    description: {
+      en: "",
+      es: "Devuelve el código del nombre de un país aleatorio",
+    },
   },
 ];

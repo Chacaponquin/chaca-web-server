@@ -9,7 +9,7 @@ import * as AdmZip from "adm-zip";
 
 @Injectable()
 export class FileGeneratorService {
-  private readonly PUBLIC_ROUTE = "../../../../data";
+  private readonly PUBLIC_ROUTE = "../../../../../data";
 
   public async createFile(
     data: ReturnDataset[],

@@ -1,4 +1,4 @@
-import { SubOption } from "../../../modules/schema-options/interfaces/options.interface";
+import { SubOption } from "@modules/schema-options/interfaces/options.interface";
 import { schemas } from "chaca";
 
 export const ImageOptions: SubOption[] = [
