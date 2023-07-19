@@ -1,21 +1,16 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { Model, Types } from "mongoose";
 import { CreateModelDTO } from "../dto/createModel.dto";
-import { IDatasetModel } from "../interfaces/dataset-model.interface";
+import { IDatasetModel } from "../infrastructure/mongo/interfaces/model.interface";
 import * as prettier from "prettier";
-import { SendDatasetModel } from "../interfaces/send.interface";
+import { DatasetModelRepository } from "./dataset-model-repository.service";
+import { DatasetModel } from "../domain/DatasetModel";
 
 @Injectable()
 export class DatasetModelService {
-  constructor(
-    @InjectModel(DB_MOELS.DATASET_MODEL)
-    private readonly model: Model<IDatasetModel>,
-  ) {}
+  constructor(private readonly repository: DatasetModelRepository) {}
 
   async deleteModel(modelID: string): Promise<void> {
-    await this.model.findByIdAndDelete(modelID);
+    await this.repository.deleteModel(modelID);
   }
 
   getModelToSendClient(
@@ -33,19 +28,7 @@ export class DatasetModelService {
     });
   }
 
-  async createModel(modelDTO: CreateModelDTO): Promise<Types.ObjectId> {
-    const { author, description, model, name, tags } = modelDTO;
-
-    const newModel = new this.model({
-      name,
-      author,
-      description,
-      model,
-      tags,
-    });
-
-    await newModel.save();
-
-    return newModel._id;
+  async createModel(modelDTO: CreateModelDTO): Promise<DatasetModel> {
+    return this.repository.create(modelDTO);
   }
 }

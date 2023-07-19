@@ -12,7 +12,7 @@ import * as bcrypt from "bcrypt";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
-import { IDatasetModel } from "@modules/dataset-model/interfaces/dataset-model.interface";
+import { IDatasetModel } from "@modules/dataset-model/infrastructure/mongo/interfaces/model.interface";
 import { RepeatUserEmailError } from "../error";
 import { GoogleUser } from "@modules/user/interfaces/googleUser.interface";
 import { GithubUser } from "../interfaces/githubUser.interface";
