@@ -1,5 +1,6 @@
 import { ArgumentSchema } from "../../../shared/interfaces/argument.interface";
 import { LanguageOptions } from "../../../shared/interfaces/language.interface";
+import { SchemaField } from "chaca";
 
 export interface ApiSchema {
   parent: string;
@@ -9,9 +10,8 @@ export interface ApiSchema {
 export interface SubOption<Z = unknown, T = any> {
   name: string;
   arguments: ArgumentSchema[];
-  exampleValue: Z;
   description: LanguageOptions;
-  getValue: (args: T) => Z;
+  schemaField: SchemaField;
 }
 
 export interface RespApiSchema extends Omit<ApiSchema, "options"> {

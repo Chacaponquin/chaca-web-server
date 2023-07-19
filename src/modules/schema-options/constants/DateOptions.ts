@@ -4,7 +4,7 @@ import { schemas } from "chaca";
 
 export const DateOptions: SubOption[] = [
   {
-    exampleValue: schemas.date.timeAgo().getValue(),
+    schemaField: schemas.date.timeAgo(),
     name: "Time Ago",
     description: { en: "", es: "" },
     arguments: [
@@ -22,11 +22,9 @@ export const DateOptions: SubOption[] = [
         ],
       },
     ],
-    getValue: (a) => schemas.date.timeAgo().getValue(a),
   },
   {
-    exampleValue: schemas.date.soon().getValue(),
-    getValue: (a) => schemas.date.soon().getValue(a),
+    schemaField: schemas.date.soon(),
     name: "Date Soon",
     arguments: [
       {
@@ -43,8 +41,7 @@ export const DateOptions: SubOption[] = [
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.past().getValue(),
-    getValue: (a) => schemas.date.past().getValue(a),
+    schemaField: schemas.date.past(),
     name: "Date Past",
     arguments: [
       {
@@ -61,8 +58,7 @@ export const DateOptions: SubOption[] = [
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.future().getValue(),
-    getValue: (a) => schemas.date.future().getValue(a),
+    schemaField: schemas.date.future(),
     name: "Date Future",
     arguments: [
       {
@@ -79,22 +75,19 @@ export const DateOptions: SubOption[] = [
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.month().getValue(),
-    getValue: (a) => schemas.date.month().getValue(a),
+    schemaField: schemas.date.month(),
     name: "Month",
     arguments: [],
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.weekDay().getValue(),
-    getValue: (a) => schemas.date.weekDay().getValue(a),
+    schemaField: schemas.date.weekDay(),
     name: "Weekday",
     arguments: [],
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.birthdate().getValue(),
-    getValue: (a) => schemas.date.birthdate().getValue(a),
+    schemaField: schemas.date.birthdate(),
     name: "BirthDate",
     arguments: [
       {
@@ -122,8 +115,7 @@ export const DateOptions: SubOption[] = [
     description: { en: "", es: "" },
   },
   {
-    exampleValue: schemas.date.between().getValue(),
-    getValue: (a) => schemas.date.between().getValue(a),
+    schemaField: schemas.date.between(),
     name: "Date Between",
     arguments: [
       {

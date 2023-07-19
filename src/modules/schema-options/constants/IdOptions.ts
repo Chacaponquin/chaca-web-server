@@ -4,22 +4,19 @@ import { schemas } from "chaca";
 export const IdOptions: SubOption[] = [
   {
     name: "MongoDB ID",
-    exampleValue: schemas.id.mongodbID().getValue(),
-    getValue: (a) => schemas.id.mongodbID().getValue(a),
+    schemaField: schemas.id.mongodbID(),
     arguments: [],
     description: { en: "", es: "" },
   },
   {
     name: "Number Row",
-    exampleValue: schemas.id.numberRow().getValue(),
-    getValue: (a) => schemas.id.numberRow().getValue(a),
+    schemaField: schemas.id.numberRow(),
     arguments: [],
     description: { en: "", es: "" },
   },
   {
     name: "UUID",
-    exampleValue: schemas.id.uuid().getValue(),
-    getValue: (a) => schemas.id.uuid().getValue(a),
+    schemaField: schemas.id.uuid(),
     arguments: [],
     description: { en: "", es: "" },
   },

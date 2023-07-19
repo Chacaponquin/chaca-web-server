@@ -5,8 +5,7 @@ import { ARGUMENT_TYPE } from "../../../shared/constants/ARGUMENT_TYPE.enum";
 export const AddressOptions: SubOption[] = [
   {
     name: "Zip Code",
-    getValue: (a) => schemas.address.zipCode().getValue(a),
-    exampleValue: schemas.address.zipCode().getValue(),
+    schemaField: schemas.address.zipCode(),
     arguments: [
       {
         argument: "format",
@@ -21,8 +20,7 @@ export const AddressOptions: SubOption[] = [
   },
   {
     name: "Time Zone",
-    exampleValue: schemas.address.timeZone().getValue(),
-    getValue: (a) => schemas.address.timeZone().getValue(a),
+    schemaField: schemas.address.timeZone(),
     arguments: [],
     description: {
       en: "",
@@ -31,15 +29,13 @@ export const AddressOptions: SubOption[] = [
   },
   {
     name: "Cardinal Direction",
-    exampleValue: schemas.address.cardinalDirection().getValue(),
-    getValue: (a) => schemas.address.cardinalDirection().getValue(a),
+    schemaField: schemas.address.cardinalDirection(),
     arguments: [],
     description: { en: "", es: "Devuelve una dirección cardinal" },
   },
   {
     name: "Country",
-    exampleValue: schemas.address.country().getValue(),
-    getValue: (a) => schemas.address.country().getValue(a),
+    schemaField: schemas.address.country(),
     arguments: [
       {
         argument: "continent",
@@ -63,8 +59,7 @@ export const AddressOptions: SubOption[] = [
   },
   {
     name: "Country Code",
-    exampleValue: schemas.address.countryCode().getValue(),
-    getValue: (a) => schemas.address.countryCode().getValue(a),
+    schemaField: schemas.address.countryCode(),
     arguments: [],
     description: {
       en: "",

@@ -5,8 +5,7 @@ import { SubOption } from "@modules/schema-options/interfaces/options.interface"
 export const PhoneOptions: SubOption[] = [
   {
     name: "Number",
-    getValue: (a) => schemas.phone.number().getValue(a),
-    exampleValue: schemas.phone.number().getValue(),
+    schemaField: schemas.phone.number(),
     arguments: [
       {
         inputType: ARGUMENT_TYPE.TEXT,
@@ -21,8 +20,7 @@ export const PhoneOptions: SubOption[] = [
   },
   {
     name: "Prefix",
-    exampleValue: schemas.phone.prefix().getValue(),
-    getValue: (a) => schemas.phone.prefix().getValue(a),
+    schemaField: schemas.phone.prefix(),
     arguments: [],
     description: { en: "", es: "Devuelve un prefijo de un número telefónico" },
   },
@@ -50,7 +48,6 @@ export const PhoneOptions: SubOption[] = [
       en: "",
       es: "Devuelve la duración de una llamada telefónica",
     },
-    exampleValue: schemas.phone.callDuration().getValue(),
-    getValue: (a) => schemas.phone.callDuration().getValue(a),
+    schemaField: schemas.phone.callDuration(),
   },
 ];

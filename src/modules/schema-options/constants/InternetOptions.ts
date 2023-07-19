@@ -4,15 +4,13 @@ import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 
 export const InternetOptions: SubOption[] = [
   {
-    exampleValue: schemas.internet.domainName().getValue(),
-    getValue: (a) => schemas.internet.domainName().getValue(a),
+    schemaField: schemas.internet.domainName(),
     name: "Domain Name",
     arguments: [],
     description: { en: "", es: "Devuelve un nombre de dominio web" },
   },
   {
-    exampleValue: schemas.internet.email().getValue(),
-    getValue: (a) => schemas.internet.email().getValue(a),
+    schemaField: schemas.internet.email(),
     name: "Email",
     arguments: [
       {
@@ -34,8 +32,7 @@ export const InternetOptions: SubOption[] = [
     description: { en: "", es: "Devuelve un email de usuario" },
   },
   {
-    exampleValue: schemas.internet.password().getValue(),
-    getValue: (a) => schemas.internet.password().getValue(a),
+    schemaField: schemas.internet.password(),
     name: "Password",
     arguments: [
       {
@@ -63,8 +60,7 @@ export const InternetOptions: SubOption[] = [
     description: { en: "", es: "Devuelve una contraseña de usuario" },
   },
   {
-    exampleValue: schemas.internet.url().getValue(),
-    getValue: (a) => schemas.internet.url().getValue(a),
+    schemaField: schemas.internet.url(),
     name: "Url",
     arguments: [
       {
@@ -79,8 +75,7 @@ export const InternetOptions: SubOption[] = [
     description: { en: "", es: "Devuelve la url de una página web" },
   },
   {
-    exampleValue: schemas.internet.userName().getValue(),
-    getValue: (a) => schemas.internet.userName().getValue(a),
+    schemaField: schemas.internet.userName(),
     name: "User Name",
     arguments: [
       {
@@ -97,64 +92,55 @@ export const InternetOptions: SubOption[] = [
     description: { en: "", es: "Devuelve el nombre de usuario" },
   },
   {
-    exampleValue: schemas.internet.httpMethod().getValue(),
+    schemaField: schemas.internet.httpMethod(),
     description: { en: "", es: "Devuelve un método HTTP" },
-    getValue: (a) => schemas.internet.httpMethod().getValue(a),
     name: "HTTP Method",
     arguments: [],
   },
   {
-    exampleValue: schemas.internet.ipv4().getValue(),
-    getValue: (a) => schemas.internet.ipv4().getValue(a),
+    schemaField: schemas.internet.ipv4(),
     name: "Ipv4",
     arguments: [],
     description: { en: "", es: "Devuelve una dirección IPv4" },
   },
   {
-    exampleValue: schemas.internet.emoji().getValue(),
-    getValue: (a) => schemas.internet.emoji().getValue(a),
+    schemaField: schemas.internet.emoji(),
     name: "Emoji",
     arguments: [],
     description: { en: "", es: "Devuelve el código de un emoji" },
   },
   {
-    exampleValue: schemas.internet.mac().getValue(),
+    schemaField: schemas.internet.mac(),
     description: { en: "", es: "Devuelve una direccióm MAC" },
-    getValue: (a) => schemas.internet.mac().getValue(a),
     name: "Mac Address",
     arguments: [],
   },
   {
-    exampleValue: schemas.internet.port().getValue(),
+    schemaField: schemas.internet.port(),
     description: { en: "", es: "Devuelve el número de un puerto" },
-    getValue: (a) => schemas.internet.port().getValue(a),
     name: "Port",
     arguments: [],
   },
   {
-    exampleValue: schemas.internet.userAgent().getValue(),
-    getValue: (a) => schemas.internet.userAgent().getValue(a),
+    schemaField: schemas.internet.userAgent(),
     name: "User Agent",
     arguments: [],
     description: { en: "", es: "Devuelve un user agent de un navegador web" },
   },
   {
-    exampleValue: schemas.internet.protocol().getValue(),
-    getValue: (a) => schemas.internet.protocol().getValue(a),
+    schemaField: schemas.internet.protocol(),
     name: "Protocol",
     arguments: [],
     description: { en: "", es: "Devuelve un protocolo http" },
   },
   {
-    exampleValue: schemas.internet.domainSuffix().getValue(),
-    getValue: (a) => schemas.internet.domainSuffix().getValue(a),
+    schemaField: schemas.internet.domainSuffix(),
     name: "Domain Suffix",
     arguments: [],
     description: { en: "", es: "Devuelve un sufijo de un dominio web" },
   },
   {
-    exampleValue: schemas.internet.httpStatusCode().getValue(),
-    getValue: (a) => schemas.internet.httpStatusCode().getValue(a),
+    schemaField: schemas.internet.httpStatusCode(),
     name: "HTTP Status Code",
     arguments: [],
     description: { en: "", es: "Devuelve un código de respuesta HTTP" },

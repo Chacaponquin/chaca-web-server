@@ -3,8 +3,7 @@ import { SubOption } from "@modules/schema-options/interfaces/options.interface"
 
 export const SystemOptions: SubOption[] = [
   {
-    exampleValue: schemas.system.fileExt(),
-    getValue: (a) => schemas.system.fileExt().getValue(a),
+    schemaField: schemas.system.fileExt(),
     name: "File Extension",
     arguments: [],
     description: {
@@ -13,15 +12,13 @@ export const SystemOptions: SubOption[] = [
     },
   },
   {
-    exampleValue: schemas.system.fileName().getValue(),
-    getValue: (a) => schemas.system.fileName().getValue(a),
+    schemaField: schemas.system.fileName(),
     name: "File Name",
     arguments: [],
     description: { en: "", es: "Devuelve el nombre de un archivo" },
   },
   {
-    exampleValue: schemas.system.filePath().getValue(),
-    getValue: (a) => schemas.system.filePath().getValue(a),
+    schemaField: schemas.system.filePath(),
     name: "File Path",
     arguments: [],
     description: {
@@ -30,8 +27,7 @@ export const SystemOptions: SubOption[] = [
     },
   },
   {
-    exampleValue: schemas.system.directoryPath().getValue(),
-    getValue: (a) => schemas.system.directoryPath().getValue(a),
+    schemaField: schemas.system.directoryPath(),
     name: "Directory Path",
     arguments: [],
     description: {
@@ -40,8 +36,7 @@ export const SystemOptions: SubOption[] = [
     },
   },
   {
-    exampleValue: schemas.system.filePath().getValue(),
-    getValue: (a) => schemas.system.filePath().getValue(a),
+    schemaField: schemas.system.filePath(),
     name: "File Path",
     arguments: [],
     description: {
@@ -50,8 +45,7 @@ export const SystemOptions: SubOption[] = [
     },
   },
   {
-    exampleValue: schemas.system.mimeType().getValue(),
-    getValue: (a) => schemas.system.mimeType().getValue(a),
+    schemaField: schemas.system.mimeType(),
     name: "Mime Type",
     arguments: [],
     description: {

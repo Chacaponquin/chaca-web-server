@@ -4,15 +4,13 @@ import { schemas } from "chaca";
 
 export const DataTypeOptions: SubOption[] = [
   {
-    exampleValue: schemas.dataType.boolean().getValue(),
-    getValue: (a) => schemas.dataType.boolean().getValue(a),
+    schemaField: schemas.dataType.boolean(),
     name: "Boolean",
     arguments: [],
     description: { en: "", es: "Devuelve un valor boolean. (true o false)" },
   },
   {
-    exampleValue: schemas.dataType.int().getValue(),
-    getValue: (a) => schemas.dataType.int().getValue(a),
+    schemaField: schemas.dataType.int(),
     name: "Integer",
     arguments: [
       {
@@ -29,8 +27,7 @@ export const DataTypeOptions: SubOption[] = [
     description: { en: "", es: "Devuelve un número entero" },
   },
   {
-    exampleValue: schemas.dataType.hexadecimal().getValue(),
-    getValue: (a) => schemas.dataType.hexadecimal().getValue(a),
+    schemaField: schemas.dataType.hexadecimal(),
     name: "Hexadecimal",
     arguments: [
       {
@@ -42,8 +39,7 @@ export const DataTypeOptions: SubOption[] = [
     description: { en: "", es: "Devuelve un valor hexadecimal" },
   },
   {
-    exampleValue: schemas.dataType.float().getValue(),
-    getValue: (a) => schemas.dataType.float().getValue(a),
+    schemaField: schemas.dataType.float(),
     name: "Float",
     arguments: [
       {
@@ -68,8 +64,7 @@ export const DataTypeOptions: SubOption[] = [
     description: { en: "", es: "Devuelve un número decimal o flotante" },
   },
   {
-    exampleValue: schemas.dataType.matriz().getValue(),
-    getValue: (a) => schemas.dataType.matriz().getValue(a),
+    schemaField: schemas.dataType.matriz(),
     name: "Matriz",
     arguments: [
       {

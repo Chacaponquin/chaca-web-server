@@ -5,8 +5,7 @@ import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 export const LoremOptions: SubOption[] = [
   {
     name: "Paragraphs",
-    exampleValue: schemas.lorem.paragraphs().getValue(),
-    getValue: (a) => schemas.lorem.paragraphs().getValue(a),
+    schemaField: schemas.lorem.paragraphs(),
     arguments: [
       {
         argument: "paragraphsCount",
@@ -33,8 +32,7 @@ export const LoremOptions: SubOption[] = [
   },
   {
     name: "Sentences",
-    exampleValue: schemas.lorem.sentences().getValue(),
-    getValue: (a) => schemas.lorem.sentences().getValue(a),
+    schemaField: schemas.lorem.sentences(),
     arguments: [
       {
         argument: "sentencesCount",
@@ -61,8 +59,7 @@ export const LoremOptions: SubOption[] = [
   },
   {
     name: "Slug",
-    exampleValue: schemas.lorem.slug().getValue(),
-    getValue: (a) => schemas.lorem.slug().getValue(a),
+    schemaField: schemas.lorem.slug(),
     arguments: [
       {
         argument: "wordCount",
@@ -74,8 +71,7 @@ export const LoremOptions: SubOption[] = [
   },
   {
     name: "Text",
-    exampleValue: schemas.lorem.text().getValue(),
-    getValue: (a) => schemas.lorem.text().getValue(a),
+    schemaField: schemas.lorem.text(),
     arguments: [
       {
         argument: "character_max",
@@ -98,8 +94,7 @@ export const LoremOptions: SubOption[] = [
   },
   {
     name: "Words",
-    exampleValue: schemas.lorem.words().getValue(),
-    getValue: (a) => schemas.lorem.words().getValue(a),
+    schemaField: schemas.lorem.words(),
     arguments: [
       {
         argument: "count",
