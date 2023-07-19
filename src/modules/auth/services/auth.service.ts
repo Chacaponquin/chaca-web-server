@@ -1,4 +1,4 @@
-import { IUser } from "@modules/user/interfaces/user.interface";
+import { IUser } from "@modules/user/infrastructure/mongo/interfaces/user.interface";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { IReturnUser, JwtPayload } from "../interfaces/auth.interface";

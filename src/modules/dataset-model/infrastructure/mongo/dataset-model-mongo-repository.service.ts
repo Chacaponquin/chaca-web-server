@@ -33,12 +33,18 @@ export class DatasetModelMongoRepository {
       tags,
     });
 
-    await newModel.save();
+    try {
+      const returnModel = this.mapToModel(newModel);
+      await newModel.save();
 
-    return this.mapToModel(newModel);
+      return returnModel;
+    } catch (error) {
+      await this.deleteModel(newModel.id);
+      throw error;
+    }
   }
 
-  private mapToModel(mongoModel: IDatasetModel): DatasetModel {
+  public mapToModel(mongoModel: IDatasetModel): DatasetModel {
     return new DatasetModel({
       id: mongoModel.id,
       description: mongoModel.description,

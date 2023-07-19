@@ -1,27 +1,28 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
 import {
   NORMAL_USER_LIMITS,
   NO_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { Model, Types } from "mongoose";
-import { SignUpDTO } from "../../auth/dto/signUpDTO.interface";
-import { IUser } from "../interfaces/user.interface";
-import * as bcrypt from "bcrypt";
+import { Types } from "mongoose";
+import { IUser } from "../infrastructure/mongo/interfaces/user.interface";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 import { IDatasetModel } from "@modules/dataset-model/infrastructure/mongo/interfaces/model.interface";
-import { RepeatUserEmailError } from "../error";
+import { RepeatUserEmailError } from "../exceptions";
 import { GoogleUser } from "@modules/user/interfaces/googleUser.interface";
 import { GithubUser } from "../interfaces/githubUser.interface";
+import { CryptServices } from "@shared/services/crypt.service";
+import { CreateSimpleUserDTO } from "../dto/create.dto";
+import { UserRepository } from "./user-repository.service";
+import { SimpleUser } from "../domain/User";
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectModel(DB_MOELS.USERS) private readonly userModel: Model<IUser>,
-    private readonly datasetModelService: DatasetModelService,
+    private readonly cryptServices: CryptServices,
+    private readonly repository: UserRepository,
   ) {}
 
   private async validateUserEmail(email: string): Promise<void> {
@@ -82,23 +83,16 @@ export class UserService {
     }
   }
 
-  async createUser(user: SignUpDTO) {
+  async createSimpleUser(user: CreateSimpleUserDTO): Promise<SimpleUser> {
     // validate
     await this.validateUserEmail(user.email);
 
-    const hashedPassword = await bcrypt.hash(user.password, 10);
+    const hashPassword = await this.cryptServices.hash(user.password);
 
-    const newUser = new this.userModel({
+    return await this.repository.createSimpleUser({
       ...user,
-      password: hashedPassword,
-      methodLogin: LOGIN_METHOD.EMAIL,
+      password: hashPassword,
     });
-
-    // guardar usuario
-    await newUser.save();
-
-    // retornar el id del user creado
-    return newUser.id;
   }
 
   async getUserById(userID: string): Promise<IUser | null> {

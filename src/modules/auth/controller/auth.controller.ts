@@ -1,4 +1,4 @@
-import { RepeatUserEmailError } from "@modules/user/error";
+import { RepeatUserEmailError } from "@modules/user/exceptions";
 import {
   NotFoundException,
   Get,
