@@ -10,11 +10,8 @@ import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 import { IDatasetModel } from "@modules/dataset-model/infrastructure/mongo/interfaces/model.interface";
-import { RepeatUserEmailError } from "../exceptions";
-import { GoogleUser } from "@modules/user/interfaces/googleUser.interface";
-import { GithubUser } from "../interfaces/githubUser.interface";
 import { CryptServices } from "@shared/services/crypt.service";
-import { CreateSimpleUserDTO } from "../dto/create.dto";
+import { CreateGithubUserDTO, CreateSimpleUserDTO } from "../dto/create.dto";
 import { UserRepository } from "./user-repository.service";
 import { SimpleUser } from "../domain/User";
 
@@ -25,78 +22,26 @@ export class UserService {
     private readonly repository: UserRepository,
   ) {}
 
-  private async validateUserEmail(email: string): Promise<void> {
-    const foundUser = await this.userModel.findOne({ email });
-
-    if (foundUser) {
-      throw new RepeatUserEmailError();
-    }
+  public async createGithubUser(
+    githubUser: CreateGithubUserDTO,
+  ): Promise<GithubUser> {
+    const newUser = await this.repository.createGithubUser(githubUser);
+    return newUser;
   }
 
-  async findUserByEmail(email: string) {
-    return await this.userModel.findOne({ email });
-  }
-
-  async createGithubUser(githubUser: GithubUser): Promise<string> {
-    const foundUser = await this.findUserByEmail(githubUser.email);
-
-    if (foundUser) {
-      foundUser.methodLogin = LOGIN_METHOD.GITHUB;
-      await foundUser.save();
-
-      return foundUser.id;
-    } else {
-      const newGithubUser = new this.userModel({
-        methodLogin: LOGIN_METHOD.GOOGLE,
-        image: githubUser.picture,
-        password: null,
-        email: githubUser.email,
-        username: githubUser.username,
-      });
-      await newGithubUser.save();
-
-      return newGithubUser.id;
-    }
-  }
-
-  async createGoogleUser(googleUser: GoogleUser): Promise<string> {
-    // buscar si existe el email
-    // si existe se devuelve ese ID
-    const foundUser = await this.findUserByEmail(googleUser.email);
-
-    if (foundUser) {
-      foundUser.methodLogin = LOGIN_METHOD.GOOGLE;
-      await foundUser.save();
-
-      return foundUser.id;
-    } else {
-      const newGoogleUser = new this.userModel({
-        methodLogin: LOGIN_METHOD.GOOGLE,
-        image: googleUser.picture,
-        password: null,
-        email: googleUser.email,
-        username: googleUser.username,
-      });
-      await newGoogleUser.save();
-
-      return newGoogleUser.id;
-    }
+  public async createGoogleUser(googleUser: GoogleUser): Promise<GoogleUser> {
+    const newUser = await this.repository.createGoogleUser(googleUser);
+    return newUser;
   }
 
   async createSimpleUser(user: CreateSimpleUserDTO): Promise<SimpleUser> {
-    // validate
-    await this.validateUserEmail(user.email);
-
     const hashPassword = await this.cryptServices.hash(user.password);
-
-    return await this.repository.createSimpleUser({
+    const newUser = await this.repository.createSimpleUser({
       ...user,
       password: hashPassword,
     });
-  }
 
-  async getUserById(userID: string): Promise<IUser | null> {
-    return await this.userModel.findById(userID);
+    return newUser;
   }
 
   async getUserDatasetModels(userID: string) {

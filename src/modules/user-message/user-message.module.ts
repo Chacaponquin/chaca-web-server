@@ -3,7 +3,7 @@ import { UserMessageController } from "./controller/user-message.controller";
 import { UserMessageService } from "./services/user-message.service";
 import { MongooseModule } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { UserMessageSchema } from "./schema/user-message.schema";
+import { UserMessageSchema } from "./infrastructure/mongo/schema/user-message.schema";
 
 @Module({
   imports: [

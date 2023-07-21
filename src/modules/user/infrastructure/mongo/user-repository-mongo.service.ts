@@ -13,7 +13,11 @@ import {
 import { LOGIN_METHOD } from "@modules/user/constants/LOGIN_METHOD.enum";
 import { DatasetModelMongoRepository } from "@modules/dataset-model/infrastructure/mongo/dataset-model-mongo-repository.service";
 import { InvalidLoginMethodError } from "@modules/user/exceptions";
-import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
+import {
+  CreateGithubUserDTO,
+  CreateGoogleUserDTO,
+  CreateSimpleUserDTO,
+} from "@modules/user/dto/create.dto";
 
 @Injectable()
 export class UserRepositoryMongo {
@@ -22,8 +26,79 @@ export class UserRepositoryMongo {
     private readonly datasetModelMongoRepository: DatasetModelMongoRepository,
   ) {}
 
+  public async findUserByEmail(email: string): Promise<User | null> {
+    const foundUser = await this.model.findOne({ email });
+    return foundUser === null ? null : this.mapToUser(foundUser);
+  }
+
   public async deleteUser(userID: string): Promise<void> {
     await this.model.findOneAndRemove({ id: userID });
+  }
+
+  public async createGithubUser(
+    githubUserDTO: CreateGithubUserDTO,
+  ): Promise<GithubUser> {
+    const { email, picture, username } = githubUserDTO;
+
+    const newGithubUser = new this.model({
+      username,
+      email,
+      password: null,
+      methodLogin: LOGIN_METHOD.GITHUB,
+      image: picture,
+      isSuperUser: false,
+      datasetModels: [],
+    });
+
+    try {
+      const returnUser = new GithubUser({
+        id: newGithubUser.id,
+        username: newGithubUser.username,
+        email: newGithubUser.email,
+        image: newGithubUser.image,
+        isSuperUser: newGithubUser.isSuperUser,
+        models: [],
+      });
+
+      await newGithubUser.save();
+      return returnUser;
+    } catch (error) {
+      await this.deleteUser(newGithubUser.id);
+      throw error;
+    }
+  }
+
+  public async createGoogleUser(
+    googleUserDTO: CreateGoogleUserDTO,
+  ): Promise<GoogleUser> {
+    const { email, picture, username } = googleUserDTO;
+
+    const newGoogleUser = new this.model({
+      username,
+      email,
+      password: null,
+      methodLogin: LOGIN_METHOD.GITHUB,
+      image: picture,
+      isSuperUser: false,
+      datasetModels: [],
+    });
+
+    try {
+      const returnUser = new GoogleUser({
+        id: newGoogleUser.id,
+        username: newGoogleUser.username,
+        email: newGoogleUser.email,
+        image: newGoogleUser.image,
+        isSuperUser: newGoogleUser.isSuperUser,
+        models: [],
+      });
+
+      await newGoogleUser.save();
+      return returnUser;
+    } catch (error) {
+      await this.deleteUser(newGoogleUser.id);
+      throw error;
+    }
   }
 
   public async createSimpleUser(
@@ -55,6 +130,7 @@ export class UserRepositoryMongo {
       await newSimpleUser.save();
       return returnUser;
     } catch (error) {
+      await this.deleteUser(newSimpleUser.id);
       throw error;
     }
   }
