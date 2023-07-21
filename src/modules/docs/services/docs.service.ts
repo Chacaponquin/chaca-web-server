@@ -3,7 +3,7 @@ import { HttpException } from "@nestjs/common";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { SharedService } from "@shared/services/shared.service";
+import { SharedService } from "@shared/services/language.service";
 import * as fs from "fs";
 import { Model } from "mongoose";
 import * as path from "path";

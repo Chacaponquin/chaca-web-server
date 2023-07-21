@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { SharedService } from "@shared/services/shared.service";
+import { SharedService } from "@shared/services/language.service";
 import { DocsController } from "./controller/docs.controller";
 import { ApiDocSchema } from "./schema/apiDoc.schema";
 import { ApiDocSubSectionSchema } from "./schema/apiDocSubSection.schema";

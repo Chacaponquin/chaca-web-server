@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { SharedService } from "@shared/services/shared.service";
+import { SharedService } from "@shared/services/language.service";
 import { SchemaOptionsService } from "./services/schema-options.service";
 
 @Module({

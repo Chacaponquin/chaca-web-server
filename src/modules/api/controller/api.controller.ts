@@ -11,7 +11,7 @@ import {
   HttpStatus,
 } from "@nestjs/common";
 import { SchemaConfigDTO } from "../dto/schemaConfig.dto";
-import { DefinitionFieldSchemaError } from "../errors";
+import { DefinitionFieldSchemaError } from "../exceptions";
 import { ApiService } from "../services/api.service";
 
 @Controller("api")
@@ -19,9 +19,9 @@ export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
   @Post("")
-  getSchemaByConfig(@Body() schemaConfig: SchemaConfigDTO) {
+  public getSchemaByConfig(@Body() schemaConfig: SchemaConfigDTO) {
     try {
-      return this.apiService.getApiSchemaObject(schemaConfig);
+      return this.apiService.getSchemaObject(schemaConfig);
     } catch (error) {
       if (
         error instanceof DefinitionFieldSchemaError ||

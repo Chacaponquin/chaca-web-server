@@ -1,29 +1,24 @@
 import { Injectable } from "@nestjs/common";
-import ChacaOptions from "../constants";
-import {
-  ApiSchema,
-  RespApiSchema,
-  SubOption,
-} from "../interfaces/options.interface";
+import { RespApiSchema, SchemaOption } from "../interfaces/options.interface";
 import { chaca, schemas } from "chaca";
-import { SharedService } from "@shared/services/shared.service";
-import { NotFoundOptionError, NotFoundSchemaError } from "../errors";
+import { LanguageService } from "@shared/services/language.service";
+import { SchemaOptionsRepository } from "./schema-options-repository.service";
 
 @Injectable()
 export class SchemaOptionsService {
-  constructor(private readonly sharedService: SharedService) {}
+  constructor(
+    private readonly languageService: LanguageService,
+    private readonly repository: SchemaOptionsRepository,
+  ) {}
 
-  getSchemas(): Array<ApiSchema> {
-    const allSchemas = [] as ApiSchema[];
-
-    for (const [parent, options] of Object.entries(ChacaOptions)) {
-      allSchemas.push({ options, parent });
-    }
-
-    return allSchemas;
+  public findSchemaOption(schema: string, option: string): SchemaOption {
+    return this.repository.findSchemaOption(schema, option);
   }
 
-  generateValueByConfig(option: SubOption, config: any): unknown | unknown[] {
+  public generateValueByConfig(
+    option: SchemaOption,
+    config: any,
+  ): unknown | unknown[] {
     const { isArray, ...args } = config;
 
     if (
@@ -36,50 +31,25 @@ export class SchemaOptionsService {
       const limit = Number(isArray);
 
       for (let i = 0; i < limit; i++) {
-        allValues.push(option.getValue(args));
+        allValues.push(option.schemaField.getValue(args));
       }
 
       return allValues;
     } else {
-      return option.getValue(args);
+      return option.schemaField.getValue(args);
     }
   }
 
-  findOption(schema: string, option: string): SubOption {
-    const schemas = this.getSchemas();
-
-    const findSchema = schemas.find(
-      (s) =>
-        chaca.utils.camelCaseText(s.parent).toLowerCase() ===
-        chaca.utils.camelCaseText(schema).toLowerCase(),
-    );
-
-    if (findSchema) {
-      const findOption = findSchema.options.find(
-        (o) =>
-          chaca.utils.camelCaseText(o.name) ===
-          chaca.utils.camelCaseText(option),
-      );
-
-      if (findOption) {
-        return findOption;
-      } else {
-        throw new NotFoundOptionError();
-      }
-    } else {
-      throw new NotFoundSchemaError();
-    }
-  }
-
-  getApiSchemas(language: string): Array<RespApiSchema> {
+  public getApiSchemas(language: string): Array<RespApiSchema> {
     const returnOptions = [] as RespApiSchema[];
+    const allSchemas = this.repository.getAllSchemas();
 
-    for (const [key, options] of Object.entries(ChacaOptions)) {
+    for (const schema of allSchemas) {
       returnOptions.push({
         id: schemas.id.uuid().getValue(),
-        parent: key,
-        options: options.map((o) => {
-          const parent = chaca.utils.camelCaseText(key);
+        name: schema.name,
+        options: schema.options.map((o) => {
+          const parent = chaca.utils.camelCaseText(schema.name);
           const name = chaca.utils.camelCaseText(o.name);
           const route = `/api/${parent}/${name}`;
 
@@ -88,7 +58,7 @@ export class SchemaOptionsService {
             route,
             id: schemas.id.uuid().getValue(),
             description:
-              o.description[this.sharedService.filterLanguage(language)],
+              o.description[this.languageService.filterLanguage(language)],
           };
         }),
       });
