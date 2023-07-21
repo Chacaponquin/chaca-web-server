@@ -1,4 +1,4 @@
-import { ConfigIsArray } from "../../../../../api/dto/fieldConfig.dto";
+import { ConfigIsArray } from "../../../../../dataset/dto/field";
 
 export interface NodeConfig {
   id: string;

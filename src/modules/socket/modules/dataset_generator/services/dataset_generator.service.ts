@@ -1,4 +1,4 @@
-import { ConfigIsArray } from "@modules/api/dto/fieldConfig.dto";
+import { ConfigIsArray } from "@modules/dataset/dto/field";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import {
   ArrayResultNode,
@@ -21,7 +21,7 @@ import { ChacaDatasetError } from "@modules/socket/errors/ChacaDatasetError";
 import { ReturnDataset } from "@modules/socket/modules/dataset_generator/interfaces/dataset.interface";
 import { Injectable } from "@nestjs/common";
 import { schemas } from "chaca";
-import { FIELD_MAX_ARRAY_LIMIT } from "../constants/FIELD_LIMITS";
+import { FIELD_MAX_ARRAY_LIMIT } from "../../../../dataset/constants/FIELD_LIMITS";
 
 @Injectable()
 export class DatasetGeneratorService {
@@ -336,16 +336,5 @@ export class DatasetGeneratorService {
         );
       }
     }
-  }
-
-  private updateFinishPorcent(): void {
-    // calcular el porciento de completado
-    //const porcent = (this.documentsCreated * 100) / this.documentsToCreate;
-
-    // enviar porciento al cliente
-    // this.socket.emit(SOCKET_EVENTS.DOCUMENT_CREATED, porcent);
-
-    // incrementar el contador de documentos creados
-    this.documentsCreated += 1;
   }
 }

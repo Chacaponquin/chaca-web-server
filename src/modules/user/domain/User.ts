@@ -1,4 +1,8 @@
 import { DatasetModel } from "@modules/dataset-model/domain/DatasetModel";
+import {
+  NORMAL_USER_LIMITS,
+  SUPER_USER_LIMITS,
+} from "../constants/USER_LIMITS.enum";
 
 export type UserParams = {
   username: string;
@@ -28,6 +32,16 @@ export abstract class User {
     this.models = models;
     this.username = username;
     this.email = email;
+  }
+
+  public get limitDataset(): number {
+    if (this.isSuperUser) return SUPER_USER_LIMITS.LIMIT_DATASETS;
+    else return NORMAL_USER_LIMITS.LIMIT_DATASETS;
+  }
+
+  public get limitDocuments(): number {
+    if (this.isSuperUser) return SUPER_USER_LIMITS.LIMIT_DOCUMENTS;
+    else return NORMAL_USER_LIMITS.LIMIT_DOCUMENTS;
   }
 }
 

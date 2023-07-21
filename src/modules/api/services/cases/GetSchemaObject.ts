@@ -1,4 +1,5 @@
 import { SchemaConfigDTO } from "@modules/api/dto/schemaConfig.dto";
+import { schemas } from "chaca";
 
 export class GetSchemaObject {
   constructor() {}

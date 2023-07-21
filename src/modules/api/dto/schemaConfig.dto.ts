@@ -1,4 +1,4 @@
-import { ConfigIsArray, ConfigPosibleNull } from "./fieldConfig.dto";
+import { ConfigIsArray, ConfigPosibleNull } from "../../dataset/dto/field";
 
 export type SchemaConfigDTO =
   | ApiSchemaConfigObject

@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { AppController } from "./app.controller";
 import { UtilsModule } from "./modules/utils/utils.module";
 import { ApiModule } from "./modules/api/api.module";
 import { UserModule } from "./modules/user/user.module";
@@ -12,6 +11,7 @@ import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
 import { AdminModule } from "./modules/admin/admin.module";
 import { SocketModule } from "./modules/socket/socket.module";
+import { DatasetModule } from "@modules/dataset/dataset.module";
 
 @Module({
   imports: [
@@ -32,8 +32,9 @@ import { SocketModule } from "./modules/socket/socket.module";
     SchemaOptionsModule,
     AdminModule,
     SocketModule,
+    DatasetModule,
   ],
-  controllers: [AppController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

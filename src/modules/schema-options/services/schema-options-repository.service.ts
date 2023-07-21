@@ -6,24 +6,30 @@ import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
 
 @Injectable()
 export class SchemaOptionsRepository {
+  private _stringToCompareName(name: string): string {
+    return chaca.utils.camelCase(name).trim().toLowerCase();
+  }
+
   public getAllSchemas(): Array<Schema> {
     return SCHEMAS;
   }
 
-  public findSchemaOption(schema: string, option: string): SchemaOption {
+  public findSchema(schema: string): Schema | null {
     const allSchemas = this.getAllSchemas();
-
-    const findSchema = allSchemas.find(
+    const foundSchema = allSchemas.find(
       (s) =>
-        chaca.utils.camelCaseText(s.name).trim().toLowerCase() ===
-        chaca.utils.camelCaseText(schema).trim().toLowerCase(),
+        this._stringToCompareName(s.name) === this._stringToCompareName(schema),
     );
 
-    if (findSchema) {
-      const findOption = findSchema.options.find(
-        (o) =>
-          chaca.utils.camelCaseText(o.name) ===
-          chaca.utils.camelCaseText(option),
+    return foundSchema ? foundSchema : null;
+  }
+
+  public findSchemaOption(schema: string, option: string): SchemaOption {
+    const foundSchema = this.findSchema(schema);
+
+    if (foundSchema) {
+      const findOption = foundSchema.options.find(
+        (o) => chaca.utils.camelCase(o.name) === chaca.utils.camelCase(option),
       );
 
       if (findOption) {

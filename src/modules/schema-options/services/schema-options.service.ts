@@ -1,5 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { RespApiSchema, SchemaOption } from "../interfaces/options.interface";
+import {
+  RespApiSchema,
+  Schema,
+  SchemaOption,
+} from "../interfaces/options.interface";
 import { chaca, schemas } from "chaca";
 import { LanguageService } from "@shared/services/language.service";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
@@ -11,8 +15,16 @@ export class SchemaOptionsService {
     private readonly repository: SchemaOptionsRepository,
   ) {}
 
+  public getAllSchemas(): Array<Schema> {
+    return this.repository.getAllSchemas();
+  }
+
   public findSchemaOption(schema: string, option: string): SchemaOption {
     return this.repository.findSchemaOption(schema, option);
+  }
+
+  public findSchema(schema: string): Schema | null {
+    return this.repository.findSchema(schema);
   }
 
   public generateValueByConfig(
@@ -49,8 +61,8 @@ export class SchemaOptionsService {
         id: schemas.id.uuid().getValue(),
         name: schema.name,
         options: schema.options.map((o) => {
-          const parent = chaca.utils.camelCaseText(schema.name);
-          const name = chaca.utils.camelCaseText(o.name);
+          const parent = chaca.utils.camelCase(schema.name);
+          const name = chaca.utils.camelCase(o.name);
           const route = `/api/${parent}/${name}`;
 
           return {

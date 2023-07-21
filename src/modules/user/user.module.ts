@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { UserService } from "./services/user.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { UserSchema } from "./schema/user.schema";
+import { UserSchema } from "./infrastructure/mongo/schema/user.schema";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import { UserController } from "./controller/user.controller";
 import { JwtStrategy } from "@shared/strategy/jwt.strategy";

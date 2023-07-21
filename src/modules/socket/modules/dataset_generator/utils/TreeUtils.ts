@@ -5,7 +5,7 @@ import {
   SchemaValueNode,
   Node,
 } from "../classes/Tree";
-import { DATA_TYPES } from "../../../constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "../../../../dataset/constants/DATA_TYPE.enum";
 import { ChacaDatasetError } from "../../../errors/ChacaDatasetError";
 import { InputDatasetField } from "../../../dto/datasetsDTO.dto";
 import {
