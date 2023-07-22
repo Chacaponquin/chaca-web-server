@@ -3,13 +3,13 @@ import { ConfigService } from "@nestjs/config";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-github2";
 import { AuthService } from "../services/auth.service";
-import { GithubUser } from "@modules/user/interfaces/githubUser.interface";
+import { CreateGithubUserDTO } from "@modules/user/dto/create.dto";
 
 @Injectable()
 export class GithubOAuthStrategy extends PassportStrategy(Strategy, "github") {
   constructor(
-    private configService: ConfigService,
-    private authService: AuthService,
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
   ) {
     super({
       clientID: configService.get<string>("GITHUB_CLIENT_ID"),
@@ -23,10 +23,10 @@ export class GithubOAuthStrategy extends PassportStrategy(Strategy, "github") {
     accessToken: string,
     _refreshToken: string,
     profile: any,
-  ): Promise<GithubUser> {
+  ): Promise<CreateGithubUserDTO> {
     const { email, avatar_url, login } = profile._json;
 
-    const user: GithubUser = {
+    const user: CreateGithubUserDTO = {
       email,
       picture: avatar_url || null,
       username: login,

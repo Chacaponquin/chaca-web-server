@@ -2,14 +2,14 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-google-oauth20";
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { GoogleUser } from "../../user/interfaces/googleUser.interface";
 import { AuthService } from "../services/auth.service";
+import { CreateGoogleUserDTO } from "@modules/user/dto/create.dto";
 
 @Injectable()
 export class GoogleOAuthStrategy extends PassportStrategy(Strategy, "google") {
   constructor(
-    private configService: ConfigService,
-    private authService: AuthService,
+    private readonly configService: ConfigService,
+    private readonly authService: AuthService,
   ) {
     super({
       clientID: configService.get<string>("GOOGLE_CLIENT_ID"),
@@ -23,10 +23,10 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, "google") {
     accessToken: string,
     refreshToken: string,
     profile: any,
-  ): Promise<GoogleUser> {
+  ): Promise<CreateGoogleUserDTO> {
     const { name, email, picture } = profile._json;
 
-    const user: GoogleUser = {
+    const user: CreateGoogleUserDTO = {
       email,
       username: name,
       picture: picture || null,
