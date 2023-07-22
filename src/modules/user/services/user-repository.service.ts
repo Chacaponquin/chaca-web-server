@@ -5,7 +5,7 @@ import {
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
 } from "../dto/create.dto";
-import { GithubUser, GoogleUser, SimpleUser } from "../domain/User";
+import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
 import { RepeatUserEmailError } from "../exceptions";
 
 @Injectable()
@@ -42,5 +42,10 @@ export class UserRepository {
     await this.validateNotRepeatEmail(googleUserDTO.email);
     const newUser = await this.mongoRepository.createGoogleUser(googleUserDTO);
     return newUser;
+  }
+
+  public async findUserByEmail(email: string): Promise<User | null> {
+    const foundUser = await this.mongoRepository.findUserByEmail(email);
+    return foundUser;
   }
 }

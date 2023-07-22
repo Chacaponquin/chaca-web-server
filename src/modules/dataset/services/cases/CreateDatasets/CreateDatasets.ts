@@ -1,9 +1,13 @@
-import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
+import {
+  InputDatasetDTO,
+  InputDatasetFieldDTO,
+} from "@modules/dataset/dto/dataset";
 import { ChacaSchema, chaca } from "chaca";
 import {
   CustomValueField,
   DefinedValueField,
   ISchemaField,
+  MixedValueField,
   RefValueField,
 } from "./value_object/ValueFields";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
@@ -20,7 +24,7 @@ export class CreateDatasets {
     const multiGenerateConfig: Array<MultiGenerateSchema> = [];
     for (const dataset of datasetsConfig) {
       const documentsLimit = new SchemaLimit(dataset.limit).value;
-      const datasetSchema = this.buildChacaSchema(dataset);
+      const datasetSchema = this.buildChacaSchema(dataset.fields);
       const datasetName = new SchemaName(dataset.name).value;
 
       multiGenerateConfig.push({
@@ -37,12 +41,13 @@ export class CreateDatasets {
     return allData;
   }
 
-  private buildChacaSchema(datasetConfig: InputDatasetDTO): ChacaSchema {
+  private buildChacaSchema(
+    datasetFields: Array<InputDatasetFieldDTO>,
+  ): ChacaSchema {
     let schemaFields: Record<string, SchemaInputField> = {};
 
-    for (const field of datasetConfig.fields) {
+    for (const field of datasetFields) {
       const fieldName = field.name;
-
       const fieldType = this.mapDataTypeToField(field.dataType).getField();
 
       const fieldConfig = {
@@ -71,6 +76,8 @@ export class CreateDatasets {
     } else if (dataType.type === DATA_TYPES.CUSTOM) {
       return new CustomValueField(dataType.code);
     } else if (dataType.type === DATA_TYPES.MIXED) {
+      const schema = this.buildChacaSchema(dataType.object);
+      return new MixedValueField(schema);
     } else {
       throw new IncorrectDefinedFieldDataTypeException();
     }

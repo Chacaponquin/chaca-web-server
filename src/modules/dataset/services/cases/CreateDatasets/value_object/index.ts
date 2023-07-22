@@ -5,6 +5,7 @@ import {
   CustomValueField,
   DefinedValueField,
   ISchemaField,
+  MixedValueField,
 } from "./ValueFields";
 
 export {
@@ -13,5 +14,6 @@ export {
   CustomValueField,
   DefinedValueField,
   ISchemaField,
+  MixedValueField,
   SchemaName,
 };

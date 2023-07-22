@@ -12,18 +12,17 @@ import {
 } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
 import { AuthGuard } from "@nestjs/passport";
-import { UserService } from "src/modules/user/services/user.service";
-import { SignInDTO } from "../dto/signInDTO.interface";
-import { SignUpDTO } from "../dto/signUpDTO.interface";
-import { IReturnUser } from "../interfaces/auth.interface";
+import { SignInDTO } from "../dto/signIn";
+import { ReturnUser } from "../interfaces/auth.interface";
 import { AuthService } from "../services/auth.service";
 import { Response } from "express";
 import { ConfigService } from "@nestjs/config";
+import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
+import { NotFoundUserToLoginException } from "../exceptions";
 
 @Controller("auth")
 export class AuthController {
   constructor(
-    private readonly userService: UserService,
     private readonly authService: AuthService,
     private configService: ConfigService,
   ) {}
@@ -37,13 +36,13 @@ export class AuthController {
   @Get("/google/redirect")
   @UseGuards(AuthGuard("google"))
   async googleAuthRedirect(@Req() req, @Res() res: Response) {
-    const token = await this.userService.createGoogleUser(req.user);
+    const token = await this.authService.googleSignUp(req.user);
     this.sendAuthCookies(res, token);
   }
 
   @Get("/github")
   @UseGuards(AuthGuard("github"))
-  async login() {
+  async githubLogin() {
     // Github Auth
   }
 
@@ -56,12 +55,12 @@ export class AuthController {
 
   @Get("/userByToken")
   @UseGuards(AuthGuard("jwt"))
-  async userByToken(@Req() req: any): Promise<IReturnUser | null> {
-    return await this.authService.getReturnUser(req.user);
+  async userByToken(@Req() req: any): Promise<ReturnUser | null> {
+    return this.authService.getReturnUser(req.user);
   }
 
   @Post("/signUp")
-  async signUp(@Body() userSignUpDTO: SignUpDTO): Promise<string> {
+  async signUp(@Body() userSignUpDTO: CreateSimpleUserDTO): Promise<string> {
     try {
       return this.authService.signUp(userSignUpDTO);
     } catch (error) {
@@ -78,15 +77,15 @@ export class AuthController {
 
   @Post("/signIn")
   async signIn(@Body() userSignInDTO: SignInDTO) {
-    const foundUserID = await this.userService.loginUser(
-      userSignInDTO.email,
-      userSignInDTO.password,
-    );
-
-    if (foundUserID) {
-      return this.authService.generateAccessToken(foundUserID);
-    } else {
-      throw new NotFoundException();
+    try {
+      const token = await this.authService.loginUser(userSignInDTO);
+      return token;
+    } catch (error) {
+      if (error instanceof NotFoundUserToLoginException) {
+        throw new NotFoundException();
+      } else {
+        throw error;
+      }
     }
   }
 

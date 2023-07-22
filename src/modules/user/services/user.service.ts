@@ -4,16 +4,14 @@ import {
   NO_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { Types } from "mongoose";
-import { IUser } from "../infrastructure/mongo/interfaces/user.interface";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { LOGIN_METHOD } from "../constants/LOGIN_METHOD.enum";
-import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
-import { IDatasetModel } from "@modules/dataset-model/infrastructure/mongo/interfaces/model.interface";
 import { CryptServices } from "@shared/services/crypt.service";
-import { CreateGithubUserDTO, CreateSimpleUserDTO } from "../dto/create.dto";
+import {
+  CreateGithubUserDTO,
+  CreateGoogleUserDTO,
+  CreateSimpleUserDTO,
+} from "../dto/create.dto";
 import { UserRepository } from "./user-repository.service";
-import { SimpleUser } from "../domain/User";
+import { GithubUser, GoogleUser, SimpleUser } from "../domain/User";
 
 @Injectable()
 export class UserService {
@@ -29,7 +27,9 @@ export class UserService {
     return newUser;
   }
 
-  public async createGoogleUser(googleUser: GoogleUser): Promise<GoogleUser> {
+  public async createGoogleUser(
+    googleUser: CreateGoogleUserDTO,
+  ): Promise<GoogleUser> {
     const newUser = await this.repository.createGoogleUser(googleUser);
     return newUser;
   }
@@ -44,59 +44,27 @@ export class UserService {
     return newUser;
   }
 
-  async getUserDatasetModels(userID: string) {
-    const foundUser = await this.userModel.findById(userID);
+  public async findUserByEmailAndPassword(
+    email: string,
+    password: string,
+  ): Promise<SimpleUser | null> {
+    let returnSearch: SimpleUser | null = null;
+    const foundUser = await this.repository.findUserByEmail(email);
 
     if (foundUser) {
-      const userPopulated = await foundUser.populate("datasetModels");
-
-      return this.datasetModelService.getModelToSendClient(
-        this.limitDatasetModelsToSend(userPopulated),
-      );
-    } else return [];
-  }
-
-  private limitDatasetModelsToSend(user: IUser): Array<IDatasetModel> {
-    return user.datasetModels;
-  }
-
-  async deleteModelFromUser(userID: string, modelID: string): Promise<void> {
-    await this.userModel.findOneAndUpdate(
-      { _id: userID },
-      { $pull: { datasetsModels: modelID } },
-    );
-  }
-
-  async loginUser(email: string, password: string): Promise<string | null> {
-    let login: string | null = null;
-
-    // buscar usuario pot email
-    const foundByEmail = await this.userModel.findOne({ email });
-
-    if (foundByEmail) {
-      if (foundByEmail.password) {
-        // comparar contraseñas
-        const isCorrectPassword = await bcrypt.compare(
+      if (foundUser instanceof SimpleUser) {
+        const isCorrectPassword = await this.cryptServices.compare(
           password,
-          foundByEmail.password,
+          foundUser.password,
         );
 
         if (isCorrectPassword) {
-          login = foundByEmail._id;
+          returnSearch = foundUser;
         }
       }
     }
 
-    return login;
-  }
-
-  async setNewDatasetModel(
-    userID: string,
-    modelID: Types.ObjectId,
-  ): Promise<void> {
-    await this.userModel.findByIdAndUpdate(userID, {
-      $push: { datasetModels: modelID },
-    });
+    return returnSearch;
   }
 
   noUserLimits() {

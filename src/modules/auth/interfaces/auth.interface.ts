@@ -2,7 +2,7 @@ export interface JwtPayload {
   userID: string;
 }
 
-export interface IReturnUser {
+export interface ReturnUser {
   username: string;
   isSuperUser: boolean;
   image: string | null;

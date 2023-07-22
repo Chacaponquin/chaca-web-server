@@ -1,12 +1,16 @@
-import { IUser } from "@modules/user/infrastructure/mongo/interfaces/user.interface";
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { IReturnUser, JwtPayload } from "../interfaces/auth.interface";
-import { SignUpDTO } from "../dto/signUpDTO.interface";
+import { ReturnUser, JwtPayload } from "../interfaces/auth.interface";
 import { UserService } from "@modules/user/services/user.service";
-import { GoogleUser } from "../../user/interfaces/googleUser.interface";
 import { ConfigService } from "@nestjs/config";
-import { GithubUser } from "@modules/user/interfaces/githubUser.interface";
+import {
+  CreateGithubUserDTO,
+  CreateGoogleUserDTO,
+  CreateSimpleUserDTO,
+} from "@modules/user/dto/create.dto";
+import { User } from "@modules/user/domain/User";
+import { SignInDTO } from "../dto/signIn";
+import { NotFoundUserToLoginException } from "../exceptions";
 
 @Injectable()
 export class AuthService {
@@ -16,27 +20,27 @@ export class AuthService {
     private configService: ConfigService,
   ) {}
 
-  async googleSignUp(googleUser: GoogleUser): Promise<string> {
-    const newUserID = await this.userService.createGoogleUser(googleUser);
-    return this.generateAccessToken(newUserID);
+  public async googleSignUp(googleUser: CreateGoogleUserDTO): Promise<string> {
+    const newUser = await this.userService.createGoogleUser(googleUser);
+    return this.generateAccessToken(newUser.id);
   }
 
-  async githubSignUp(githubUser: GithubUser): Promise<string> {
-    const newUserID = await this.userService.createGithubUser(githubUser);
-    return this.generateAccessToken(newUserID);
+  public async githubSignUp(githubUser: CreateGithubUserDTO): Promise<string> {
+    const newUser = await this.userService.createGithubUser(githubUser);
+    return this.generateAccessToken(newUser.id);
   }
 
-  async signUp(newUser: SignUpDTO): Promise<string> {
-    const newUserID = await this.userService.createUser(newUser);
-    return this.generateAccessToken(newUserID);
+  async signUp(simpleUser: CreateSimpleUserDTO): Promise<string> {
+    const newUser = await this.userService.createSimpleUser(simpleUser);
+    return this.generateAccessToken(newUser.id);
   }
 
-  generateAccessToken(userID: string): string {
+  private generateAccessToken(userID: string): string {
     const payload: JwtPayload = { userID };
     return this.jwtService.sign(payload);
   }
 
-  async getReturnUser(user: IUser): Promise<IReturnUser> {
+  public getReturnUser(user: User): ReturnUser {
     return {
       image: user.image,
       isSuperUser: user.isSuperUser,
@@ -46,7 +50,7 @@ export class AuthService {
     };
   }
 
-  async authenticateToken(token: string): Promise<null | JwtPayload> {
+  public async authenticateToken(token: string): Promise<null | JwtPayload> {
     try {
       const user = await this.jwtService.verifyAsync(token);
       return user;
@@ -57,7 +61,20 @@ export class AuthService {
 
   public getOAuthRedirectURL(oauth: "google" | "github"): string {
     const serverURL = this.configService.get("SERVER_URL") as string;
-
     return serverURL + `/auth/${oauth}/redirect`;
+  }
+
+  public async loginUser(userSignInDTO: SignInDTO): Promise<string | null> {
+    const foundUser = await this.userService.findUserByEmailAndPassword(
+      userSignInDTO.email,
+      userSignInDTO.password,
+    );
+
+    if (foundUser) {
+      const token = this.generateAccessToken(foundUser.id);
+      return token;
+    } else {
+      throw new NotFoundUserToLoginException();
+    }
   }
 }

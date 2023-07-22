@@ -18,29 +18,53 @@ type SimpleUserParams = UserParams & {
 };
 
 export abstract class User {
-  public username: string;
-  public image: string | null;
-  public id: string;
-  public isSuperUser: boolean;
-  public models: Array<DatasetModel>;
-  public email: string;
+  private _username: string;
+  private _image: string | null;
+  private _id: string;
+  private _isSuperUser: boolean;
+  private _models: Array<DatasetModel>;
+  private _email: string;
 
   constructor({ id, image, isSuperUser, models, username, email }: UserParams) {
-    this.id = id;
-    this.image = image;
-    this.isSuperUser = isSuperUser;
-    this.models = models;
-    this.username = username;
-    this.email = email;
+    this._id = id;
+    this._image = image;
+    this._isSuperUser = isSuperUser;
+    this._models = models;
+    this._username = username;
+    this._email = email;
   }
 
-  public get limitDataset(): number {
-    if (this.isSuperUser) return SUPER_USER_LIMITS.LIMIT_DATASETS;
+  public get id() {
+    return this._id;
+  }
+
+  public get models() {
+    return this._models;
+  }
+
+  public get email() {
+    return this._email;
+  }
+
+  public get isSuperUser() {
+    return this._isSuperUser;
+  }
+
+  public get username() {
+    return this._username;
+  }
+
+  public get image() {
+    return this._image;
+  }
+
+  public get limitDatasets(): number {
+    if (this._isSuperUser) return SUPER_USER_LIMITS.LIMIT_DATASETS;
     else return NORMAL_USER_LIMITS.LIMIT_DATASETS;
   }
 
   public get limitDocuments(): number {
-    if (this.isSuperUser) return SUPER_USER_LIMITS.LIMIT_DOCUMENTS;
+    if (this._isSuperUser) return SUPER_USER_LIMITS.LIMIT_DOCUMENTS;
     else return NORMAL_USER_LIMITS.LIMIT_DOCUMENTS;
   }
 }

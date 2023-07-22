@@ -1,14 +1,14 @@
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { DatasetGeneratorService } from "@modules/socket/modules/dataset_generator/services/dataset_generator.service";
 import { Injectable } from "@nestjs/common";
 import { SchemaConfigDTO } from "../dto/schemaConfig.dto";
 import { GetSchemaObject, GetValueBySchemaOption } from "./cases";
+import { DatasetService } from "@modules/dataset/services/dataset.service";
 
 @Injectable()
 export class ApiService {
   constructor(
     private readonly schemaOptionsService: SchemaOptionsService,
-    private readonly datasetGeneratorService: DatasetGeneratorService,
+    private readonly datasetService: DatasetService,
   ) {}
 
   public getValueBySchemaOption(
@@ -21,7 +21,7 @@ export class ApiService {
   }
 
   public getSchemaObject(schemaConfig: SchemaConfigDTO) {
-    const useCase = new GetSchemaObject();
+    const useCase = new GetSchemaObject(this.datasetService);
     return useCase.execute(schemaConfig);
   }
 }

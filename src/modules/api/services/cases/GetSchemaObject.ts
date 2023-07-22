@@ -1,8 +1,9 @@
 import { SchemaConfigDTO } from "@modules/api/dto/schemaConfig.dto";
+import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { schemas } from "chaca";
 
 export class GetSchemaObject {
-  constructor() {}
+  constructor(private readonly datasetService: DatasetService) {}
 
   public execute(schemaConfig: SchemaConfigDTO): unknown {
     const inputDataset = this.transformApiSchemaObjectToDataset(schemaConfig);
