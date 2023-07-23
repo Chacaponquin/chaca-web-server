@@ -10,7 +10,7 @@ import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module
 import { UserMessageModule } from "./modules/user-message/user-message.module";
 import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
 import { AdminModule } from "./modules/admin/admin.module";
-import { SocketModule } from "./modules/socket/socket.module";
+import { DatasetSocketModule } from "./modules/dataset-socket/dataset-socket.module";
 import { DatasetModule } from "@modules/dataset/dataset.module";
 
 @Module({
@@ -31,7 +31,7 @@ import { DatasetModule } from "@modules/dataset/dataset.module";
     UserModule,
     SchemaOptionsModule,
     AdminModule,
-    SocketModule,
+    DatasetSocketModule,
     DatasetModule,
   ],
   controllers: [],

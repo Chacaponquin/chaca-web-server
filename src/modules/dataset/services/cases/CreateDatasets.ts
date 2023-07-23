@@ -9,6 +9,17 @@ export class CreateDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public execute(datasetsConfig: Array<InputDatasetDTO>) {
+    const multiGenerateConfig = this.buildSchemas(datasetsConfig);
+    const allData = chaca.multiGenerate(multiGenerateConfig, {
+      verbose: false,
+    });
+
+    return allData;
+  }
+
+  public buildSchemas(
+    datasetsConfig: Array<InputDatasetDTO>,
+  ): Array<MultiGenerateSchema> {
     const multiGenerateConfig: Array<MultiGenerateSchema> = [];
     for (const dataset of datasetsConfig) {
       const schemaBuilder = new ChacaSchemaBuilder(this.schemaOptionsServices);
@@ -24,10 +35,6 @@ export class CreateDatasets {
       });
     }
 
-    const allData = chaca.multiGenerate(multiGenerateConfig, {
-      verbose: false,
-    });
-
-    return allData;
+    return multiGenerateConfig;
   }
 }

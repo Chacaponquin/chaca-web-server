@@ -1,6 +1,7 @@
 import { FieldIsArray } from "./FieldIsArray";
 import { FieldName } from "./FieldName";
 import { FieldPosibleNull } from "./FieldPosibleNull";
+import { FileExt } from "./FileExt";
 import { SchemaLimit } from "./SchemaLimit";
 import { SchemaName } from "./SchemaName";
 import {
@@ -22,4 +23,5 @@ export {
   FieldIsArray,
   FieldPosibleNull,
   FieldName,
+  FileExt,
 };

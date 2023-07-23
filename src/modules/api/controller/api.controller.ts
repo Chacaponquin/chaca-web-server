@@ -1,4 +1,4 @@
-import { ChacaDatasetError } from "@modules/socket/errors/ChacaDatasetError";
+import { ChacaDatasetError } from "@modules/socket/exceptions/ChacaDatasetError";
 import {
   Controller,
   Get,
