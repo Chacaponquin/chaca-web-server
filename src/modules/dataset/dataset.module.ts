@@ -5,7 +5,7 @@ import { SchemaOptionsModule } from "@modules/schema-options/schema-options.modu
 @Module({
   imports: [SchemaOptionsModule],
   controllers: [],
-  exports: [],
+  exports: [DatasetService],
   providers: [DatasetService],
 })
 export class DatasetModule {}

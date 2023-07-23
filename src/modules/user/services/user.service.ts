@@ -11,7 +11,7 @@ import {
   CreateSimpleUserDTO,
 } from "../dto/create.dto";
 import { UserRepository } from "./user-repository.service";
-import { GithubUser, GoogleUser, SimpleUser } from "../domain/User";
+import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
 
 @Injectable()
 export class UserService {
@@ -19,6 +19,11 @@ export class UserService {
     private readonly cryptServices: CryptServices,
     private readonly repository: UserRepository,
   ) {}
+
+  public async findUserById(userId: string): Promise<User | null> {
+    const foundUser = await this.repository.findById(userId);
+    return foundUser;
+  }
 
   public async createGithubUser(
     githubUser: CreateGithubUserDTO,
@@ -34,7 +39,9 @@ export class UserService {
     return newUser;
   }
 
-  async createSimpleUser(user: CreateSimpleUserDTO): Promise<SimpleUser> {
+  public async createSimpleUser(
+    user: CreateSimpleUserDTO,
+  ): Promise<SimpleUser> {
     const hashPassword = await this.cryptServices.hash(user.password);
     const newUser = await this.repository.createSimpleUser({
       ...user,

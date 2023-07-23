@@ -1,8 +1,8 @@
-import { SubOption } from "../interfaces/options.interface";
+import { SchemaOption } from "../interfaces/options.interface";
 import { schemas } from "chaca";
 import { ARGUMENT_TYPE } from "../../../shared/constants/ARGUMENT_TYPE.enum";
 
-export const AddressOptions: SubOption[] = [
+export const AddressOptions: SchemaOption[] = [
   {
     name: "Zip Code",
     schemaField: schemas.address.zipCode(),

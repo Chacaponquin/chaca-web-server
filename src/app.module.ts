@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { UtilsModule } from "./modules/utils/utils.module";
+import { WebApiModule } from "./modules/web-api/web-api.module";
 import { ApiModule } from "./modules/api/api.module";
 import { UserModule } from "./modules/user/user.module";
 import { ConfigModule } from "@nestjs/config";
@@ -21,7 +21,7 @@ import { DatasetModule } from "@modules/dataset/dataset.module";
       expandVariables: true,
     }),
     MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
-    UtilsModule,
+    WebApiModule,
     ApiModule,
     AuthModule,
     DocsModule,

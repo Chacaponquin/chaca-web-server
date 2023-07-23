@@ -1,8 +1,8 @@
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { schemas } from "chaca";
 
-export const DataTypeOptions: SubOption[] = [
+export const DataTypeOptions: SchemaOption[] = [
   {
     schemaField: schemas.dataType.boolean(),
     name: "Boolean",
@@ -64,7 +64,7 @@ export const DataTypeOptions: SubOption[] = [
     description: { en: "", es: "Devuelve un número decimal o flotante" },
   },
   {
-    schemaField: schemas.dataType.matriz(),
+    schemaField: schemas.dataType.matrix(),
     name: "Matriz",
     arguments: [
       {

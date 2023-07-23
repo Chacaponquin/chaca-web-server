@@ -1,5 +1,5 @@
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 
 const LANGUAGE_ARGUMENT = [
@@ -14,7 +14,7 @@ const LANGUAGE_ARGUMENT = [
   },
 ];
 
-export const WordOptions: SubOption[] = [
+export const WordOptions: SchemaOption[] = [
   {
     name: "Adjective",
     schemaField: schemas.word.adjective(),

@@ -6,14 +6,14 @@ import {
   StreamableFile,
 } from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
-import { UtilsService } from "../services/utils.service";
+import { WebApiService } from "../services/web-api.service";
 import * as path from "path";
 import * as fs from "fs";
 
-@Controller("util")
-export class UtilsController {
+@Controller("web_api")
+export class WebApiController {
   constructor(
-    private readonly utilsServices: UtilsService,
+    private readonly services: WebApiService,
     private readonly userService: UserService,
   ) {}
 
@@ -27,17 +27,17 @@ export class UtilsController {
 
   @Get("/schemas")
   getApiSchemas(@Headers("language") language: string) {
-    return this.utilsServices.getApiSchemas(language);
+    return this.services.getApiSchemas(language);
   }
 
   @Get("/fileConfig")
   getFileConfig() {
-    return this.utilsServices.fileConfig();
+    return this.services.fileConfig();
   }
 
   @Get("/faq")
   getFAQ() {
-    return this.utilsServices.faq();
+    return this.services.faq();
   }
 
   @Get("/noUserLimits")

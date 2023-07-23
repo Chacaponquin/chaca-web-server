@@ -1,11 +1,11 @@
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
-import { DatasetGeneratorModule } from "@modules/socket/modules/dataset_generator/dataset_generator.module";
 import { Module } from "@nestjs/common";
 import { ApiController } from "./controller/api.controller";
 import { ApiService } from "./services/api.service";
+import { DatasetModule } from "@modules/dataset/dataset.module";
 
 @Module({
-  imports: [SchemaOptionsModule, DatasetGeneratorModule],
+  imports: [DatasetModule, SchemaOptionsModule],
   controllers: [ApiController],
   exports: [ApiService],
   providers: [ApiService],

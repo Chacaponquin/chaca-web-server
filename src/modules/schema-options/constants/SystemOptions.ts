@@ -1,7 +1,7 @@
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 
-export const SystemOptions: SubOption[] = [
+export const SystemOptions: SchemaOption[] = [
   {
     schemaField: schemas.system.fileExt(),
     name: "File Extension",

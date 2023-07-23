@@ -1,8 +1,8 @@
-import { SubOption } from "../../../modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "../../../modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { schemas } from "chaca";
 
-export const FinanceOptions: SubOption[] = [
+export const FinanceOptions: SchemaOption[] = [
   {
     name: "Money Code",
     arguments: [],

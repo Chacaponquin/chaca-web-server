@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { IUser } from "./interfaces/user.interface";
+import { IUser } from "./model/user.interface";
 import { Model } from "mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
 import {
@@ -25,6 +25,11 @@ export class UserRepositoryMongo {
     @InjectModel(DB_MOELS.USERS) private readonly model: Model<IUser>,
     private readonly datasetModelMongoRepository: DatasetModelMongoRepository,
   ) {}
+
+  public async findById(userID: string): Promise<User | null> {
+    const foundUser = await this.model.findOne({ id: userID });
+    return foundUser === null ? null : this.mapToUser(foundUser);
+  }
 
   public async findUserByEmail(email: string): Promise<User | null> {
     const foundUser = await this.model.findOne({ email });

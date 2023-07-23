@@ -1,7 +1,7 @@
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 import { schemas } from "chaca";
 
-export const ImageOptions: SubOption[] = [
+export const ImageOptions: SchemaOption[] = [
   {
     name: "Animal",
     description: { en: "", es: "" },

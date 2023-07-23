@@ -7,6 +7,9 @@ import { UserController } from "./controller/user.controller";
 import { JwtStrategy } from "@shared/strategy/jwt.strategy";
 import { PassportModule } from "@nestjs/passport";
 import { DatasetModelModule } from "@modules/dataset-model/dataset-model.module";
+import { CryptServices } from "@shared/services/crypt.service";
+import { UserRepository } from "./services/user-repository.service";
+import { UserRepositoryMongo } from "./infrastructure/mongo/user-repository-mongo.service";
 
 @Module({
   imports: [
@@ -18,6 +21,12 @@ import { DatasetModelModule } from "@modules/dataset-model/dataset-model.module"
   ],
   controllers: [UserController],
   exports: [UserService],
-  providers: [UserService, JwtStrategy],
+  providers: [
+    UserRepository,
+    UserRepositoryMongo,
+    UserService,
+    JwtStrategy,
+    CryptServices,
+  ],
 })
 export class UserModule {}

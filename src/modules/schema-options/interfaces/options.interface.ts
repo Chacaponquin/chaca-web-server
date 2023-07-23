@@ -16,10 +16,10 @@ export interface SchemaOption {
 
 export interface RespApiSchema extends Omit<Schema, "options"> {
   id: string;
-  options: Array<RespSubOption>;
+  options: Array<RespSchemaOption>;
 }
 
-export interface RespSubOption extends Omit<SchemaOption, "description"> {
+export interface RespSchemaOption extends Omit<SchemaOption, "description"> {
   route: string;
   description: string;
   id: string;

@@ -1,7 +1,7 @@
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 
-export const VideoOptions: SubOption[] = [
+export const VideoOptions: SchemaOption[] = [
   {
     name: "Animal",
     description: { en: "", es: "Devuelve un video de la temática animal" },

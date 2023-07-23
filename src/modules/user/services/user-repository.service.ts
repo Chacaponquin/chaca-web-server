@@ -20,6 +20,11 @@ export class UserRepository {
     }
   }
 
+  public async findById(userId: string): Promise<User | null> {
+    const foundUser = await this.mongoRepository.findById(userId);
+    return foundUser;
+  }
+
   public async createSimpleUser(
     createUserDTO: CreateSimpleUserDTO,
   ): Promise<SimpleUser> {

@@ -5,7 +5,7 @@ import { ALL_FAQ } from "../constants/FAQ";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 
 @Injectable()
-export class UtilsService {
+export class WebApiService {
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
   getApiSchemas(language: string): RespApiSchema[] {

@@ -1,7 +1,7 @@
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 
-export const VehicleOptions: SubOption[] = [
+export const VehicleOptions: SchemaOption[] = [
   {
     schemaField: schemas.vehicle.bicycle(),
     name: "Bicycle",

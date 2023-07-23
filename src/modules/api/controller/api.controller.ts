@@ -1,16 +1,4 @@
-import { ChacaDatasetError } from "@modules/socket/exceptions/ChacaDatasetError";
-import {
-  Controller,
-  Get,
-  Param,
-  Req,
-  Post,
-  Body,
-  InternalServerErrorException,
-  HttpException,
-  HttpStatus,
-} from "@nestjs/common";
-import { DefinitionFieldSchemaError } from "../exceptions";
+import { Controller, Get, Param, Req, Post, Body } from "@nestjs/common";
 import { ApiService } from "../services/api.service";
 import { SimpleSchemaConfig } from "../dto/schema_config";
 
@@ -23,17 +11,7 @@ export class ApiController {
     try {
       return this.apiService.getSchemaObject(schemaConfig);
     } catch (error) {
-      if (
-        error instanceof DefinitionFieldSchemaError ||
-        error instanceof ChacaDatasetError
-      ) {
-        throw new HttpException(
-          error.message,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      } else {
-        throw new InternalServerErrorException();
-      }
+      throw error;
     }
   }
 

@@ -1,8 +1,8 @@
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 
-export const PhoneOptions: SubOption[] = [
+export const PhoneOptions: SchemaOption[] = [
   {
     name: "Number",
     schemaField: schemas.phone.number(),

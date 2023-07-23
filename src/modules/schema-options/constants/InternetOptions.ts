@@ -1,8 +1,8 @@
 import { schemas } from "chaca";
-import { SubOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 
-export const InternetOptions: SubOption[] = [
+export const InternetOptions: SchemaOption[] = [
   {
     schemaField: schemas.internet.domainName(),
     name: "Domain Name",

@@ -1,5 +1,5 @@
 import { FILE_TYPE } from "@modules/dataset/constants/FILE_TYPE";
-import { FileOption } from "../interfaces/config.interface";
+import { FileOption } from "../interfaces/config";
 
 export const FILE_CONFIG: FileOption[] = [
   {

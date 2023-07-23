@@ -1,4 +1,4 @@
-import { SubOption } from "../../../modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "../../../modules/schema-options/interfaces/options.interface";
 import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 import { schemas } from "chaca";
 
@@ -22,7 +22,7 @@ const LANGUAGE_ARGUMENTS = [
 
 const NAME_FIELD_ARGUMENTS = [...SEX_ARGUMENTS, ...LANGUAGE_ARGUMENTS];
 
-export const PersonOptions: SubOption[] = [
+export const PersonOptions: SchemaOption[] = [
   {
     name: "Last Name",
     arguments: LANGUAGE_ARGUMENTS,
@@ -55,7 +55,7 @@ export const PersonOptions: SubOption[] = [
   },
   {
     name: "Job Level",
-  schemaField: schemas.person.jobLevel(),
+    schemaField: schemas.person.jobLevel(),
     arguments: [],
     description: { en: "", es: "Devuelve el nivel de un puesto de trabajo" },
   },

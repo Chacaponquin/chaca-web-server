@@ -1,16 +1,10 @@
-import { SubOption } from "../../../modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "../../../modules/schema-options/interfaces/options.interface";
 import { schemas } from "chaca";
 
-export const IdOptions: SubOption[] = [
+export const IdOptions: SchemaOption[] = [
   {
     name: "MongoDB ID",
     schemaField: schemas.id.mongodbID(),
-    arguments: [],
-    description: { en: "", es: "" },
-  },
-  {
-    name: "Number Row",
-    schemaField: schemas.id.numberRow(),
     arguments: [],
     description: { en: "", es: "" },
   },

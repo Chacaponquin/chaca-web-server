@@ -1,4 +1,4 @@
-import { FAQ } from "../interfaces/faq.interface";
+import { FAQ } from "../interfaces/faq";
 
 export const ALL_FAQ: FAQ[] = [
   {
