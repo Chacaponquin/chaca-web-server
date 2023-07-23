@@ -1,12 +1,12 @@
 import { Injectable } from "@nestjs/common";
-import { v2 as cloudinary } from "cloudinary";
+import { MediaRepository } from "./media-repository.service";
 
 @Injectable()
 export class MediaService {
-  async uploadImage(fileURL: string): Promise<string> {
-    const result = await cloudinary.uploader.upload(fileURL, {
-      folder: "chaca",
-    });
-    return result.url;
+  constructor(private readonly repository: MediaRepository) {}
+
+  public async uploadImage(imageURL: string): Promise<string> {
+    const resultURL = this.repository.uploadImage(imageURL);
+    return resultURL;
   }
 }

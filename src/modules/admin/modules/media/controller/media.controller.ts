@@ -7,6 +7,11 @@ import * as path from "path";
 
 @Controller("admin/media")
 export class MediaController {
+  private readonly TEMP_FOLDER_DIR = path.join(
+    __dirname,
+    "../../../../../temp",
+  );
+
   constructor(private readonly mediaService: MediaService) {}
 
   @Post("/uploadImage")
@@ -21,14 +26,11 @@ export class MediaController {
       }),
     }),
   )
-  async uploadImage(
+  public async uploadImage(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    const fileURL = path.join(
-      __dirname,
-      `../../../../../temp/${file.filename}`,
-    );
-    const imageResultURL = await this.mediaService.uploadImage(fileURL);
+    const imageURL = path.join(this.TEMP_FOLDER_DIR, `/${file.filename}`);
+    const imageResultURL = await this.mediaService.uploadImage(imageURL);
 
     return imageResultURL;
   }
