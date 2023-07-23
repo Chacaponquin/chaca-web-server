@@ -16,7 +16,7 @@ import { DatasetModule } from "@modules/dataset/dataset.module";
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ".env.development",
+      envFilePath: ".env",
       isGlobal: true,
       expandVariables: true,
     }),
