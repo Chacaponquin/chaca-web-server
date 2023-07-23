@@ -1,45 +1,39 @@
 import { Injectable } from "@nestjs/common";
-import { InjectModel } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
-import { Model } from "mongoose";
-import { IAdminUser } from "../interfaces/adminUser.interface";
-import * as bs from "bcrypt";
+import { AdminUserRepository } from "./admin-user-repository.service";
+import { AdminUser } from "../domain";
+import { CryptServices } from "@shared/services/crypt.service";
 
 @Injectable()
 export class AdminUserService {
   constructor(
-    @InjectModel(DB_MOELS.ADMIN_USERS)
-    private readonly adminUserModel: Model<IAdminUser>,
+    private readonly repository: AdminUserRepository,
+    private readonly cryptService: CryptServices,
   ) {}
 
-  public async getAdminUserByID(userID: string): Promise<string | null> {
-    const foundUser = await this.adminUserModel.findById(userID);
-
-    if (foundUser) return foundUser.id;
-    else return null;
+  public async getAdminUserByID(userID: string): Promise<AdminUser | null> {
+    const foundUser = await this.repository.findById(userID);
+    return foundUser;
   }
 
-  async findUserByEmailAndPassword(
+  public async findAdminUserByEmailAndPassword(
     email: string,
     password: string,
-  ): Promise<string | null> {
-    const findUserByEmail = await this.adminUserModel.findOne({
-      email: email,
-    });
+  ): Promise<AdminUser | null> {
+    let returnUser: AdminUser | null = null;
 
-    if (findUserByEmail) {
-      const isCorrectPassword = await bs.compare(
-        findUserByEmail.password,
+    const foundUserByEmail = await this.repository.findByEmail(email);
+
+    if (foundUserByEmail) {
+      const validPassword = await this.cryptService.compare(
+        foundUserByEmail.password,
         password,
       );
 
-      if (isCorrectPassword) {
-        return findUserByEmail.id;
-      } else {
-        return null;
+      if (validPassword) {
+        returnUser = foundUserByEmail;
       }
-    } else {
-      return null;
     }
+
+    return returnUser;
   }
 }
