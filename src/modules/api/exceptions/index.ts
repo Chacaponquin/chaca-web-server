@@ -1,1 +1,3 @@
-export class DefinitionFieldSchemaError extends Error {}
+export class IncorrectFieldTypeException extends Error {}
+
+export class IncorrectFieldParamsException extends Error {}

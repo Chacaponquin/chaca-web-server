@@ -1,8 +1,8 @@
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { Injectable } from "@nestjs/common";
-import { SchemaConfigDTO } from "../dto/schemaConfig.dto";
 import { GetSchemaObject, GetValueBySchemaOption } from "./cases";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
+import { SimpleSchemaConfig } from "../dto/schema_config";
 
 @Injectable()
 export class ApiService {
@@ -20,7 +20,7 @@ export class ApiService {
     return useCase.execute(schema, option, optionConfig);
   }
 
-  public getSchemaObject(schemaConfig: SchemaConfigDTO) {
+  public getSchemaObject(schemaConfig: SimpleSchemaConfig) {
     const useCase = new GetSchemaObject(this.datasetService);
     return useCase.execute(schemaConfig);
   }

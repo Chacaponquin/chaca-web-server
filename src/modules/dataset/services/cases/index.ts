@@ -1,3 +1,4 @@
-import { CreateDatasets } from "./CreateDatasets/CreateDatasets";
+import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
+import { CreateDatasets } from "./CreateDatasets";
 
-export { CreateDatasets };
+export { CreateDatasets, ChacaSchemaBuilder };

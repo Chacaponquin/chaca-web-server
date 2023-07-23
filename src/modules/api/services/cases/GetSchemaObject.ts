@@ -1,166 +1,122 @@
-import { SchemaConfigDTO } from "@modules/api/dto/schemaConfig.dto";
+import {
+  SchemaFieldType,
+  SimpleSchemaConfig,
+} from "@modules/api/dto/schema_config";
+import { IncorrectFieldTypeException } from "@modules/api/exceptions";
+import { FieldParams, FieldType } from "@modules/api/value-object";
+import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
+import { FieldDataType } from "@modules/dataset/dto/data_type";
+import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
-import { schemas } from "chaca";
+import {
+  FieldIsArray,
+  FieldName,
+  FieldPosibleNull,
+} from "@modules/dataset/services/value_object";
 
 export class GetSchemaObject {
   constructor(private readonly datasetService: DatasetService) {}
 
-  public execute(schemaConfig: SchemaConfigDTO): unknown {
-    const inputDataset = this.transformApiSchemaObjectToDataset(schemaConfig);
+  public execute(schemaConfig: SimpleSchemaConfig) {
+    const schemaFields = this.mapToSchemaInputFields(schemaConfig);
+    const schema = this.datasetService.buildSchema(schemaFields);
 
-    const data = this.datasetGeneratorService.createDataset(inputDataset);
-
-    if (inputDataset.limit === -1) {
-      return data[0];
-    } else {
-      return data;
-    }
+    return schema.generateObject();
   }
 
-  private transformApiSchemaObjectToDataset(
-    schemaConfig: SchemaConfigDTO,
-  ): InputDataset {
-    if ("schema" in schemaConfig) {
-      const config = schemaConfig as ApiSchemaConfigCompleteObject;
-      const limit = this.validateSchemaLimit(config.limit);
+  private mapToSchemaInputFields(
+    schemaConfig: SimpleSchemaConfig,
+  ): Array<InputDatasetFieldDTO> {
+    const schemaFields = [] as Array<InputDatasetFieldDTO>;
 
-      return {
-        id: schemas.id.uuid().getValue(),
-        limit,
-        fields: this.transformApiSchemaObjectFields(config.schema),
-        name: schemas.id.mongodbID().getValue(),
-      };
-    } else {
-      return {
-        id: schemas.id.uuid().getValue(),
-        limit: -1,
-        fields: this.transformApiSchemaObjectFields(schemaConfig),
-        name: schemas.id.mongodbID().getValue(),
-      };
-    }
-  }
+    for (const [fieldKey, fieldConfig] of Object.entries(schemaConfig)) {
+      const fieldName = new FieldName(fieldKey).value;
 
-  private transformApiSchemaObjectFields(
-    schema: ApiSchemaConfigObject,
-  ): Array<InputDatasetField> {
-    const fields = [] as Array<InputDatasetField>;
-
-    Object.entries(schema).forEach(([name, fieldConfig]) => {
       if (typeof fieldConfig === "string") {
-        const schemaParsed = this.resolveFieldSchemaString(name, fieldConfig);
+        const fieldIsArray = new FieldIsArray().value;
+        const fieldPosibleNull = new FieldPosibleNull().value;
 
-        fields.push({
-          id: schemas.id.uuid().getValue(),
-          name,
-          isArray: null,
-          isPosibleNull: 0,
-          dataType: { type: DATA_TYPES.SINGLE_VALUE, fieldType: schemaParsed },
+        schemaFields.push({
+          name: fieldName,
+          isArray: fieldIsArray,
+          isPosibleNull: fieldPosibleNull,
+          dataType: this.mapTypeStringToDataType(fieldConfig),
         });
-      } else {
-        if ("schema" in fieldConfig) {
-          if (typeof fieldConfig.schema === "string") {
-            const schemaParsed = this.resolveFieldSchemaString(
-              name,
-              fieldConfig.schema,
-            );
+      } else if (typeof fieldConfig === "object") {
+        const fieldIsArray = new FieldIsArray(fieldConfig.isArray).value;
+        const fieldPosibleNull = new FieldPosibleNull(fieldConfig.isPosibleNull)
+          .value;
 
-            fields.push({
-              id: schemas.id.uuid().getValue(),
-              name,
-              isArray: null,
-              isPosibleNull: 0,
-              dataType: {
-                type: DATA_TYPES.SINGLE_VALUE,
-                fieldType: schemaParsed,
-              },
-            });
-          } else {
-            const schemaSubFields = this.transformApiSchemaObjectFields(
-              fieldConfig.schema,
-            );
-
-            fields.push({
-              id: schemas.id.uuid().getValue(),
-              name,
-              isArray: fieldConfig.isArray
-                ? this.datasetGeneratorService.validateFieldIsArrayLimit(
-                    fieldConfig.isArray,
-                  )
-                : null,
-              isPosibleNull: this.datasetGeneratorService.validateIsPosibleNull(
-                fieldConfig.isPosibleNull,
-              ),
-              dataType: {
-                type: DATA_TYPES.MIXED,
-                object: schemaSubFields,
-              },
-            });
-          }
-        } else {
-          throw new DefinitionFieldSchemaError(
-            `You must provide a schema in the field ${name}`,
-          );
-        }
+        schemaFields.push({
+          name: fieldName,
+          isArray: fieldIsArray,
+          isPosibleNull: fieldPosibleNull,
+          dataType: this.mapSchemaConfigToDataType(fieldConfig.fieldType),
+        });
       }
-    });
-
-    return fields;
-  }
-
-  private validateSchemaLimit(limit?: number): number {
-    let returnLimit = -1;
-
-    if (typeof limit === "number" && limit >= 0 && limit <= 100) {
-      returnLimit = limit;
     }
 
-    return returnLimit;
+    return schemaFields;
   }
 
-  private getArgsFromString(argsString: string) {
-    let args = {};
+  private mapTypeStringToDataType(type: string): FieldDataType {
+    const indexFirstArgument = type.indexOf("<");
 
-    const separatedArgs = argsString.split(";");
+    if (indexFirstArgument !== -1) {
+      const argsString = type.slice(indexFirstArgument).trim();
+      const schemaString = type.slice(0, indexFirstArgument);
 
-    separatedArgs.forEach((ar) => {
-      const valueString = ar.split("=");
+      const args = new FieldParams(argsString).value;
+      const [schema, option] = this.parseSchemaOptionString(schemaString);
 
-      if (valueString.length === 2) {
-        const key = valueString[0];
-        const value = valueString[1];
-
-        args = { ...args, [key]: this.validateStringValue(value) };
-      }
-    });
-
-    return args;
+      return {
+        type: DATA_TYPES.SINGLE_VALUE,
+        fieldType: { args: args, parent: schema, type: option },
+      };
+    } else {
+      const [schema, option] = this.parseSchemaOptionString(type);
+      return {
+        type: DATA_TYPES.SINGLE_VALUE,
+        fieldType: { args: {}, parent: schema, type: option },
+      };
+    }
   }
 
-  private resolveFieldSchemaString(fieldName: string, schemaString: string) {
-    const initSchemaDefinitionPos = schemaString.indexOf("{{");
-    const finishSchemaDefinitionPos = schemaString.indexOf("}}");
+  private mapSchemaConfigToDataType(type?: SchemaFieldType): FieldDataType {
+    if (typeof type === "string") {
+      const dataType = this.mapTypeStringToDataType(type);
+      return dataType;
+    } else if (typeof type === "object") {
+      const fieldType = new FieldType(type.type, type.params);
 
-    if (initSchemaDefinitionPos !== -1 && finishSchemaDefinitionPos !== -1) {
-      const separatedSchema = schemaString
-        .slice(initSchemaDefinitionPos + 2, finishSchemaDefinitionPos)
-        .split("/");
-
-      if (separatedSchema.length === 2) {
-        const parent = separatedSchema[0];
-        const option = separatedSchema[1];
-
-        const argsString = schemaString.slice(finishSchemaDefinitionPos + 2);
-        const args = this.getArgsFromString(argsString);
-
-        return { parent, args, type: option };
-      } else {
-        throw new DefinitionFieldSchemaError(
-          `Incorrect schema pattern in field '${fieldName}'`,
+      if (fieldType.type === "schema") {
+        const subSchemaFields = this.execute(
+          fieldType.params as SimpleSchemaConfig,
         );
+        return { type: DATA_TYPES.MIXED, object: subSchemaFields };
+      } else {
+        const [schema, option] = this.parseSchemaOptionString(fieldType.type);
+        return {
+          type: DATA_TYPES.SINGLE_VALUE,
+          fieldType: { args: fieldType.params, parent: schema, type: option },
+        };
       }
     } else {
-      throw new DefinitionFieldSchemaError(
-        `Incorrect schema pattern in field '${fieldName}'`,
+      throw new IncorrectFieldTypeException(
+        `You must specify a type for this field`,
+      );
+    }
+  }
+
+  private parseSchemaOptionString(optionString: string): [string, string] {
+    const pattern = /^[\w]+[.][\w]+$/;
+
+    if (pattern.test(optionString)) {
+      const [schema, option] = optionString.split(".");
+      return [schema, option];
+    } else {
+      throw new IncorrectFieldTypeException(
+        `The field type must have the pattern 'schema.option'. Example: 'id.uuid'`,
       );
     }
   }

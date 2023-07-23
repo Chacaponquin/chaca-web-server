@@ -1,3 +1,6 @@
+import { FieldIsArray } from "./FieldIsArray";
+import { FieldName } from "./FieldName";
+import { FieldPosibleNull } from "./FieldPosibleNull";
 import { SchemaLimit } from "./SchemaLimit";
 import { SchemaName } from "./SchemaName";
 import {
@@ -16,4 +19,7 @@ export {
   ISchemaField,
   MixedValueField,
   SchemaName,
+  FieldIsArray,
+  FieldPosibleNull,
+  FieldName,
 };

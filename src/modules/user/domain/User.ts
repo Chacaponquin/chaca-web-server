@@ -70,11 +70,15 @@ export abstract class User {
 }
 
 export class SimpleUser extends User {
-  public password: string;
+  private _password: string;
 
   constructor({ password, ...rest }: SimpleUserParams) {
     super(rest);
-    this.password = password;
+    this._password = password;
+  }
+
+  public get password() {
+    return this._password;
   }
 }
 

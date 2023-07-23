@@ -10,16 +10,16 @@ import {
   HttpException,
   HttpStatus,
 } from "@nestjs/common";
-import { SchemaConfigDTO } from "../dto/schemaConfig.dto";
 import { DefinitionFieldSchemaError } from "../exceptions";
 import { ApiService } from "../services/api.service";
+import { SimpleSchemaConfig } from "../dto/schema_config";
 
 @Controller("api")
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Post("")
-  public getSchemaByConfig(@Body() schemaConfig: SchemaConfigDTO) {
+  @Post("/schema")
+  public getSchemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
     try {
       return this.apiService.getSchemaObject(schemaConfig);
     } catch (error) {
