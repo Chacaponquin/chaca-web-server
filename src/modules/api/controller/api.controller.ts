@@ -8,11 +8,7 @@ export class ApiController {
 
   @Post("/schema")
   public getSchemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
-    try {
-      return this.apiService.getSchemaObject(schemaConfig);
-    } catch (error) {
-      throw error;
-    }
+    return this.apiService.getSchemaObject(schemaConfig);
   }
 
   @Get("/:schema/:option")
