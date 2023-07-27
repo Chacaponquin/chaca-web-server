@@ -1,4 +1,9 @@
+import { IncorrectFieldTypeException } from "@modules/api/exceptions";
 import { DefinedValueType } from "@modules/dataset/dto/data_type";
+import {
+  NotFoundOptionError,
+  NotFoundSchemaError,
+} from "@modules/schema-options/exceptions";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { ChacaSchema, SchemaField, chaca, RefField, CustomField } from "chaca";
 
@@ -56,13 +61,23 @@ export class DefinedValueField implements ISchemaField {
     private readonly schemaOptionsServices: SchemaOptionsService,
     definedValue: DefinedValueType,
   ) {
-    const foundOption = this.schemaOptionsServices.findSchemaOption(
-      definedValue.parent,
-      definedValue.type,
-    );
+    try {
+      const foundOption = this.schemaOptionsServices.findSchemaOption(
+        definedValue.parent,
+        definedValue.type,
+      );
 
-    this.schemaField = foundOption.schemaField;
-    this.args = definedValue.args;
+      this.schemaField = foundOption.schemaField;
+      this.args = definedValue.args;
+    } catch (error) {
+      if (error instanceof NotFoundSchemaError) {
+        throw new IncorrectFieldTypeException(error.message);
+      } else if (error instanceof NotFoundOptionError) {
+        throw new IncorrectFieldTypeException(error.message);
+      } else {
+        throw error;
+      }
+    }
   }
 
   public getField() {
