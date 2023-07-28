@@ -1,3 +1,9 @@
+import {
+  UserMessageMessage,
+  UserMessageTitle,
+  UserMessageUserEmail,
+} from "../value-object";
+
 export type UserMessageParams = {
   id: string;
   name: string;
@@ -13,9 +19,9 @@ export class UserMessage {
 
   constructor({ id, message, name, userEmail }: UserMessageParams) {
     this._id = id;
-    this._message = message;
-    this._userEmail = userEmail;
-    this._name = name;
+    this._message = new UserMessageMessage(message).value;
+    this._userEmail = new UserMessageUserEmail(userEmail).value;
+    this._name = new UserMessageTitle(name).value;
   }
 
   public get id() {
