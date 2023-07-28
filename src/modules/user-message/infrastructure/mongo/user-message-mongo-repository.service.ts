@@ -1,5 +1,5 @@
 import { UserMessage } from "@modules/user-message/domain/UserMessage";
-import { CreateUserMessageDTO } from "@modules/user-message/dto/userMessage.dto";
+import { CreateUserMessageDTO } from "@modules/user-message/dto/user_message";
 import { IUserMessage } from "@modules/user-message/infrastructure/mongo/model/user-message.interface";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
@@ -17,17 +17,10 @@ export class UserMessageMongoRepository {
     createUserMessageDTO: CreateUserMessageDTO,
   ): Promise<UserMessage> {
     const { message, name, userEmail } = createUserMessageDTO;
-
     const newMessage = new this.model({ userEmail, name, message });
 
     try {
-      const returnMessage = new UserMessage({
-        id: newMessage.id,
-        message: newMessage.message,
-        name: newMessage.name,
-        userEmail: newMessage.userEmail,
-      });
-
+      const returnMessage = this._mapToUserMessage(newMessage);
       await newMessage.save();
       return returnMessage;
     } catch (error) {
@@ -36,7 +29,27 @@ export class UserMessageMongoRepository {
     }
   }
 
+  public async findById(id: string): Promise<UserMessage | null> {
+    const foundUser = await this.model.findById(id);
+    return foundUser === null ? null : this._mapToUserMessage(foundUser);
+  }
+
   public async delete(messageID: string): Promise<void> {
     await this.model.findByIdAndRemove(messageID);
+  }
+
+  public async clean(): Promise<void> {
+    await this.model.deleteMany({});
+  }
+
+  private _mapToUserMessage(message: IUserMessage): UserMessage {
+    const returnMessage = new UserMessage({
+      id: message.id,
+      message: message.message,
+      name: message.name,
+      userEmail: message.userEmail,
+    });
+
+    return returnMessage;
   }
 }

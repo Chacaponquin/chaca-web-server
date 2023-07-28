@@ -1,5 +1,5 @@
 import { Controller, Post, Body, HttpStatus, HttpCode } from "@nestjs/common";
-import { CreateUserMessageDTO } from "../dto/userMessage.dto";
+import { CreateUserMessageDTO } from "../dto/user_message";
 import { UserMessageService } from "../services/user-message.service";
 
 @Controller("userMessage")

@@ -6,15 +6,31 @@ export type UserMessageParams = {
 };
 
 export class UserMessage {
-  public id: string;
-  public name: string;
-  public userEmail: string;
-  public message: string;
+  private _id: string;
+  private _name: string;
+  private _userEmail: string;
+  private _message: string;
 
   constructor({ id, message, name, userEmail }: UserMessageParams) {
-    this.id = id;
-    this.message = message;
-    this.userEmail = userEmail;
-    this.name = name;
+    this._id = id;
+    this._message = message;
+    this._userEmail = userEmail;
+    this._name = name;
+  }
+
+  public get id() {
+    return this._id;
+  }
+
+  public get name() {
+    return this._name;
+  }
+
+  public get userEmail() {
+    return this._userEmail;
+  }
+
+  public get message() {
+    return this._message;
   }
 }
