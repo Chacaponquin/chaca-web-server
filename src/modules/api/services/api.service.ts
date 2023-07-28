@@ -4,6 +4,12 @@ import { GetSchemaObject, GetValueBySchemaOption } from "./cases";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SimpleSchemaConfig } from "../dto/schema_config";
 
+type SchemaValueParams = {
+  schema: string;
+  option: string;
+  optionConfig?: Record<string, unknown>;
+};
+
 @Injectable()
 export class ApiService {
   constructor(
@@ -11,11 +17,11 @@ export class ApiService {
     private readonly datasetService: DatasetService,
   ) {}
 
-  public getValueBySchemaOption(
-    schema: string,
-    option: string,
-    optionConfig: Record<string, string>,
-  ) {
+  public getValueBySchemaOption({
+    option,
+    optionConfig = {},
+    schema,
+  }: SchemaValueParams) {
     const useCase = new GetValueBySchemaOption(this.schemaOptionsService);
     return useCase.execute(schema, option, optionConfig);
   }

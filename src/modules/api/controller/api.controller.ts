@@ -17,6 +17,10 @@ export class ApiController {
     @Param("option") option: string,
     @Req() req: any,
   ): unknown {
-    return this.apiService.getValueBySchemaOption(schema, option, req.query);
+    return this.apiService.getValueBySchemaOption({
+      schema,
+      option,
+      optionConfig: req.query,
+    });
   }
 }
