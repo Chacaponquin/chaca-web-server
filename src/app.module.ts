@@ -13,10 +13,12 @@ import { AdminModule } from "./modules/admin/admin.module";
 import { DatasetSocketModule } from "./modules/dataset-socket/dataset-socket.module";
 import { DatasetModule } from "@modules/dataset/dataset.module";
 
+const NODE_ENV = process.env.NODE_ENV;
+
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: ".env",
+      envFilePath: NODE_ENV === "test" ? ".env.test" : ".env",
       isGlobal: true,
       expandVariables: true,
     }),
