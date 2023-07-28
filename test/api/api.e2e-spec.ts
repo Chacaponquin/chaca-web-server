@@ -3,6 +3,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { ApiController } from "@modules/api/controller/api.controller";
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
+import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions";
 
 describe("ApiController", () => {
   let app: INestApplication;
@@ -143,7 +144,7 @@ describe("ApiController", () => {
       });
 
       describe("Create schemas with array field configuration", () => {
-        it("Pass config.isArray=10 number. Shoul return an array with", () => {
+        it("Pass config.isArray=10 number. Should return an array with", () => {
           const schema = {
             id: {
               fieldType: "id.uuid",
@@ -154,6 +155,43 @@ describe("ApiController", () => {
           const result = apiController.getSchemaByConfig(schema);
 
           expect(result.id.length).toBe(10);
+        });
+
+        it("Pass config.isArray=null. Should return a not array field value", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uuid",
+              isArray: null,
+            },
+          };
+
+          const result = apiController.getSchemaByConfig(schema);
+          expect(typeof result.id).toBe("string");
+        });
+
+        it("Pass config.isArray=-10. Should throw an error", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uuid",
+              isArray: -10,
+            },
+          };
+
+          expect(() => apiController.getSchemaByConfig(schema)).toThrow(
+            IncorrectFieldArrayConfigException,
+          );
+        });
+
+        it("Pass empty object as isArray configuration. Should return an array field between 0 and 10 elements", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uuid",
+              isArray: {},
+            },
+          };
+
+          const result = apiController.getSchemaByConfig(schema);
+          expect(result.id.length >= 0 && result.id.length <= 10).toBe(true);
         });
       });
     });

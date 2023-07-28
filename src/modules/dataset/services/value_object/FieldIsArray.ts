@@ -27,6 +27,8 @@ export class FieldIsArray {
               `The 'min' limit can not be greater than 'max' limit`,
             );
           }
+        } else {
+          this._value = { max: 10, min: 0 };
         }
       }
     }
