@@ -4,7 +4,7 @@ import { schemas } from "chaca";
 
 export const DateOptions: SchemaOption[] = [
   {
-    schemaField: schemas.date.timeAgo(),
+    schemaField: (a) => schemas.date.timeAgo(a),
     name: "Time Ago",
     description: { en: "", es: "" },
     arguments: [
@@ -24,7 +24,7 @@ export const DateOptions: SchemaOption[] = [
     ],
   },
   {
-    schemaField: schemas.date.soon(),
+    schemaField: (a) => schemas.date.soon(a),
     name: "Date Soon",
     arguments: [
       {
@@ -41,7 +41,7 @@ export const DateOptions: SchemaOption[] = [
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.past(),
+    schemaField: (a) => schemas.date.past(a),
     name: "Date Past",
     arguments: [
       {
@@ -58,7 +58,7 @@ export const DateOptions: SchemaOption[] = [
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.future(),
+    schemaField: (a) => schemas.date.future(a),
     name: "Date Future",
     arguments: [
       {
@@ -75,19 +75,19 @@ export const DateOptions: SchemaOption[] = [
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.month(),
+    schemaField: () => schemas.date.month(),
     name: "Month",
     arguments: [],
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.weekDay(),
+    schemaField: () => schemas.date.weekDay(),
     name: "Weekday",
     arguments: [],
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.birthdate(),
+    schemaField: (a) => schemas.date.birthdate(a),
     name: "BirthDate",
     arguments: [
       {
@@ -115,8 +115,8 @@ export const DateOptions: SchemaOption[] = [
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.date.between(),
-    name: "Date Between",
+    schemaField: (a) => schemas.date.between(a),
+    name: "Between",
     arguments: [
       {
         argument: "from",

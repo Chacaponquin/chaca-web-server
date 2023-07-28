@@ -4,13 +4,13 @@ import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 
 export const InternetOptions: SchemaOption[] = [
   {
-    schemaField: schemas.internet.domainName(),
+    schemaField: () => schemas.internet.domainName(),
     name: "Domain Name",
     arguments: [],
     description: { en: "", es: "Devuelve un nombre de dominio web" },
   },
   {
-    schemaField: schemas.internet.email(),
+    schemaField: (a) => schemas.internet.email(a),
     name: "Email",
     arguments: [
       {
@@ -32,7 +32,7 @@ export const InternetOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve un email de usuario" },
   },
   {
-    schemaField: schemas.internet.password(),
+    schemaField: (a) => schemas.internet.password(a),
     name: "Password",
     arguments: [
       {
@@ -60,7 +60,7 @@ export const InternetOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve una contraseña de usuario" },
   },
   {
-    schemaField: schemas.internet.url(),
+    schemaField: (a) => schemas.internet.url(a),
     name: "Url",
     arguments: [
       {
@@ -75,7 +75,7 @@ export const InternetOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve la url de una página web" },
   },
   {
-    schemaField: schemas.internet.userName(),
+    schemaField: (a) => schemas.internet.userName(a),
     name: "User Name",
     arguments: [
       {
@@ -92,55 +92,55 @@ export const InternetOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve el nombre de usuario" },
   },
   {
-    schemaField: schemas.internet.httpMethod(),
+    schemaField: () => schemas.internet.httpMethod(),
     description: { en: "", es: "Devuelve un método HTTP" },
     name: "HTTP Method",
     arguments: [],
   },
   {
-    schemaField: schemas.internet.ipv4(),
+    schemaField: () => schemas.internet.ipv4(),
     name: "Ipv4",
     arguments: [],
     description: { en: "", es: "Devuelve una dirección IPv4" },
   },
   {
-    schemaField: schemas.internet.emoji(),
+    schemaField: () => schemas.internet.emoji(),
     name: "Emoji",
     arguments: [],
     description: { en: "", es: "Devuelve el código de un emoji" },
   },
   {
-    schemaField: schemas.internet.mac(),
+    schemaField: () => schemas.internet.mac(),
     description: { en: "", es: "Devuelve una direccióm MAC" },
     name: "Mac Address",
     arguments: [],
   },
   {
-    schemaField: schemas.internet.port(),
+    schemaField: () => schemas.internet.port(),
     description: { en: "", es: "Devuelve el número de un puerto" },
     name: "Port",
     arguments: [],
   },
   {
-    schemaField: schemas.internet.userAgent(),
+    schemaField: () => schemas.internet.userAgent(),
     name: "User Agent",
     arguments: [],
     description: { en: "", es: "Devuelve un user agent de un navegador web" },
   },
   {
-    schemaField: schemas.internet.protocol(),
+    schemaField: () => schemas.internet.protocol(),
     name: "Protocol",
     arguments: [],
     description: { en: "", es: "Devuelve un protocolo http" },
   },
   {
-    schemaField: schemas.internet.domainSuffix(),
+    schemaField: () => schemas.internet.domainSuffix(),
     name: "Domain Suffix",
     arguments: [],
     description: { en: "", es: "Devuelve un sufijo de un dominio web" },
   },
   {
-    schemaField: schemas.internet.httpStatusCode(),
+    schemaField: () => schemas.internet.httpStatusCode(),
     name: "HTTP Status Code",
     arguments: [],
     description: { en: "", es: "Devuelve un código de respuesta HTTP" },

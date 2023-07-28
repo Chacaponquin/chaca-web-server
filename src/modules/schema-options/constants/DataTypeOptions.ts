@@ -4,13 +4,13 @@ import { schemas } from "chaca";
 
 export const DataTypeOptions: SchemaOption[] = [
   {
-    schemaField: schemas.dataType.boolean(),
+    schemaField: () => schemas.dataType.boolean(),
     name: "Boolean",
     arguments: [],
     description: { en: "", es: "Devuelve un valor boolean. (true o false)" },
   },
   {
-    schemaField: schemas.dataType.int(),
+    schemaField: (a) => schemas.dataType.int(a),
     name: "Integer",
     arguments: [
       {
@@ -27,7 +27,7 @@ export const DataTypeOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve un número entero" },
   },
   {
-    schemaField: schemas.dataType.hexadecimal(),
+    schemaField: (a) => schemas.dataType.hexadecimal(a),
     name: "Hexadecimal",
     arguments: [
       {
@@ -39,7 +39,7 @@ export const DataTypeOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve un valor hexadecimal" },
   },
   {
-    schemaField: schemas.dataType.float(),
+    schemaField: (a) => schemas.dataType.float(a),
     name: "Float",
     arguments: [
       {
@@ -64,7 +64,7 @@ export const DataTypeOptions: SchemaOption[] = [
     description: { en: "", es: "Devuelve un número decimal o flotante" },
   },
   {
-    schemaField: schemas.dataType.matrix(),
+    schemaField: (a) => schemas.dataType.matrix(a),
     name: "Matriz",
     arguments: [
       {

@@ -1,7 +1,7 @@
 import {
   IncorrectFieldParamsException,
   IncorrectFieldTypeException,
-} from "../exceptions";
+} from "../../exceptions";
 
 export class FieldType {
   private _type: string;

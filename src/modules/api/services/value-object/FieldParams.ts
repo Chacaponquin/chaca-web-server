@@ -1,4 +1,4 @@
-import { IncorrectFieldTypeException } from "../exceptions";
+import { IncorrectFieldTypeException } from "../../exceptions";
 
 export class FieldParams {
   private _params: Record<string, unknown> = {};
@@ -47,13 +47,16 @@ export class FieldParams {
     }
 
     const content = str.substring(1, str.length - 1);
-    const pairs = content.split(";");
 
-    for (const pair of pairs) {
-      const keyValue = pair.split("=");
+    if (content.trim() !== "") {
+      const pairs = content.split(";");
 
-      if (keyValue.length !== 2) {
-        return false;
+      for (const pair of pairs) {
+        const keyValue = pair.split("=");
+
+        if (keyValue.length !== 2) {
+          return false;
+        }
       }
     }
 

@@ -4,7 +4,7 @@ import { AppModule } from "../../src/app.module";
 import { ApiController } from "@modules/api/controller/api.controller";
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
 
-describe("ApiController (e2e)", () => {
+describe("ApiController", () => {
   let app: INestApplication;
   let apiController: ApiController;
 
@@ -24,27 +24,138 @@ describe("ApiController (e2e)", () => {
   });
 
   describe("POST: /api/schema", () => {
-    it("Pass schema with id, name. Should return an object with that fields", async () => {
-      const schema = {
-        id: "id.uuid",
-        name: "person.firstName",
-      };
+    describe("POST: /api/schema (string params)", () => {
+      it("Pass schema with id, name. Should return an object with that fields", async () => {
+        const schema = {
+          id: "id.uuid",
+          image: "image.fashion",
+        };
 
-      const result = apiController.getSchemaByConfig(schema);
+        const result = apiController.getSchemaByConfig(schema);
 
-      expect(result).toHaveProperty("id");
-      expect(result).toHaveProperty("name");
+        expect(result).toHaveProperty("id");
+        expect(result).toHaveProperty("image");
+      });
+
+      it("Pass a not existing schema. Should throw an error", () => {
+        const schema = {
+          id: "id.uid",
+          name: "per.firstName",
+        };
+
+        expect(() => {
+          apiController.getSchemaByConfig(schema);
+        }).toThrow(IncorrectFieldTypeException);
+      });
+
+      it("Pass a not exist schema option. Should throw an error", () => {
+        const schema = {
+          id: "id.uid",
+          name: "person.firstName",
+        };
+
+        expect(() => {
+          apiController.getSchemaByConfig(schema);
+        }).toThrow(IncorrectFieldTypeException);
+      });
+
+      it("Pass arguments in dataType.int option", () => {
+        const schema = {
+          age: "dataType.integer<min=18;max=30>",
+        };
+
+        const allResultSchemas = Array.from({ length: 1000 }).map(() =>
+          apiController.getSchemaByConfig(schema),
+        );
+
+        expect(allResultSchemas.every((s) => s.age >= 18 && s.age <= 30)).toBe(
+          true,
+        );
+      });
+
+      it("Pass no arguments to schema field", () => {
+        const schemaTest1 = {
+          age: "dataType.integer<>",
+        };
+
+        const schemaTest2 = {
+          age: "dataType.integer<    >",
+        };
+
+        const result1 = apiController.getSchemaByConfig(schemaTest1);
+        const result2 = apiController.getSchemaByConfig(schemaTest2);
+
+        expect(typeof result1.age).toBe("number");
+        expect(typeof result2.age).toBe("number");
+      });
+
+      it("No pass > character in arguments declaration. Should throw an error", () => {
+        const schema = {
+          age: "dataType.integer<min=18",
+        };
+
+        expect(() => {
+          apiController.getSchemaByConfig(schema);
+        }).toThrow(IncorrectFieldTypeException);
+      });
     });
 
-    it("Pass a not exist schema option. Should throw an error", () => {
-      const schema = {
-        id: "id.uuid54252",
-        name: "person.firstName",
-      };
+    describe("POST: /api/schema (object params)", () => {
+      describe("Create schemas with simple value configurations", () => {
+        it("Pass schema with id, name. Should return an object with that fields", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uuid",
+            },
+            name: {
+              fieldType: "person.fullName",
+            },
+          };
 
-      expect(() => {
-        apiController.getSchemaByConfig(schema);
-      }).toThrow(IncorrectFieldTypeException);
+          const result = apiController.getSchemaByConfig(schema);
+
+          expect(result).toHaveProperty("id");
+          expect(result).toHaveProperty("name");
+        });
+
+        it("No pass config.fieldType in fields. Should throw an error", () => {
+          const schema = {
+            id: {},
+            name: {},
+          };
+
+          expect(() => {
+            apiController.getSchemaByConfig(schema);
+          }).toThrow(IncorrectFieldTypeException);
+        });
+
+        it("Pass a not existing schema option. Should throw an error", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uid",
+            },
+          };
+
+          expect(() => {
+            apiController.getSchemaByConfig(schema);
+          }).toThrow(IncorrectFieldTypeException);
+        });
+      });
+
+      describe("Create schemas with array field configuration", () => {
+        it("Pass config.isArray=10 number. Shoul return an array with", () => {
+          const schema = {
+            id: {
+              fieldType: "id.uuid",
+              isArray: 10,
+            },
+          };
+
+          const result = apiController.getSchemaByConfig(schema);
+
+          expect(result.id.length).toBe(10);
+        });
+      });
     });
   });
 });

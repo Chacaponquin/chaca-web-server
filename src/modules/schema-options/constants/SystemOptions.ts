@@ -3,7 +3,7 @@ import { SchemaOption } from "@modules/schema-options/interfaces/options.interfa
 
 export const SystemOptions: SchemaOption[] = [
   {
-    schemaField: schemas.system.fileExt(),
+    schemaField:  () =>schemas.system.fileExt(),
     name: "File Extension",
     arguments: [],
     description: {
@@ -12,13 +12,13 @@ export const SystemOptions: SchemaOption[] = [
     },
   },
   {
-    schemaField: schemas.system.fileName(),
+    schemaField:  () =>schemas.system.fileName(),
     name: "File Name",
     arguments: [],
     description: { en: "", es: "Devuelve el nombre de un archivo" },
   },
   {
-    schemaField: schemas.system.filePath(),
+    schemaField:  () =>schemas.system.filePath(),
     name: "File Path",
     arguments: [],
     description: {
@@ -27,7 +27,7 @@ export const SystemOptions: SchemaOption[] = [
     },
   },
   {
-    schemaField: schemas.system.directoryPath(),
+    schemaField:  () =>schemas.system.directoryPath(),
     name: "Directory Path",
     arguments: [],
     description: {
@@ -36,7 +36,7 @@ export const SystemOptions: SchemaOption[] = [
     },
   },
   {
-    schemaField: schemas.system.filePath(),
+    schemaField:  () => schemas.system.filePath(),
     name: "File Path",
     arguments: [],
     description: {
@@ -45,7 +45,7 @@ export const SystemOptions: SchemaOption[] = [
     },
   },
   {
-    schemaField: schemas.system.mimeType(),
+    schemaField:  () =>schemas.system.mimeType(),
     name: "Mime Type",
     arguments: [],
     description: {

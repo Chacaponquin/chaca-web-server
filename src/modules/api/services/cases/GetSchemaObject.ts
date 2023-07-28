@@ -3,7 +3,7 @@ import {
   SimpleSchemaConfig,
 } from "@modules/api/dto/schema_config";
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
-import { FieldParams, FieldType } from "@modules/api/value-object";
+import { FieldParams, FieldType } from "@modules/api/services/value-object";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
@@ -35,23 +35,27 @@ export class GetSchemaObject {
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray().value;
         const fieldPosibleNull = new FieldPosibleNull().value;
+        const fieldDataType = this.mapTypeStringToDataType(fieldConfig);
 
         schemaFields.push({
           name: fieldName,
           isArray: fieldIsArray,
           isPosibleNull: fieldPosibleNull,
-          dataType: this.mapTypeStringToDataType(fieldConfig),
+          dataType: fieldDataType,
         });
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray).value;
         const fieldPosibleNull = new FieldPosibleNull(fieldConfig.isPosibleNull)
           .value;
+        const fieldDataType = this.mapSchemaConfigToDataType(
+          fieldConfig.fieldType,
+        );
 
         schemaFields.push({
           name: fieldName,
           isArray: fieldIsArray,
           isPosibleNull: fieldPosibleNull,
-          dataType: this.mapSchemaConfigToDataType(fieldConfig.fieldType),
+          dataType: fieldDataType,
         });
       }
     }

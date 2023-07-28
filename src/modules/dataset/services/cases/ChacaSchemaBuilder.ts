@@ -39,7 +39,8 @@ export class ChacaSchemaBuilder {
       };
     }
 
-    return chaca.schema(schemaFields);
+    const schema = chaca.schema(schemaFields);
+    return schema;
   }
 
   private mapDataTypeToField(dataType: FieldDataType): ISchemaField {

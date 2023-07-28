@@ -43,12 +43,12 @@ export class SchemaOptionsService {
       const limit = Number(isArray);
 
       for (let i = 0; i < limit; i++) {
-        allValues.push(option.schemaField.getValue(args));
+        allValues.push(option.schemaField().getValue(args));
       }
 
       return allValues;
     } else {
-      return option.schemaField.getValue(args);
+      return option.schemaField().getValue(args);
     }
   }
 

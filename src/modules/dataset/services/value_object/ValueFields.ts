@@ -54,8 +54,7 @@ export class RefValueField implements ISchemaField {
 }
 
 export class DefinedValueField implements ISchemaField {
-  public schemaField: SchemaField;
-  public args: Record<string, unknown>;
+  private _schemaField: SchemaField;
 
   constructor(
     private readonly schemaOptionsServices: SchemaOptionsService,
@@ -67,8 +66,7 @@ export class DefinedValueField implements ISchemaField {
         definedValue.type,
       );
 
-      this.schemaField = foundOption.schemaField;
-      this.args = definedValue.args;
+      this._schemaField = foundOption.schemaField(definedValue.args || {});
     } catch (error) {
       if (error instanceof NotFoundSchemaError) {
         throw new IncorrectFieldTypeException(error.message);
@@ -81,6 +79,6 @@ export class DefinedValueField implements ISchemaField {
   }
 
   public getField() {
-    return this.schemaField;
+    return this._schemaField;
   }
 }

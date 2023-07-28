@@ -5,7 +5,7 @@ import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
 export const LoremOptions: SchemaOption[] = [
   {
     name: "Paragraphs",
-    schemaField: schemas.lorem.paragraphs(),
+    schemaField: (a) => schemas.lorem.paragraphs(a),
     arguments: [
       {
         argument: "paragraphsCount",
@@ -32,7 +32,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Sentences",
-    schemaField: schemas.lorem.sentences(),
+    schemaField:  (a) =>schemas.lorem.sentences(a),
     arguments: [
       {
         argument: "sentencesCount",
@@ -59,7 +59,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Slug",
-    schemaField: schemas.lorem.slug(),
+    schemaField:  (a) =>schemas.lorem.slug(a),
     arguments: [
       {
         argument: "wordCount",
@@ -71,7 +71,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Text",
-    schemaField: schemas.lorem.text(),
+    schemaField:  (a) =>schemas.lorem.text(a),
     arguments: [
       {
         argument: "character_max",
@@ -94,7 +94,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Words",
-    schemaField: schemas.lorem.words(),
+    schemaField:  (a) =>schemas.lorem.words(a),
     arguments: [
       {
         argument: "count",

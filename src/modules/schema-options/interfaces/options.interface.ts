@@ -11,7 +11,7 @@ export interface SchemaOption {
   name: string;
   arguments: ArgumentSchema[];
   description: LanguageOptions;
-  schemaField: SchemaField;
+  schemaField: (a?: any) => SchemaField;
 }
 
 export interface RespApiSchema extends Omit<Schema, "options"> {

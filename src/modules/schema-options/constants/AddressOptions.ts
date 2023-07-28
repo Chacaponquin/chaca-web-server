@@ -5,7 +5,7 @@ import { ARGUMENT_TYPE } from "../../../shared/constants/ARGUMENT_TYPE.enum";
 export const AddressOptions: SchemaOption[] = [
   {
     name: "Zip Code",
-    schemaField: schemas.address.zipCode(),
+    schemaField: (a) => schemas.address.zipCode(a),
     arguments: [
       {
         argument: "format",
@@ -20,7 +20,7 @@ export const AddressOptions: SchemaOption[] = [
   },
   {
     name: "Time Zone",
-    schemaField: schemas.address.timeZone(),
+    schemaField: () => schemas.address.timeZone(),
     arguments: [],
     description: {
       en: "",
@@ -29,13 +29,13 @@ export const AddressOptions: SchemaOption[] = [
   },
   {
     name: "Cardinal Direction",
-    schemaField: schemas.address.cardinalDirection(),
+    schemaField: () => schemas.address.cardinalDirection(),
     arguments: [],
     description: { en: "", es: "Devuelve una dirección cardinal" },
   },
   {
     name: "Country",
-    schemaField: schemas.address.country(),
+    schemaField: (a) => schemas.address.country(a),
     arguments: [
       {
         argument: "continent",
@@ -59,7 +59,7 @@ export const AddressOptions: SchemaOption[] = [
   },
   {
     name: "Country Code",
-    schemaField: schemas.address.countryCode(),
+    schemaField: () => schemas.address.countryCode(),
     arguments: [],
     description: {
       en: "",

@@ -5,7 +5,7 @@ import { SchemaOption } from "@modules/schema-options/interfaces/options.interfa
 export const PhoneOptions: SchemaOption[] = [
   {
     name: "Number",
-    schemaField: schemas.phone.number(),
+    schemaField: (a) => schemas.phone.number(a),
     arguments: [
       {
         inputType: ARGUMENT_TYPE.TEXT,
@@ -20,7 +20,7 @@ export const PhoneOptions: SchemaOption[] = [
   },
   {
     name: "Prefix",
-    schemaField: schemas.phone.prefix(),
+    schemaField: () => schemas.phone.prefix(),
     arguments: [],
     description: { en: "", es: "Devuelve un prefijo de un número telefónico" },
   },
@@ -48,6 +48,6 @@ export const PhoneOptions: SchemaOption[] = [
       en: "",
       es: "Devuelve la duración de una llamada telefónica",
     },
-    schemaField: schemas.phone.callDuration(),
+    schemaField: (a) => schemas.phone.callDuration(a),
   },
 ];
