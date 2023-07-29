@@ -19,7 +19,7 @@ export class GetValueBySchemaOption {
         option,
       );
 
-      const returnValue = this.schemaOptionsServices.generateValueByConfig(
+      const returnValue = this.schemaOptionsServices.generateValueByParams(
         foundOption,
         optionParams,
       );

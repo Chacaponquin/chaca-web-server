@@ -1,11 +1,10 @@
-import { ApiController } from "@modules/api/controller/api.controller";
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "src/app.module";
+import * as request from "supertest";
 
 describe("GET: /api/:schema/:option", () => {
   let app: INestApplication;
-  let apiController: ApiController;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -14,18 +13,33 @@ describe("GET: /api/:schema/:option", () => {
 
     app = module.createNestApplication();
     await app.init();
-
-    apiController = app.get(ApiController);
   });
 
   afterAll(async () => {
     await app.close();
   });
 
-  describe("Schema without arguments", () => {
-    it("Pass schema=id & option=uuid. Should return a string", () => {
-      const result = apiController.valueBySchema("id", "uuid", {});
-      expect(typeof result).toBe("string");
+  describe("Schema option without arguments", () => {
+    it("Pass schema=id & option=uuid. Should return a string", (done) => {
+      request(app.getHttpServer())
+        .get("/api/id/uuid")
+        .expect((response) => {
+          expect(response.status).toBe(200);
+          console.log(response.body);
+        })
+        .end(done);
+    });
+  });
+
+  describe("Schema option array values", () => {
+    it("Pass isArray=5 as query param. Should return an array with", (done) => {
+      request(app.getHttpServer())
+        .get("/api/id/uuid?isArray=5")
+        .expect((response) => {
+          expect(response.status).toBe(200);
+          expect(response.body).toHaveLength(5);
+        })
+        .end(done);
     });
   });
 });

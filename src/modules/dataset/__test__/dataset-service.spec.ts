@@ -162,5 +162,37 @@ describe("# Dataset Services Tests", () => {
 
       expect(result.id.length).toBeLessThanOrEqual(5);
     });
+
+    /*   it("Pass isArray=0. Should return a array field with 0 elements", () => {
+      const result = service.createSingleDataset([
+        {
+          isArray: 0,
+          dataType: {
+            type: DATA_TYPES.SINGLE_VALUE,
+            fieldType: { args: {}, type: "uuid", parent: "id" },
+          },
+          isPosibleNull: 0,
+          name: "id",
+        },
+      ]);
+
+      expect(result.id).toHaveLength(0);
+    });*/
+
+    it("Pass isArray=5. Should return a array field with 5 elements", () => {
+      const result = service.createSingleDataset([
+        {
+          isArray: 5,
+          dataType: {
+            type: DATA_TYPES.SINGLE_VALUE,
+            fieldType: { args: {}, type: "uuid", parent: "id" },
+          },
+          isPosibleNull: 0,
+          name: "id",
+        },
+      ]);
+
+      expect(result.id).toHaveLength(5);
+    });
   });
 });

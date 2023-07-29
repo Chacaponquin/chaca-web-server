@@ -7,6 +7,7 @@ import {
 import { chaca, schemas } from "chaca";
 import { LanguageService } from "@shared/services/language.service";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
+import { OptionValueLimit } from "../value-object";
 
 @Injectable()
 export class SchemaOptionsService {
@@ -27,20 +28,15 @@ export class SchemaOptionsService {
     return this.repository.findSchema(schema);
   }
 
-  public generateValueByConfig(
+  public generateValueByParams(
     option: SchemaOption,
     config: Record<string, unknown>,
-  ): unknown | unknown[] {
+  ): unknown | Array<unknown> {
     const { isArray, ...args } = config;
+    const limit = new OptionValueLimit(isArray).value;
 
-    if (
-      isArray &&
-      typeof Number(isArray) === "number" &&
-      Number(isArray) >= 0 &&
-      Number(isArray) <= 300
-    ) {
+    if (limit) {
       const allValues = [] as Array<unknown>;
-      const limit = Number(isArray);
 
       for (let i = 0; i < limit; i++) {
         allValues.push(option.schemaField().getValue(args));

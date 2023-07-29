@@ -1,5 +1,6 @@
-import { ConfigIsArray } from "@modules/dataset/dto/field";
+import { ConfigIsArray, ConfigIsArrayObject } from "@modules/dataset/dto/field";
 import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions";
+import { schemas } from "chaca";
 
 export class FieldIsArray {
   private _value: ConfigIsArray = null;
@@ -59,6 +60,22 @@ export class FieldIsArray {
           `The 'min' limit can not be less than 0`,
         );
       }
+    }
+  }
+
+  public getLimitValue() {
+    const value = this.value;
+
+    if (value === null) {
+      return null;
+    } else if (typeof value === "number") {
+      return value;
+    } else {
+      const config = value as ConfigIsArrayObject;
+      const limit = schemas.dataType
+        .int()
+        .getValue({ min: config.min, max: config.max });
+      return limit;
     }
   }
 

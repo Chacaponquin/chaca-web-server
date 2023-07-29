@@ -9,3 +9,5 @@ export class NotFoundSchemaError extends Error {
     super(`The schema '${schema}' do not exists`);
   }
 }
+
+export class InvalidOptionValueLimitException extends Error {}
