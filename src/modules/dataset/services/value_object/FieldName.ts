@@ -4,7 +4,7 @@ export class FieldName {
   private _value: string;
 
   constructor(value: string) {
-    if (value) {
+    if (value && value.trim() !== "") {
       this._value = value;
     } else {
       throw new IncorrectFieldNameException();

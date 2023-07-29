@@ -6,12 +6,14 @@ import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
 
 @Injectable()
 export class SchemaOptionsRepository {
+  private SCHEMAS: Array<Schema> = SCHEMAS;
+
   private _stringToCompareName(name: string): string {
     return chaca.utils.camelCase(name).trim().toLowerCase();
   }
 
   public getAllSchemas(): Array<Schema> {
-    return SCHEMAS;
+    return this.SCHEMAS;
   }
 
   public findSchema(schema: string): Schema | null {

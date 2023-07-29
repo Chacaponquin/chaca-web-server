@@ -6,7 +6,7 @@ import {
   MessageBody,
 } from "@nestjs/websockets";
 import { Server } from "socket.io";
-import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS.enum";
+import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS";
 import { SocketService } from "../services/dataset-socket.service";
 import { CreateDatasetDTO } from "../dto/dataset";
 
@@ -34,8 +34,7 @@ export class DatasetSocketGateway {
 
       socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileURL);
     } catch (error) {
-      console.log(error);
-      socket.emit(SOCKET_EVENTS.CREATION_ERROR, "");
+      socket.emit(SOCKET_EVENTS.CREATION_ERROR, error.message);
     }
   }
 }

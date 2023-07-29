@@ -1,5 +1,5 @@
 import { Module } from "@nestjs/common";
-import { DatasetSocketGateway } from "./controller/dataset-socket.gateway";
+import { DatasetSocketGateway } from "./controller/dataset-socket";
 import { SocketService } from "./services/dataset-socket.service";
 import { DatasetModule } from "@modules/dataset/dataset.module";
 

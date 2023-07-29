@@ -8,7 +8,6 @@ import { UserEmail } from "@modules/user/value-object";
 export class User {
   @Prop({
     required: true,
-    unique: true,
     type: mongoose.SchemaTypes.String,
   })
   username: string;
