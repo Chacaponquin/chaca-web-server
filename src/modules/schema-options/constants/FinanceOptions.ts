@@ -64,7 +64,7 @@ export const FinanceOptions: SchemaOption[] = [
     description: { en: "", es: "" },
   },
   {
-    schemaField: schemas.finance.creditCardCVV,
+    schemaField: () => schemas.finance.creditCardCVV(),
     name: "Credict Card CVV",
     arguments: [],
     description: { en: "", es: "" },

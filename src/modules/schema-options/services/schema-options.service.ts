@@ -29,7 +29,7 @@ export class SchemaOptionsService {
 
   public generateValueByConfig(
     option: SchemaOption,
-    config: any,
+    config: Record<string, unknown>,
   ): unknown | unknown[] {
     const { isArray, ...args } = config;
 
