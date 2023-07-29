@@ -12,6 +12,7 @@ import {
 } from "../dto/create.dto";
 import { UserRepository } from "./user-repository.service";
 import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
+import { UserPassword } from "../value-object";
 
 @Injectable()
 export class UserService {
@@ -19,6 +20,10 @@ export class UserService {
     private readonly cryptServices: CryptServices,
     private readonly repository: UserRepository,
   ) {}
+
+  public async clean(): Promise<void> {
+    await this.repository.clean();
+  }
 
   public async findUserById(userId: string): Promise<User | null> {
     const foundUser = await this.repository.findById(userId);
@@ -42,7 +47,9 @@ export class UserService {
   public async createSimpleUser(
     user: CreateSimpleUserDTO,
   ): Promise<SimpleUser> {
-    const hashPassword = await this.cryptServices.hash(user.password);
+    const password = new UserPassword(user.password).value;
+    const hashPassword = await this.cryptServices.hash(password);
+
     const newUser = await this.repository.createSimpleUser({
       ...user,
       password: hashPassword,

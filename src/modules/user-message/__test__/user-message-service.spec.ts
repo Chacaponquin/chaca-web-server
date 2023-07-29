@@ -1,5 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
-import { UserMessageService } from "./user-message.service";
+import { UserMessageService } from "../services/user-message.service";
 import { CreateUserMessageDTO } from "../dto/user_message";
 import { AppModule } from "src/app.module";
 import { INestApplication } from "@nestjs/common";
@@ -49,7 +49,7 @@ describe("# User Message Services Test", () => {
         userEmail: "user@gmail.com",
       };
 
-      expect(
+      await expect(
         async () => await service.createUserMessage(params),
       ).rejects.toThrow(InvalidUserMessageMessageException);
     });
@@ -61,7 +61,7 @@ describe("# User Message Services Test", () => {
         userEmail: "user@gmail.com",
       };
 
-      expect(
+      await expect(
         async () => await service.createUserMessage(params),
       ).rejects.toThrow(InvalidUserMessageTitleException);
     });
@@ -73,7 +73,7 @@ describe("# User Message Services Test", () => {
         userEmail: "",
       };
 
-      expect(
+      await expect(
         async () => await service.createUserMessage(params),
       ).rejects.toThrow(InvalidUserMessageUserEmailException);
     });
@@ -85,7 +85,7 @@ describe("# User Message Services Test", () => {
         userEmail: "email.com",
       };
 
-      expect(
+      await expect(
         async () => await service.createUserMessage(params),
       ).rejects.toThrow(InvalidUserMessageUserEmailException);
     });

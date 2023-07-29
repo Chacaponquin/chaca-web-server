@@ -26,12 +26,16 @@ export class UserRepositoryMongo {
     private readonly datasetModelMongoRepository: DatasetModelMongoRepository,
   ) {}
 
+  public async clean(): Promise<void> {
+    await this.model.deleteMany({});
+  }
+
   public async findById(userID: string): Promise<User | null> {
-    const foundUser = await this.model.findOne({ id: userID });
+    const foundUser = await this.model.findById(userID);
     return foundUser === null ? null : this.mapToUser(foundUser);
   }
 
-  public async findUserByEmail(email: string): Promise<User | null> {
+  public async findByEmail(email: string): Promise<User | null> {
     const foundUser = await this.model.findOne({ email });
     return foundUser === null ? null : this.mapToUser(foundUser);
   }
@@ -82,7 +86,7 @@ export class UserRepositoryMongo {
       username,
       email,
       password: null,
-      methodLogin: LOGIN_METHOD.GITHUB,
+      methodLogin: LOGIN_METHOD.GOOGLE,
       image: picture,
       isSuperUser: false,
       datasetModels: [],

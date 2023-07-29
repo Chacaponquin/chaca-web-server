@@ -13,11 +13,15 @@ export class UserRepository {
   constructor(private readonly mongoRepository: UserRepositoryMongo) {}
 
   public async validateNotRepeatEmail(email: string): Promise<void> {
-    const foundUser = await this.mongoRepository.findUserByEmail(email);
+    const foundUser = await this.mongoRepository.findByEmail(email);
 
-    if (!foundUser) {
+    if (foundUser) {
       throw new RepeatUserEmailError();
     }
+  }
+
+  public async clean(): Promise<void> {
+    await this.mongoRepository.clean();
   }
 
   public async findById(userId: string): Promise<User | null> {
@@ -50,7 +54,7 @@ export class UserRepository {
   }
 
   public async findUserByEmail(email: string): Promise<User | null> {
-    const foundUser = await this.mongoRepository.findUserByEmail(email);
+    const foundUser = await this.mongoRepository.findByEmail(email);
     return foundUser;
   }
 }
