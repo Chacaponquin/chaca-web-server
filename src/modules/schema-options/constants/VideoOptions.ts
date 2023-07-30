@@ -1,5 +1,5 @@
 import { schemas } from "chaca";
-import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options";
 
 export const VideoOptions: SchemaOption[] = [
   {

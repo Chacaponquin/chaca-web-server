@@ -3,7 +3,7 @@ import { CreateUserMessageDTO } from "@modules/user-message/dto/user_message";
 import { IUserMessage } from "@modules/user-message/infrastructure/mongo/model/user-message.interface";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import { Model } from "mongoose";
 
 @Injectable()

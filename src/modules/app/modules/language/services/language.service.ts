@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { AppLanguages } from "@shared/interfaces/language.interface";
+import { AppLanguages } from "../interfaces/language";
 
 @Injectable()
 export class LanguageService {

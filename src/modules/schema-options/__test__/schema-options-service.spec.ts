@@ -1,9 +1,9 @@
 import { INestApplication } from "@nestjs/common";
 import { SchemaOptionsService } from "../services/schema-options.service";
 import { Test, TestingModule } from "@nestjs/testing";
-import { AppModule } from "src/app.module";
+import { AppModule } from "@modules/app/app.module";
 import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
-import { Schema } from "../interfaces/options.interface";
+import { Schema } from "../interfaces/options";
 import { SCHEMAS } from "../constants";
 
 describe("# Schema Options Service Tests", () => {

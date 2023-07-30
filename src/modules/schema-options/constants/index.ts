@@ -1,4 +1,4 @@
-import { Schema } from "../interfaces/options.interface";
+import { Schema } from "../interfaces/options";
 import { AddressOptions } from "./AddressOptions";
 import { AnimalOptions } from "./AnimalOptions";
 import { DataTypeOptions } from "./DataTypeOptions";

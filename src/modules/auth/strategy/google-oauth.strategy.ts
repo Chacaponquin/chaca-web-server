@@ -19,11 +19,11 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, "google") {
     });
   }
 
-  async validate(
+  public validate(
     accessToken: string,
     refreshToken: string,
     profile: any,
-  ): Promise<CreateGoogleUserDTO> {
+  ): CreateGoogleUserDTO {
     const { name, email, picture } = profile._json;
 
     const user: CreateGoogleUserDTO = {

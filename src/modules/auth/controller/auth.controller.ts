@@ -55,14 +55,15 @@ export class AuthController {
 
   @Get("/userByToken")
   @UseGuards(AuthGuard("jwt"))
-  async userByToken(@Req() req: any): Promise<ReturnUser | null> {
+  userByToken(@Req() req: any): ReturnUser | null {
     return this.authService.getReturnUser(req.user);
   }
 
   @Post("/signUp")
   async signUp(@Body() userSignUpDTO: CreateSimpleUserDTO): Promise<string> {
     try {
-      return this.authService.signUp(userSignUpDTO);
+      const userToken = await this.authService.signUp(userSignUpDTO);
+      return userToken;
     } catch (error) {
       if (error instanceof RepeatUserEmailError) {
         throw new HttpException(

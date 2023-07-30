@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { IAdminUser } from "./model/admin_user";
 import { Model } from "mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import { InjectModel } from "@nestjs/mongoose";
 import { AdminUser } from "../../domain";
 

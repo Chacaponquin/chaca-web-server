@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { UserMessageController } from "./controller/user-message.controller";
 import { UserMessageService } from "./services/user-message.service";
 import { MongooseModule } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import { UserMessageSchema } from "./infrastructure/mongo/schema/user-message.schema";
 import { UserMessageRepository } from "./services/user-message-repository.service";
 import { UserMessageMongoRepository } from "./infrastructure/mongo/user-message-mongo-repository.service";

@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { Schema, SchemaOption } from "../interfaces/options.interface";
+import { Schema, SchemaOption } from "../interfaces/options";
 import { SCHEMAS } from "../constants";
 import { chaca } from "chaca";
 import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";

@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { IUser } from "./model/user.interface";
 import { Model } from "mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import {
   GithubUser,
   GoogleUser,

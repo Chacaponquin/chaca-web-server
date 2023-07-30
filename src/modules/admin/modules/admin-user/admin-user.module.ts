@@ -1,6 +1,6 @@
 import { Module } from "@nestjs/common";
 import { MongooseModule } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import { AdminUserSchema } from "./infrastructure/mongo/schemas/adminUser.schema";
 import { AdminUserService } from "./services/admin-user.service";
 import { AdminUserRepository } from "./services/admin-user-repository.service";

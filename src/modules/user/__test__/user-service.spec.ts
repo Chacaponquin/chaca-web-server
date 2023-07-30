@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserService } from "../services/user.service";
 import { INestApplication } from "@nestjs/common";
-import { AppModule } from "src/app.module";
+import { AppModule } from "@modules/app/app.module";
 import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,

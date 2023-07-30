@@ -1,5 +1,5 @@
-import { ArgumentSchema } from "../../../shared/interfaces/argument.interface";
-import { LanguageOptions } from "../../../shared/interfaces/language.interface";
+import { OptionArgument } from "../../dataset/dto/argument";
+import { LanguageOptions } from "@modules/app/modules/language/interfaces/language";
 import { SchemaField } from "chaca";
 
 export interface Schema {
@@ -9,7 +9,7 @@ export interface Schema {
 
 export interface SchemaOption {
   name: string;
-  arguments: ArgumentSchema[];
+  arguments: OptionArgument[];
   description: LanguageOptions;
   schemaField: (a?: any) => SchemaField;
 }

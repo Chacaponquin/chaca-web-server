@@ -1,14 +1,6 @@
-import {
-  Controller,
-  Get,
-  Headers,
-  Param,
-  StreamableFile,
-} from "@nestjs/common";
+import { Controller, Get, Headers, Param } from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
 import { WebApiService } from "../services/web-api.service";
-import * as path from "path";
-import * as fs from "fs";
 
 @Controller("web_api")
 export class WebApiController {
@@ -19,10 +11,7 @@ export class WebApiController {
 
   @Get("/downloadData/:file")
   downloadFile(@Param("file") fileName: string) {
-    const file = fs.createReadStream(
-      path.join(__dirname, "../../../data", fileName),
-    );
-    return new StreamableFile(file);
+    return this.services.fileToDownload(fileName);
   }
 
   @Get("/schemas")

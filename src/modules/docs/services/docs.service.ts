@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
-import { LanguageService } from "@shared/services/language.service";
 import { DocsRepository } from "./docs-repository.service";
+import { LanguageService } from "@modules/app/modules/language/services/language.service";
 
 @Injectable()
 export class DocsService {

@@ -1,5 +1,5 @@
-import { SchemaOption } from "../../../modules/schema-options/interfaces/options.interface";
-import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
+import { SchemaOption } from "../interfaces/options";
+import { ARGUMENT_TYPE } from "@modules/dataset/constants/ARGUMENT_TYPE";
 import { schemas } from "chaca";
 
 export const DateOptions: SchemaOption[] = [

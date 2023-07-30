@@ -1,6 +1,6 @@
 import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { AppModule } from "src/app.module";
+import { AppModule } from "@modules/app/app.module";
 import * as request from "supertest";
 
 describe("POST: /api/schema/array", () => {

@@ -1,6 +1,6 @@
-import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
+import { ARGUMENT_TYPE } from "@modules/dataset/constants/ARGUMENT_TYPE";
 import { schemas } from "chaca";
-import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
+import { SchemaOption } from "@modules/schema-options/interfaces/options";
 
 export const PhoneOptions: SchemaOption[] = [
   {

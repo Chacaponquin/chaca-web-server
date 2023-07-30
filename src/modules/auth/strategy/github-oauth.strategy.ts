@@ -19,11 +19,11 @@ export class GithubOAuthStrategy extends PassportStrategy(Strategy, "github") {
     });
   }
 
-  async validate(
+  public validate(
     accessToken: string,
     _refreshToken: string,
     profile: any,
-  ): Promise<CreateGithubUserDTO> {
+  ): CreateGithubUserDTO {
     const { email, avatar_url, login } = profile._json;
 
     const user: CreateGithubUserDTO = {

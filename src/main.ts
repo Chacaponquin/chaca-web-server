@@ -1,8 +1,8 @@
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { SocketAdapter } from "@shared/adapters/SocketAdapter";
-import { ChacaExceptionFilter } from "@shared/filters/http-error.filter";
-import { AppModule } from "./app.module";
+import { SocketAdapter } from "@modules/app/adapters/SocketAdapter";
+import { ChacaExceptionFilter } from "@modules/app/filters/http-error.filter";
+import { AppModule } from "./modules/app/app.module";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

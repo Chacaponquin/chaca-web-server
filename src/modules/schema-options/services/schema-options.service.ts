@@ -1,14 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import {
-  RespApiSchema,
-  Schema,
-  SchemaOption,
-} from "../interfaces/options.interface";
+import { RespApiSchema, Schema, SchemaOption } from "../interfaces/options";
 import { chaca, schemas } from "chaca";
-import { LanguageService } from "@shared/services/language.service";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
 import { OptionValueLimit } from "../value-object";
 import { ParamsObject } from "@modules/api/services/value-object";
+import { LanguageService } from "@modules/app/modules/language/services/language.service";
 
 @Injectable()
 export class SchemaOptionsService {

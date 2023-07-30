@@ -1,12 +1,12 @@
 import { Module } from "@nestjs/common";
 import { SchemaOptionsService } from "./services/schema-options.service";
-import { LanguageService } from "@shared/services/language.service";
 import { SchemaOptionsRepository } from "./services/schema-options-repository.service";
+import { LanguageModule } from "@modules/app/modules/language/language.module";
 
 @Module({
-  imports: [],
+  imports: [LanguageModule],
   controllers: [],
   exports: [SchemaOptionsService],
-  providers: [LanguageService, SchemaOptionsRepository, SchemaOptionsService],
+  providers: [SchemaOptionsRepository, SchemaOptionsService],
 })
 export class SchemaOptionsModule {}

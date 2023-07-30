@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS.enum";
+import { DB_MOELS } from "@shared/constants/DB_MODELS";
 import mongoose from "mongoose";
 import { LOGIN_METHOD } from "../../../constants/LOGIN_METHOD.enum";
 import { UserEmail } from "@modules/user/value-object";

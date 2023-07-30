@@ -1,6 +1,6 @@
 import { schemas } from "chaca";
-import { SchemaOption } from "@modules/schema-options/interfaces/options.interface";
-import { ARGUMENT_TYPE } from "@shared/constants/ARGUMENT_TYPE.enum";
+import { SchemaOption } from "@modules/schema-options/interfaces/options";
+import { ARGUMENT_TYPE } from "@modules/dataset/constants/ARGUMENT_TYPE";
 
 export const LoremOptions: SchemaOption[] = [
   {
@@ -32,7 +32,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Sentences",
-    schemaField:  (a) =>schemas.lorem.sentences(a),
+    schemaField: (a) => schemas.lorem.sentences(a),
     arguments: [
       {
         argument: "sentencesCount",
@@ -59,7 +59,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Slug",
-    schemaField:  (a) =>schemas.lorem.slug(a),
+    schemaField: (a) => schemas.lorem.slug(a),
     arguments: [
       {
         argument: "wordCount",
@@ -71,7 +71,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Text",
-    schemaField:  (a) =>schemas.lorem.text(a),
+    schemaField: (a) => schemas.lorem.text(a),
     arguments: [
       {
         argument: "character_max",
@@ -94,7 +94,7 @@ export const LoremOptions: SchemaOption[] = [
   },
   {
     name: "Words",
-    schemaField:  (a) =>schemas.lorem.words(a),
+    schemaField: (a) => schemas.lorem.words(a),
     arguments: [
       {
         argument: "count",

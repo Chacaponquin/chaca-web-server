@@ -4,17 +4,17 @@ import { AuthService } from "./services/auth.service";
 import { JwtModule } from "@nestjs/jwt";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { PassportModule } from "@nestjs/passport";
-import { JwtStrategy } from "@shared/strategy/jwt.strategy";
+import { JwtStrategy } from "@modules/auth/strategy/jwt.strategy";
 import { UserModule } from "@modules/user/user.module";
-import { GoogleOAuthStrategy } from "./strategys/google-oauth.strategy";
-import { GithubOAuthStrategy } from "./strategys/github-oauth.strategy";
+import { GoogleOAuthStrategy } from "./strategy/google-oauth.strategy";
+import { GithubOAuthStrategy } from "./strategy/github-oauth.strategy";
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => {
+      useFactory: (configService: ConfigService) => {
         return {
           secret: configService.get<string>("SECRET_WORD"),
           signOptions: {

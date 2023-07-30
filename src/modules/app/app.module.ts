@@ -1,17 +1,18 @@
 import { Module } from "@nestjs/common";
-import { WebApiModule } from "./modules/web-api/web-api.module";
-import { ApiModule } from "./modules/api/api.module";
-import { UserModule } from "./modules/user/user.module";
+import { WebApiModule } from "../web-api/web-api.module";
+import { ApiModule } from "../api/api.module";
+import { UserModule } from "../user/user.module";
 import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
-import { AuthModule } from "./modules/auth/auth.module";
-import { DocsModule } from "./modules/docs/docs.module";
-import { DatasetModelModule } from "./modules/dataset-model/dataset-model.module";
-import { UserMessageModule } from "./modules/user-message/user-message.module";
-import { SchemaOptionsModule } from "./modules/schema-options/schema-options.module";
-import { AdminModule } from "./modules/admin/admin.module";
-import { DatasetSocketModule } from "./modules/dataset-socket/dataset-socket.module";
+import { AuthModule } from "../auth/auth.module";
+import { DocsModule } from "../docs/docs.module";
+import { DatasetModelModule } from "../dataset-model/dataset-model.module";
+import { UserMessageModule } from "../user-message/user-message.module";
+import { SchemaOptionsModule } from "../schema-options/schema-options.module";
+import { AdminModule } from "../admin/admin.module";
+import { DatasetSocketModule } from "../dataset-socket/dataset-socket.module";
 import { DatasetModule } from "@modules/dataset/dataset.module";
+import { LanguageModule } from "./modules/language/language.module";
 
 const NODE_ENV = process.env.NODE_ENV;
 
@@ -35,6 +36,7 @@ const NODE_ENV = process.env.NODE_ENV;
     AdminModule,
     DatasetSocketModule,
     DatasetModule,
+    LanguageModule,
   ],
   controllers: [],
   providers: [],

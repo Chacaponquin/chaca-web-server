@@ -1,5 +1,5 @@
 import { FILE_TYPE } from "@modules/dataset/constants/FILE_TYPE";
-import { ArgumentSchema } from "@shared/interfaces/argument.interface";
+import { OptionArgument } from "@modules/dataset/dto/argument";
 
 export interface InputConfigSchema {
   file: InputFileTypeConfig;
@@ -13,5 +13,5 @@ export interface InputFileTypeConfig {
 
 export interface FileOption {
   fileType: FILE_TYPE;
-  arguments: ArgumentSchema[];
+  arguments: OptionArgument[];
 }
