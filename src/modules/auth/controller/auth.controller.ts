@@ -1,4 +1,3 @@
-import { RepeatUserEmailError } from "@modules/user/exceptions";
 import {
   NotFoundException,
   Get,
@@ -6,8 +5,6 @@ import {
   Controller,
   Req,
   Body,
-  HttpException,
-  HttpStatus,
   Res,
 } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
@@ -61,19 +58,8 @@ export class AuthController {
 
   @Post("/signUp")
   async signUp(@Body() userSignUpDTO: CreateSimpleUserDTO): Promise<string> {
-    try {
-      const userToken = await this.authService.signUp(userSignUpDTO);
-      return userToken;
-    } catch (error) {
-      if (error instanceof RepeatUserEmailError) {
-        throw new HttpException(
-          "That user aldready exists",
-          HttpStatus.UNAUTHORIZED,
-        );
-      } else {
-        throw error;
-      }
-    }
+    const userToken = await this.authService.signUp(userSignUpDTO);
+    return userToken;
   }
 
   @Post("/signIn")

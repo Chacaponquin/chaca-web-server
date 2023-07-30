@@ -54,4 +54,9 @@ export class DatasetModelMongoRepository {
       tags: mongoModel.tags,
     });
   }
+
+  public async findById(modelId: string): Promise<DatasetModel | null> {
+    const found = await this.model.findById(modelId);
+    return found === null ? null : this.mapToModel(found);
+  }
 }

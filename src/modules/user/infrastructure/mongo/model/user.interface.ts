@@ -1,13 +1,12 @@
 import { LOGIN_METHOD } from "../../../constants/LOGIN_METHOD.enum";
 import { Document } from "mongoose";
-import { IDatasetModel } from "@modules/dataset-model/infrastructure/mongo/interfaces/model.interface";
 
 export interface IUser extends Document {
   username: string;
   email: string;
   password: string | null;
   isSuperUser: boolean;
-  datasetModels: IDatasetModel[];
+  datasetModels: Array<string>;
   image: string | null;
   methodLogin: LOGIN_METHOD;
 }

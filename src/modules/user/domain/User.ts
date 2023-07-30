@@ -3,15 +3,15 @@ import {
   NORMAL_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { UserEmail,UserImage,UserName } from "../value-object";
-
+import { UserEmail, UserImage, UserName } from "../value-object";
 
 export type UserParams = {
   username: string;
   image: string | null;
   id: string;
   isSuperUser: boolean;
-  models: Array<DatasetModel>;
+  models?: Array<DatasetModel>;
+  modelsId?: Array<string>;
   email: string;
 };
 
@@ -24,16 +24,34 @@ export abstract class User {
   private _image: string | null;
   private _id: string;
   private _isSuperUser: boolean;
-  private _models: Array<DatasetModel>;
+  private _models: Array<DatasetModel> = [];
   private _email: string;
+  private _modelsId: Array<string> = [];
 
-  constructor({ id, image, isSuperUser, models, username, email }: UserParams) {
+  constructor({
+    id,
+    image,
+    isSuperUser,
+    models = [],
+    username,
+    email,
+    modelsId = [],
+  }: UserParams) {
     this._id = id;
     this._image = new UserImage(image).value;
     this._isSuperUser = isSuperUser;
     this._models = models;
     this._username = new UserName(username).value;
     this._email = new UserEmail(email).value;
+    this._modelsId = modelsId;
+  }
+
+  public get modelsId() {
+    return this._modelsId;
+  }
+
+  public setModels(models: Array<DatasetModel>): void {
+    this._models = models;
   }
 
   public get id() {

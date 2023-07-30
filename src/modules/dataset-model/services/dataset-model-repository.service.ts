@@ -11,6 +11,11 @@ export class DatasetModelRepository {
     await this.mongoRepository.deleteModel(modelID);
   }
 
+  async findById(modelId: string): Promise<DatasetModel | null> {
+    const found = await this.mongoRepository.findById(modelId);
+    return found;
+  }
+
   async getAll(): Promise<Array<DatasetModel>> {
     return await this.mongoRepository.getAll();
   }

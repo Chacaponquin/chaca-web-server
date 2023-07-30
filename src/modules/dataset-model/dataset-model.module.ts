@@ -13,7 +13,7 @@ import { DatasetModelMongoRepository } from "./infrastructure/mongo/dataset-mode
     ]),
   ],
   controllers: [],
-  exports: [DatasetModelService, DatasetModelMongoRepository],
+  exports: [DatasetModelService],
   providers: [
     DatasetModelRepository,
     DatasetModelMongoRepository,

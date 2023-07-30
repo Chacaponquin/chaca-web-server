@@ -11,7 +11,6 @@ import {
   UserParams,
 } from "@modules/user/domain/User";
 import { LOGIN_METHOD } from "@modules/user/constants/LOGIN_METHOD.enum";
-import { DatasetModelMongoRepository } from "@modules/dataset-model/infrastructure/mongo/dataset-model-mongo-repository.service";
 import { InvalidLoginMethodError } from "@modules/user/exceptions";
 import {
   CreateGithubUserDTO,
@@ -23,7 +22,6 @@ import {
 export class UserRepositoryMongo {
   constructor(
     @InjectModel(DB_MOELS.USERS) private readonly model: Model<IUser>,
-    private readonly datasetModelMongoRepository: DatasetModelMongoRepository,
   ) {}
 
   public async clean(): Promise<void> {
@@ -156,9 +154,7 @@ export class UserRepositoryMongo {
       image: mongoUser.image,
       isSuperUser: mongoUser.isSuperUser,
       username: mongoUser.username,
-      models: mongoUser.datasetModels.map((m) =>
-        this.datasetModelMongoRepository.mapToModel(m),
-      ),
+      models: [],
     };
 
     if (mongoUser.methodLogin === LOGIN_METHOD.EMAIL) {

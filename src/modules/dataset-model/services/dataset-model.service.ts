@@ -12,6 +12,22 @@ export class DatasetModelService {
   }
 
   async createModel(modelDTO: CreateModelDTO): Promise<DatasetModel> {
-    return this.repository.create(modelDTO);
+    const newModel = await this.repository.create(modelDTO);
+    return newModel;
+  }
+
+  async findModelsById(
+    userModelsId: Array<string>,
+  ): Promise<Array<DatasetModel>> {
+    const returnDatasets = [] as Array<DatasetModel>;
+
+    for (const modelID of userModelsId) {
+      const found = await this.repository.findById(modelID);
+      if (found) {
+        returnDatasets.push(found);
+      }
+    }
+
+    return returnDatasets;
   }
 }

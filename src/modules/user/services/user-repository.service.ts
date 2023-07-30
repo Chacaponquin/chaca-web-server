@@ -7,10 +7,14 @@ import {
 } from "../dto/create.dto";
 import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
 import { RepeatUserEmailError } from "../exceptions";
+import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
 
 @Injectable()
 export class UserRepository {
-  constructor(private readonly mongoRepository: UserRepositoryMongo) {}
+  constructor(
+    private readonly mongoRepository: UserRepositoryMongo,
+    private readonly datasetModelService: DatasetModelService,
+  ) {}
 
   public async validateNotRepeatEmail(email: string): Promise<void> {
     const foundUser = await this.mongoRepository.findByEmail(email);
@@ -55,6 +59,14 @@ export class UserRepository {
 
   public async findUserByEmail(email: string): Promise<User | null> {
     const foundUser = await this.mongoRepository.findByEmail(email);
+
+    if (foundUser) {
+      const userModels = await this.datasetModelService.findModelsById(
+        foundUser.modelsId,
+      );
+
+      foundUser.setModels(userModels);
+    }
     return foundUser;
   }
 }

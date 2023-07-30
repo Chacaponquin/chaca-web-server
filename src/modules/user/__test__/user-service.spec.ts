@@ -12,6 +12,7 @@ import {
   InvalidUserEmailException,
   InvalidUserPasswordException,
   InvalidUsernameException,
+  RepeatUserEmailError,
 } from "../exceptions";
 import { schemas } from "chaca";
 
@@ -172,6 +173,22 @@ describe("# User Service Tests", () => {
       await expect(
         async () => await service.createSimpleUser(params),
       ).rejects.toThrow(InvalidUserEmailException);
+    });
+
+    it("Create an user with repeat email. Should throw an error", async () => {
+      const params: CreateSimpleUserDTO = {
+        email: schemas.internet.email().getValue(),
+        password: schemas.internet.password().getValue(),
+        username: schemas.internet.userName().getValue(),
+      };
+
+      const newUser = await service.createSimpleUser(params);
+      const foundUser = await service.findUserById(newUser.id);
+
+      expect(foundUser).not.toBeNull();
+      await expect(
+        async () => await service.createSimpleUser(params),
+      ).rejects.toThrow(RepeatUserEmailError);
     });
   });
 });

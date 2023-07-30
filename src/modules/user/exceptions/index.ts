@@ -1,4 +1,10 @@
-export class RepeatUserEmailError extends Error {}
+import { HttpException, HttpStatus } from "@nestjs/common";
+
+export class RepeatUserEmailError extends HttpException {
+  constructor() {
+    super(`Aldready exists an user with that email`, HttpStatus.UNAUTHORIZED);
+  }
+}
 
 export class NotEqualUserPasswords extends Error {}
 
