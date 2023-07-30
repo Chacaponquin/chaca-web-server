@@ -1,18 +1,23 @@
 import { Controller, Get, Param, Req, Post, Body } from "@nestjs/common";
 import { ApiService } from "../services/api.service";
-import { SimpleSchemaConfig } from "../dto/schema_config";
+import { CompleteSchemaConfig, SimpleSchemaConfig } from "../dto/schema_config";
 
 @Controller("api")
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
   @Post("/schema")
-  public getSchemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
+  public schemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
     return this.apiService.getSchemaObject(schemaConfig);
   }
 
+  @Post("/schema/array")
+  public schemaArrayByConfig(@Body() schemaConfig: CompleteSchemaConfig) {
+    return this.apiService.getSchemaArray(schemaConfig);
+  }
+
   @Get("/:schema/:option")
-  valueBySchema(
+  public valueBySchema(
     @Param("schema") schema: string,
     @Param("option") option: string,
     @Req() req: any,
