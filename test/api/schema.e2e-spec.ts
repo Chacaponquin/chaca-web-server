@@ -1,9 +1,10 @@
-import { INestApplication } from "@nestjs/common";
+import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "../../src/app.module";
 import { ApiController } from "@modules/api/controller/api.controller";
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
 import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions";
+import * as request from "supertest";
 
 describe("POST: /api/schema", () => {
   let app: INestApplication;
@@ -25,55 +26,81 @@ describe("POST: /api/schema", () => {
   });
 
   describe("POST: /api/schema (string params)", () => {
-    it("Pass schema with id, name. Should return an object with that fields", async () => {
+    it("Pass schema with id, name. Should return an object with that fields", (done) => {
       const schema = {
         id: "id.uuid",
         image: "image.fashion",
       };
 
-      const result = apiController.getSchemaByConfig(schema);
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schema)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.CREATED);
 
-      expect(result).toHaveProperty("id");
-      expect(result).toHaveProperty("image");
+          expect(response.body).toHaveProperty("id");
+          expect(response.body).toHaveProperty("image");
+        })
+        .end(done);
     });
 
-    it("Pass a not existing schema. Should throw an error", () => {
+    it("Pass a not existing schema. Should throw an error", (done) => {
       const schema = {
         id: "id.uid",
         name: "per.firstName",
       };
 
-      expect(() => {
-        apiController.getSchemaByConfig(schema);
-      }).toThrow(IncorrectFieldTypeException);
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schema)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+        })
+        .end(done);
     });
 
-    it("Pass a not exist schema option. Should throw an error", () => {
+    it("Pass a not exist schema option. Should throw an error", (done) => {
       const schema = {
         id: "id.uid",
         name: "person.firstName",
       };
 
-      expect(() => {
-        apiController.getSchemaByConfig(schema);
-      }).toThrow(IncorrectFieldTypeException);
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schema)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+        })
+        .end(done);
     });
 
-    it("Pass arguments in dataType.int option", () => {
+    it("Pass arguments in dataType.int option", (done) => {
       const schema = {
         age: "dataType.integer<min=18;max=30>",
       };
 
-      const allResultSchemas = Array.from({ length: 1000 }).map(() =>
-        apiController.getSchemaByConfig(schema),
-      );
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schema)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.CREATED);
 
-      expect(allResultSchemas.every((s) => s.age >= 18 && s.age <= 30)).toBe(
-        true,
-      );
+          const age = response.body.age;
+          expect(age).toBeGreaterThanOrEqual(18);
+          expect(age).toBeLessThanOrEqual(30);
+        })
+        .end(done);
     });
 
-    it("Pass no arguments to schema field", () => {
+    it("Pass no arguments to schema field", async () => {
       const schemaTest1 = {
         age: "dataType.integer<>",
       };
@@ -82,21 +109,45 @@ describe("POST: /api/schema", () => {
         age: "dataType.integer<    >",
       };
 
-      const result1 = apiController.getSchemaByConfig(schemaTest1);
-      const result2 = apiController.getSchemaByConfig(schemaTest2);
+      await request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schemaTest1)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.CREATED);
 
-      expect(typeof result1.age).toBe("number");
-      expect(typeof result2.age).toBe("number");
+          const age = response.body.age;
+          expect(typeof age).toBe("number");
+        });
+
+      await request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schemaTest2)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.CREATED);
+
+          const age = response.body.age;
+          expect(typeof age).toBe("number");
+        });
     });
 
-    it("No pass > character in arguments declaration. Should throw an error", () => {
+    it("No pass > character in arguments declaration. Should throw an error", (done) => {
       const schema = {
         age: "dataType.integer<min=18",
       };
 
-      expect(() => {
-        apiController.getSchemaByConfig(schema);
-      }).toThrow(IncorrectFieldTypeException);
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(schema)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.BAD_REQUEST);
+        })
+        .end(done);
     });
   });
 

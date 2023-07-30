@@ -18,7 +18,9 @@ export class FieldType {
 
   private validateType(type?: string): void {
     if (!(typeof type === "string")) {
-      throw new IncorrectFieldTypeException();
+      throw new IncorrectFieldTypeException(
+        "The field type must be a string. Example: id.uuid",
+      );
     } else {
       this._type = type;
     }

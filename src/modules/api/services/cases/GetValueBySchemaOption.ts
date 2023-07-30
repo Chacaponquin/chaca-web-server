@@ -1,8 +1,3 @@
-import { IncorrectFieldTypeException } from "@modules/api/exceptions";
-import {
-  NotFoundOptionError,
-  NotFoundSchemaError,
-} from "@modules/schema-options/exceptions";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 
 export class GetValueBySchemaOption {
@@ -13,26 +8,16 @@ export class GetValueBySchemaOption {
     option: string,
     optionParams: Record<string, unknown>,
   ): unknown | Array<unknown> {
-    try {
-      const foundOption = this.schemaOptionsServices.findSchemaOption(
-        schema,
-        option,
-      );
+    const foundOption = this.schemaOptionsServices.findSchemaOption(
+      schema,
+      option,
+    );
 
-      const returnValue = this.schemaOptionsServices.generateValueByParams(
-        foundOption,
-        optionParams,
-      );
+    const returnValue = this.schemaOptionsServices.generateValueByParams(
+      foundOption,
+      optionParams,
+    );
 
-      return returnValue;
-    } catch (error) {
-      if (error instanceof NotFoundSchemaError) {
-        throw new IncorrectFieldTypeException(error.message);
-      } else if (error instanceof NotFoundOptionError) {
-        throw new IncorrectFieldTypeException(error.message);
-      } else {
-        throw error;
-      }
-    }
+    return returnValue;
   }
 }

@@ -1,4 +1,4 @@
-import { FieldIsArray } from "./FieldIsArray";
+import { FieldIsArray } from "./FieldsArray";
 import { FieldName } from "./FieldName";
 import { FieldPosibleNull } from "./FieldPosibleNull";
 import { FileExt } from "./FileExt";

@@ -10,7 +10,7 @@ export class FieldIsArray {
       this.validateSpecificLimit(isArray);
       this._value = isArray;
     } else {
-      if (isArray) {
+      if (typeof isArray === "object" && isArray !== null) {
         if (isArray.max && !isArray.min) {
           this.validateMax(isArray.max);
           this._value = { max: isArray.max };
