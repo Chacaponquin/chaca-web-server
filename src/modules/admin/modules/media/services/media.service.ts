@@ -6,7 +6,7 @@ export class MediaService {
   constructor(private readonly repository: MediaRepository) {}
 
   public async uploadImage(imageURL: string): Promise<string> {
-    const resultURL = this.repository.uploadImage(imageURL);
+    const resultURL = await this.repository.uploadImage(imageURL);
     return resultURL;
   }
 }

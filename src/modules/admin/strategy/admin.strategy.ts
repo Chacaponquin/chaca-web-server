@@ -1,5 +1,5 @@
 import { AdminUserService } from "@modules/admin/modules/admin-user/services/admin-user.service";
-import { JwtPayload } from "@modules/auth/interfaces/auth.interface";
+import { JwtPayload } from "@modules/auth/interfaces/auth";
 import { Injectable, UnauthorizedException } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { ExtractJwt, Strategy } from "passport-jwt";

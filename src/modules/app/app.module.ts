@@ -2,7 +2,6 @@ import { Module } from "@nestjs/common";
 import { WebApiModule } from "../web-api/web-api.module";
 import { ApiModule } from "../api/api.module";
 import { UserModule } from "../user/user.module";
-import { ConfigModule } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 import { AuthModule } from "../auth/auth.module";
 import { DocsModule } from "../docs/docs.module";
@@ -13,16 +12,11 @@ import { AdminModule } from "../admin/admin.module";
 import { DatasetSocketModule } from "../dataset-socket/dataset-socket.module";
 import { DatasetModule } from "@modules/dataset/dataset.module";
 import { LanguageModule } from "./modules/language/language.module";
-
-const NODE_ENV = process.env.NODE_ENV;
+import { EnvModule } from "./modules/env/env.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: NODE_ENV === "test" ? ".env.test" : ".env",
-      isGlobal: true,
-      expandVariables: true,
-    }),
+    EnvModule,
     MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
     WebApiModule,
     ApiModule,

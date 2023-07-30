@@ -1,8 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
-import { ReturnUser, JwtPayload } from "../interfaces/auth.interface";
+import { ReturnUser, JwtPayload } from "../interfaces/auth";
 import { UserService } from "@modules/user/services/user.service";
-import { ConfigService } from "@nestjs/config";
 import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
@@ -11,13 +10,14 @@ import {
 import { User } from "@modules/user/domain/User";
 import { SignInDTO } from "../dto/signIn";
 import { NotFoundUserToLoginException } from "../exceptions";
+import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
     private userService: UserService,
-    private configService: ConfigService,
+    private envService: EnvService,
   ) {}
 
   public async googleSignUp(googleUser: CreateGoogleUserDTO): Promise<string> {
@@ -60,7 +60,7 @@ export class AuthService {
   }
 
   public getOAuthRedirectURL(oauth: "google" | "github"): string {
-    const serverURL = this.configService.get("SERVER_URL") as string;
+    const serverURL = this.envService.SERVER_URL;
     return serverURL + `/auth/${oauth}/redirect`;
   }
 
