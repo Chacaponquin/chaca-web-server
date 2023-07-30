@@ -14,5 +14,5 @@ export type SchemaFieldType =
 
 export type CompleteSchemaConfig = {
   schema?: SimpleSchemaConfig;
-  limit?: number;
+  count?: number;
 };

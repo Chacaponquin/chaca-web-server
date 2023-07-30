@@ -1,8 +1,12 @@
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { Injectable } from "@nestjs/common";
-import { GetSchemaObject, GetValueBySchemaOption } from "./cases";
+import {
+  GetSchemaArray,
+  GetSchemaObject,
+  GetValueBySchemaOption,
+} from "./cases";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
-import { SimpleSchemaConfig } from "../dto/schema_config";
+import { CompleteSchemaConfig, SimpleSchemaConfig } from "../dto/schema_config";
 
 type SchemaValueParams = {
   schema: string;
@@ -28,6 +32,11 @@ export class ApiService {
 
   public getSchemaObject(schemaConfig: SimpleSchemaConfig) {
     const useCase = new GetSchemaObject(this.datasetService);
+    return useCase.execute(schemaConfig);
+  }
+
+  public getSchemaArray(schemaConfig: CompleteSchemaConfig) {
+    const useCase = new GetSchemaArray(this.datasetService);
     return useCase.execute(schemaConfig);
   }
 }

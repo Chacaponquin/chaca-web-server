@@ -9,11 +9,9 @@ export class FieldType {
 
   constructor(type?: string, params?: Record<string, unknown>) {
     this.validateType(type);
+    this.validateParams(params);
 
-    if (type === "schema") {
-      this.validateParams(params);
-      this._params = params as Record<string, unknown>;
-    }
+    this._params = params as Record<string, unknown>;
   }
 
   private validateType(type?: string): void {
@@ -27,8 +25,12 @@ export class FieldType {
   }
 
   private validateParams(params?: Record<string, unknown>): void {
-    if (typeof params !== "object" || params === null) {
-      throw new IncorrectFieldParamsException();
+    if (params !== undefined) {
+      if (typeof params !== "object" || params === null) {
+        throw new IncorrectFieldParamsException(
+          `The field type params must be an object with the values`,
+        );
+      }
     }
   }
 
