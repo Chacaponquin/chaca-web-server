@@ -16,6 +16,7 @@ const config: Config.InitialOptions = {
   moduleDirectories: ["<rootDir>/../", "node_modules"],
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths),
   detectOpenHandles: true,
+  
 };
 
 export default config;
