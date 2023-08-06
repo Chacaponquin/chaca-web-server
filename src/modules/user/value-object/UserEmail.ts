@@ -13,7 +13,7 @@ export class UserEmail {
 
   private validateNotEmpty(email: string): void {
     if (email.trim() === "") {
-      throw new InvalidUserEmailException();
+      throw new InvalidUserEmailException(`The email can not be empty`);
     }
   }
 
@@ -21,7 +21,7 @@ export class UserEmail {
     const isValid = UserEmail.emailRegex.test(email);
 
     if (!isValid) {
-      throw new InvalidUserEmailException();
+      throw new InvalidUserEmailException(`'${email}' is not an email string`);
     }
   }
 

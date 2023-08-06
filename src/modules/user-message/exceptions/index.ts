@@ -1,5 +1,19 @@
-export class InvalidUserMessageMessageException extends Error {}
+import { HttpException, HttpStatus } from "@nestjs/common";
 
-export class InvalidUserMessageTitleException extends Error {}
+export class InvalidUserMessageMessageException extends HttpException {
+  constructor(msg: string) {
+    super(msg, HttpStatus.BAD_REQUEST);
+  }
+}
 
-export class InvalidUserMessageUserEmailException extends Error {}
+export class InvalidUserMessageTitleException extends HttpException {
+  constructor(msg: string) {
+    super(msg, HttpStatus.BAD_REQUEST);
+  }
+}
+
+export class InvalidUserMessageUserEmailException extends HttpException {
+  constructor(msg: string) {
+    super(msg, HttpStatus.BAD_REQUEST);
+  }
+}

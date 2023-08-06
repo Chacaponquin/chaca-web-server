@@ -167,7 +167,7 @@ export class UserRepositoryMongo {
     } else if (mongoUser.methodLogin === LOGIN_METHOD.GOOGLE) {
       return new GoogleUser(userParams);
     } else {
-      throw new InvalidLoginMethodError();
+      throw new InvalidLoginMethodError(mongoUser.methodLogin);
     }
   }
 }

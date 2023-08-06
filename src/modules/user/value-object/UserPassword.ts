@@ -5,7 +5,7 @@ export class UserPassword {
 
   constructor(password: string) {
     if (password.trim() === "") {
-      throw new InvalidUserPasswordException();
+      throw new InvalidUserPasswordException(`The password can not be empty`);
     }
 
     this._password = password;

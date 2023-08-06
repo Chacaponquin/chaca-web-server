@@ -5,7 +5,9 @@ export class UserMessageTitle {
 
   constructor(name: string) {
     if (name.trim() === "") {
-      throw new InvalidUserMessageTitleException();
+      throw new InvalidUserMessageTitleException(
+        `The message must have a title`,
+      );
     }
   }
 

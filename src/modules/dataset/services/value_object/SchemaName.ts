@@ -5,7 +5,7 @@ export class SchemaName {
 
   constructor(value: string) {
     if (value.trim() === "") {
-      throw new IncorrectDatasetNameException();
+      throw new IncorrectDatasetNameException(`The dataset must have a name`);
     }
 
     this._value = value;

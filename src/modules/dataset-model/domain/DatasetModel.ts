@@ -1,3 +1,5 @@
+import { DatasetModelName } from "../value-object";
+
 type DatasetModelParams = {
   id: string;
   name: string;
@@ -11,8 +13,8 @@ export class DatasetModel {
   public id: string;
   public name: string;
   public model: string;
-  public likes: Array<string>;
-  public tags: Array<string>;
+  public likes: Array<string> = [];
+  public tags: Array<string> = [];
   public description: string;
 
   constructor({
@@ -25,7 +27,7 @@ export class DatasetModel {
   }: DatasetModelParams) {
     this.id = id;
     this.description = description;
-    this.name = name;
+    this.name = new DatasetModelName(name).value;
     this.tags = tags;
     this.model = model;
     this.likes = likes;

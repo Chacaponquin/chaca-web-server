@@ -95,7 +95,7 @@ describe("POST: /api/schema/array", () => {
         .end(done);
     });
 
-    it("Pass count=-5. Should return an array with 5 elements", (done) => {
+    it("Pass count=-5. Should throw an error", (done) => {
       request(app.getHttpServer())
         .post("/api/schema/array")
         .send({ schema, count: -5 })

@@ -5,7 +5,9 @@ export class UserMessageMessage {
 
   constructor(message: string) {
     if (message.trim() === "") {
-      throw new InvalidUserMessageMessageException();
+      throw new InvalidUserMessageMessageException(
+        `The message can not be empty`,
+      );
     }
 
     this._message = message;

@@ -24,7 +24,9 @@ export class FileExt {
       case FILE_TYPE.YAML:
         return "yaml";
       default:
-        throw new IncorrectFileExportFormatException();
+        throw new IncorrectFileExportFormatException(
+          `${this._type} is not a valid export format`,
+        );
     }
   }
 }

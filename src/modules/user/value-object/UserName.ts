@@ -5,7 +5,7 @@ export class UserName {
 
   constructor(name: string) {
     if (name.trim() === "") {
-      throw new InvalidUsernameException();
+      throw new InvalidUsernameException(`The username can not be empty`);
     }
 
     this._name = name.trim();

@@ -57,7 +57,9 @@ export class ChacaSchemaBuilder {
       const schema = this.execute(dataType.object);
       return new MixedValueField(schema);
     } else {
-      throw new IncorrectDefinedFieldDataTypeException();
+      throw new IncorrectDefinedFieldDataTypeException(
+        `The field must have a dataType.`,
+      );
     }
   }
 }
