@@ -29,7 +29,7 @@ yarn.lock
 *.sublime-workspace
 
 # envs
-.env.development
+.env.dev
 .env
 .env.test
 
