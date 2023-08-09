@@ -56,12 +56,10 @@ describe("POST: /api/schema/array", () => {
         fieldType: "id.uuid",
       },
       user: {
-        fieldType: {
-          type: "schema",
-          params: {
-            id: "id.uuid",
-            age: "dataType.integer<min=18;max=80>",
-          },
+        fieldType: "schema",
+        params: {
+          id: "id.uuid",
+          age: "dataType.integer<min=18;max=80>",
         },
       },
     };
@@ -76,7 +74,7 @@ describe("POST: /api/schema/array", () => {
           expect(response.status).toBe(HttpStatus.CREATED);
 
           expect(response.body.length).toBeGreaterThanOrEqual(1);
-          expect(response.body.length).toBeLessThanOrEqual(10);
+          expect(response.body.length).toBeLessThanOrEqual(50);
         })
         .end(done);
     });

@@ -20,7 +20,7 @@ export class SchemaLimit {
 
       this._value = limit;
     } else {
-      this._value = schemas.dataType.int().getValue({ min: 1, max: 10 });
+      this._value = schemas.dataType.int().getValue({ min: 1, max: 50 });
     }
   }
 

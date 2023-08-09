@@ -1,6 +1,7 @@
 import { Controller, Get, Param, Req, Post, Body } from "@nestjs/common";
 import { ApiService } from "../services/api.service";
 import { CompleteSchemaConfig, SimpleSchemaConfig } from "../dto/schema_config";
+import { Request } from "express";
 
 @Controller("api")
 export class ApiController {
@@ -20,7 +21,7 @@ export class ApiController {
   public valueBySchema(
     @Param("schema") schema: string,
     @Param("option") option: string,
-    @Req() req: any,
+    @Req() req: Request,
   ): unknown {
     const value = this.apiService.getValueBySchemaOption({
       schema,

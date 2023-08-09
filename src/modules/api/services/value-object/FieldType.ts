@@ -10,8 +10,6 @@ export class FieldType {
   constructor(type?: string, params?: Record<string, unknown>) {
     this.validateType(type);
     this.validateParams(params);
-
-    this._params = params as Record<string, unknown>;
   }
 
   private validateType(type?: string): void {
@@ -30,6 +28,8 @@ export class FieldType {
         throw new IncorrectFieldParamsException(
           `The field type params must be an object with the values`,
         );
+      } else {
+        this._params = params;
       }
     }
   }

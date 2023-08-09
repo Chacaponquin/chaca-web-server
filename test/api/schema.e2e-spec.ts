@@ -2,6 +2,7 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "../../src/modules/app/app.module";
 import * as request from "supertest";
+import { COMPLETE_SCHEMA } from "./utils";
 
 describe("POST: /api/schema", () => {
   let app: INestApplication;
@@ -17,6 +18,34 @@ describe("POST: /api/schema", () => {
 
   afterAll(async () => {
     await app.close();
+  });
+
+  describe("POST: /api/schema (examples)", () => {
+    it("Pass complete schema example", (done) => {
+      request(app.getHttpServer())
+        .post("/api/schema")
+        .send(COMPLETE_SCHEMA)
+        .set("Content-Type", "application/json")
+        .set("Accept", "application/json")
+        .expect((response) => {
+          expect(response.status).toBe(HttpStatus.CREATED);
+
+          expect(response.body).toHaveProperty("id");
+          expect(response.body).toHaveProperty("age");
+          expect(response.body).toHaveProperty("posts");
+          expect(response.body).toHaveProperty("socialMedia");
+
+          expect(response.body.posts.length).toBeGreaterThanOrEqual(1);
+          expect(response.body.posts.length).toBeLessThanOrEqual(10);
+
+          expect(response.body.age).toBeGreaterThanOrEqual(18);
+          expect(response.body.age).toBeLessThanOrEqual(90);
+
+          expect(typeof response.body.socialMedia.facebook).toBe("string");
+          expect(typeof response.body.socialMedia.instagram).toBe("string");
+        })
+        .end(done);
+    });
   });
 
   describe("POST: /api/schema (string params)", () => {
@@ -209,12 +238,10 @@ describe("POST: /api/schema", () => {
       it("Pass schema with params configuration", (done) => {
         const schema = {
           int: {
-            fieldType: {
-              type: "dataType.integer",
-              params: {
-                min: 5,
-                max: 10,
-              },
+            fieldType: "dataType.integer",
+            params: {
+              min: 5,
+              max: 10,
             },
           },
         };
@@ -237,19 +264,15 @@ describe("POST: /api/schema", () => {
       it("Pass schema with incorrect params configuration", async () => {
         const schema1 = {
           int: {
-            fieldType: {
-              type: "dataType.integer",
-              params: null,
-            },
+            fieldType: "dataType.integer",
+            params: null,
           },
         };
 
         const schema2 = {
           int: {
-            fieldType: {
-              type: "dataType.integer",
-              params: 5,
-            },
+            fieldType: "dataType.integer",
+            params: 5,
           },
         };
 
@@ -275,10 +298,8 @@ describe("POST: /api/schema", () => {
       it("Pass schema with undefined as params configuration", (done) => {
         const schema = {
           int: {
-            fieldType: {
-              type: "dataType.integer",
-              params: undefined,
-            },
+            fieldType: "dataType.integer",
+            params: undefined,
           },
         };
 
@@ -419,12 +440,10 @@ describe("POST: /api/schema", () => {
             fieldType: "id.uuid",
           },
           user: {
-            fieldType: {
-              type: "schema",
-              params: {
-                id: "id.uuid",
-                age: "dataType.integer<min=18;max=80>",
-              },
+            fieldType: "schema",
+            params: {
+              id: "id.uuid",
+              age: "dataType.integer<min=18;max=80>",
             },
           },
         };
@@ -453,10 +472,8 @@ describe("POST: /api/schema", () => {
             fieldType: "id.uuid",
           },
           user: {
-            fieldType: {
-              type: "schema",
-              params: undefined,
-            },
+            fieldType: "schema",
+            params: undefined,
           },
         };
 
@@ -465,10 +482,8 @@ describe("POST: /api/schema", () => {
             fieldType: "id.uuid",
           },
           user: {
-            fieldType: {
-              type: "schema",
-              params: undefined,
-            },
+            fieldType: "schema",
+            params: undefined,
           },
         };
 
@@ -504,14 +519,12 @@ describe("POST: /api/schema", () => {
       it("Create a schema with array nested schema field", (done) => {
         const schema = {
           user: {
-            fieldType: {
-              type: "schema",
-              params: {
-                id: "id.uuid",
-                age: "dataType.integer<min=18;max=80>",
-              },
-            },
+            fieldType: "schema",
             isArray: 10,
+            params: {
+              id: "id.uuid",
+              age: "dataType.integer<min=18;max=80>",
+            },
           },
         };
 

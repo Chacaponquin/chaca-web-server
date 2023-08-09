@@ -1,11 +1,8 @@
 import {
-  SchemaFieldType,
+  SchemaFieldParams,
   SimpleSchemaConfig,
 } from "@modules/api/dto/schema_config";
-import {
-  IncorrectFieldTypeException,
-  InvalidSchemaException,
-} from "@modules/api/exceptions";
+import { InvalidSchemaException } from "@modules/api/exceptions";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
 import { FieldParams } from "./FieldParams";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
@@ -16,6 +13,7 @@ import {
 } from "@modules/dataset/services/value_object";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
+import { SchemaOption } from "./SchemaOption";
 
 export class SchemaInput {
   private _value?: SimpleSchemaConfig;
@@ -51,7 +49,9 @@ export class SchemaInput {
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray();
         const fieldPosibleNull = new FieldPosibleNull();
-        const fieldDataType = this.mapTypeStringToDataType(fieldConfig);
+        const fieldType = new FieldType(fieldConfig);
+
+        const fieldDataType = this.mapTypeStringToDataType(fieldType);
 
         schemaFields.push({
           name: fieldName,
@@ -61,11 +61,10 @@ export class SchemaInput {
         });
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
-        const fieldPosibleNull = new FieldPosibleNull(
-          fieldConfig.isPosibleNull,
-        );
+        const fieldPosibleNull = new FieldPosibleNull(fieldConfig.posibleNull);
         const fieldDataType = this.mapSchemaConfigToDataType(
           fieldConfig.fieldType,
+          fieldConfig.params,
         );
 
         schemaFields.push({
@@ -80,65 +79,53 @@ export class SchemaInput {
     return schemaFields;
   }
 
-  private mapTypeStringToDataType(type: string): FieldDataType {
-    const indexFirstArgument = type.indexOf("<");
+  private mapSchemaConfigToDataType(
+    type?: string,
+    params?: SchemaFieldParams,
+  ): FieldDataType {
+    const fieldType = new FieldType(type, params);
+
+    if (fieldType.type === "schema") {
+      const subSchemaFields = this.mapToSchemaInputFields(
+        fieldType.params as SimpleSchemaConfig,
+      );
+
+      return { type: DATA_TYPES.MIXED, object: subSchemaFields };
+    } else {
+      const dataType = this.mapTypeStringToDataType(fieldType);
+      return dataType;
+    }
+  }
+
+  private mapTypeStringToDataType(type: FieldType): FieldDataType {
+    const indexFirstArgument = type.type.indexOf("<");
 
     if (indexFirstArgument !== -1) {
-      const argsString = type.slice(indexFirstArgument).trim();
-      const schemaString = type.slice(0, indexFirstArgument);
+      const argsString = type.type.slice(indexFirstArgument).trim();
+      const schemaString = type.type.slice(0, indexFirstArgument);
 
       const args = new FieldParams(argsString).value;
-      const [schema, option] = this.parseSchemaOptionString(schemaString);
+      const option = new SchemaOption(schemaString);
 
       return {
         type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: { args: args, parent: schema, type: option },
+        fieldType: {
+          args: { ...type.params, ...args },
+          parent: option.schema,
+          type: option.option,
+        },
       };
     } else {
-      const [schema, option] = this.parseSchemaOptionString(type);
+      const option = new SchemaOption(type.type);
+
       return {
         type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: { args: {}, parent: schema, type: option },
+        fieldType: {
+          args: type.params,
+          parent: option.schema,
+          type: option.option,
+        },
       };
-    }
-  }
-
-  private mapSchemaConfigToDataType(type?: SchemaFieldType): FieldDataType {
-    if (typeof type === "string") {
-      const dataType = this.mapTypeStringToDataType(type);
-      return dataType;
-    } else if (typeof type === "object") {
-      const fieldType = new FieldType(type.type, type.params);
-
-      if (fieldType.type === "schema") {
-        const subSchemaFields = this.mapToSchemaInputFields(
-          fieldType.params as SimpleSchemaConfig,
-        );
-        return { type: DATA_TYPES.MIXED, object: subSchemaFields };
-      } else {
-        const [schema, option] = this.parseSchemaOptionString(fieldType.type);
-        return {
-          type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: fieldType.params, parent: schema, type: option },
-        };
-      }
-    } else {
-      throw new IncorrectFieldTypeException(
-        `You must specify a type for this field`,
-      );
-    }
-  }
-
-  private parseSchemaOptionString(optionString: string): [string, string] {
-    const pattern = /^[\w]+[.][\w]+$/;
-
-    if (pattern.test(optionString)) {
-      const [schema, option] = optionString.split(".");
-      return [schema, option];
-    } else {
-      throw new IncorrectFieldTypeException(
-        `The field type must have the pattern 'schema.option'. Example: 'id.uuid'`,
-      );
     }
   }
 
