@@ -30,6 +30,7 @@ export class ChacaExceptionFilter implements ExceptionFilter {
       time: new Date().toISOString(),
       path: request.url,
       error: msg,
+      status: status,
     });
   }
 }

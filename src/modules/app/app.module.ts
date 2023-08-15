@@ -13,11 +13,16 @@ import { DatasetSocketModule } from "../dataset-socket/dataset-socket.module";
 import { DatasetModule } from "@modules/dataset/dataset.module";
 import { LanguageModule } from "./modules/language/language.module";
 import { EnvModule } from "./modules/env/env.module";
+import { ThrottlerModule } from "@nestjs/throttler";
 
 @Module({
   imports: [
     EnvModule,
     MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
+    ThrottlerModule.forRoot({
+      ttl: 60,
+      limit: 10,
+    }),
     WebApiModule,
     ApiModule,
     AuthModule,
