@@ -1,11 +1,14 @@
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
-import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "../constants/DATA_TYPE";
 
 export type FieldDataType =
   | CustomDataType
   | MixedDataType
   | DefinedValueDataType
-  | RefDataType;
+  | RefDataType
+  | SequenceDataType
+  | SequentialDataType
+  | EnumDataType;
 
 export type RefDataType = {
   type: DATA_TYPES.REF;
@@ -31,4 +34,20 @@ export type DefinedValueType = {
   parent: string;
   type: string;
   args: Record<string, unknown>;
+};
+
+export type SequenceDataType = {
+  type: DATA_TYPES.SEQUENCE;
+  startsWith: number;
+  step: number;
+};
+
+export type SequentialDataType = {
+  type: DATA_TYPES.SEQUENTIAL;
+  values: Array<string>;
+};
+
+export type EnumDataType = {
+  type: DATA_TYPES.ENUM;
+  values: Array<string>;
 };

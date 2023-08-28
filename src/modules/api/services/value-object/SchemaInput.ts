@@ -3,7 +3,7 @@ import {
   SimpleSchemaConfig,
 } from "@modules/api/dto/schema_config";
 import { InvalidSchemaException } from "@modules/api/exceptions";
-import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldParams } from "./FieldParams";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import {

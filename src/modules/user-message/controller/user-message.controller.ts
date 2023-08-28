@@ -2,7 +2,7 @@ import { Controller, Post, Body, HttpStatus, HttpCode } from "@nestjs/common";
 import { CreateUserMessageDTO } from "../dto/user_message";
 import { UserMessageService } from "../services/user-message.service";
 
-@Controller("userMessage")
+@Controller("user_message")
 export class UserMessageController {
   constructor(private readonly userMessageService: UserMessageService) {}
 

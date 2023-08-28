@@ -14,4 +14,5 @@ export interface InputFileTypeConfig {
 export interface FileOption {
   fileType: FILE_TYPE;
   arguments: OptionArgument[];
+  title: string;
 }

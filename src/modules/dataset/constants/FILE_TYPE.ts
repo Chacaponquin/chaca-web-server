@@ -5,4 +5,6 @@ export enum FILE_TYPE {
   TYPESCRIPT = "typescript",
   JAVA = "java",
   YAML = "yaml",
+  POSTGRESQL = "postgresql",
+  PYTHON = "python",
 }

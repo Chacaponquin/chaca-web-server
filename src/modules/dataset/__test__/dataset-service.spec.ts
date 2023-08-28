@@ -7,7 +7,7 @@ import {
   IncorrectFieldArrayConfigException,
 } from "../exceptions";
 import { ChacaError } from "chaca";
-import { DATA_TYPES } from "../constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "../constants/DATA_TYPE";
 
 describe("# Dataset Services Tests", () => {
   let service: DatasetService;

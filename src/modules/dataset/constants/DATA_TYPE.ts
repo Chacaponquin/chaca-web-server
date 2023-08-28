@@ -3,4 +3,7 @@ export enum DATA_TYPES {
   MIXED = "MIXED",
   REF = "REF",
   CUSTOM = "CUSTOM",
+  SEQUENCE = "SEQUENCE",
+  SEQUENTIAL = "SEQUENTIAL",
+  ENUM = "ENUM",
 }

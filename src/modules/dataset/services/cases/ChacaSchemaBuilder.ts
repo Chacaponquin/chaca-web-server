@@ -1,4 +1,4 @@
-import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
