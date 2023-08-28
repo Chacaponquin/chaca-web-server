@@ -1,4 +1,4 @@
-import { SchemaOption } from "../interfaces/options";
+import { SchemaOption } from "../../interfaces/options";
 import { ARGUMENT_TYPE } from "@modules/dataset/constants/ARGUMENT_TYPE";
 import { schemas } from "chaca";
 

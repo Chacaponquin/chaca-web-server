@@ -1,6 +1,6 @@
-import { SchemaOption } from "../interfaces/options";
+import { SchemaOption } from "../../interfaces/options";
 import { schemas } from "chaca";
-import { ARGUMENT_TYPE } from "../../dataset/constants/ARGUMENT_TYPE";
+import { ARGUMENT_TYPE } from "../../../dataset/constants/ARGUMENT_TYPE";
 
 export const AddressOptions: SchemaOption[] = [
   {

@@ -1,4 +1,4 @@
-import { SchemaOption } from "../interfaces/options";
+import { SchemaOption } from "../../interfaces/options";
 import { schemas } from "chaca";
 
 export const AnimalOptions: SchemaOption[] = [

@@ -1,10 +1,10 @@
 import { Injectable, NotFoundException, StreamableFile } from "@nestjs/common";
-import { RespApiSchema } from "@modules/schema-options/interfaces/options";
 import { FILE_CONFIG } from "../constants/FILE_CONFIG";
 import { ALL_FAQ } from "../constants/FAQ";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import * as path from "path";
 import * as fs from "fs";
+import { ApiArgument, ApiSchema, ApiSchemaOption } from "../dto/schema";
 
 @Injectable()
 export class WebApiService {
@@ -13,8 +13,29 @@ export class WebApiService {
 
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
-  getApiSchemas(language: string): RespApiSchema[] {
-    return this.schemaOptionsService.getApiSchemas(language);
+  getApiSchemas(): ApiSchema[] {
+    const schemas = this.schemaOptionsService.getApiSchemas();
+    const returnSchemas = [] as Array<ApiSchema>;
+
+    for (const s of schemas) {
+      const saveOptions: Array<ApiSchemaOption> = s.options.map((o) => {
+        const saveArguments: Array<ApiArgument> = [];
+
+        for (const arg of o.arguments) {
+          saveArguments.push({
+            argument: arg.argument,
+            inputType: arg.inputType,
+            selectValues: arg.selectValues,
+          });
+        }
+
+        return { arguments: saveArguments, name: o.name };
+      });
+
+      returnSchemas.push({ name: s.name, options: saveOptions });
+    }
+
+    return returnSchemas;
   }
 
   fileConfig() {
@@ -30,6 +51,7 @@ export class WebApiService {
       const file = fs.createReadStream(
         path.join(__dirname, "../../../data", fileName),
       );
+
       return new StreamableFile(file);
     } catch (error) {
       throw new NotFoundException();

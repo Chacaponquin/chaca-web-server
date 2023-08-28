@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, Param } from "@nestjs/common";
+import { Controller, Get, Param } from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
 import { WebApiService } from "../services/web-api.service";
 
@@ -15,8 +15,8 @@ export class WebApiController {
   }
 
   @Get("/schemas")
-  getApiSchemas(@Headers("language") language: string) {
-    return this.services.getApiSchemas(language);
+  getApiSchemas() {
+    return this.services.getApiSchemas();
   }
 
   @Get("/fileConfig")
