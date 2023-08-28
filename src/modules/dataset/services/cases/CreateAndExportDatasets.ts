@@ -3,7 +3,7 @@ import { SchemaOptionsService } from "@modules/schema-options/services/schema-op
 import { CreateDatasets } from "./CreateDatasets";
 import { MultiGenerateSchema, chaca, schemas as chacaSchemas } from "chaca";
 import { FileConfigDTO } from "@modules/dataset/dto/file";
-import { FileExt } from "../value_object";
+import { FileExt } from "../value_object/file_config";
 import * as path from "path";
 
 export class CreateAndExportDatasets {

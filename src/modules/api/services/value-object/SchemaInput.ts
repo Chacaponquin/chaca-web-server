@@ -10,7 +10,7 @@ import {
   FieldIsArray,
   FieldName,
   FieldPosibleNull,
-} from "@modules/dataset/services/value_object";
+} from "@modules/dataset/services/value_object/field_config";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
 import { SchemaOption } from "./SchemaOption";
