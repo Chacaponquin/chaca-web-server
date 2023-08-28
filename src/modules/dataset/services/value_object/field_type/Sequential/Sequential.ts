@@ -4,9 +4,13 @@ import { SequentialField, chaca } from "chaca";
 export class SequentialValueField implements ISchemaField {
   private _values: Array<unknown> = [];
 
-  constructor(values: Array<unknown>) {}
+  private loop = false;
+
+  constructor(values: Array<unknown>) {
+    this._values = values;
+  }
 
   getField(): SequentialField {
-    return chaca.sequential();
+    return chaca.sequential(this._values, { loop: this.loop });
   }
 }
