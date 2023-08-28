@@ -28,7 +28,7 @@ export class DefinedValueField implements ISchemaField {
       } else if (error instanceof NotFoundOptionError) {
         throw new IncorrectFieldTypeException(error.message);
       } else {
-        throw error;
+        throw new IncorrectFieldTypeException(error.message);
       }
     }
   }
