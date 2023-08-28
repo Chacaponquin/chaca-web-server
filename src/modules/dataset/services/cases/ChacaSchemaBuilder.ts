@@ -3,17 +3,22 @@ import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
+import { ChacaSchema, SchemaInputField, chaca } from "chaca";
 import {
-  CustomValueField,
-  DefinedValueField,
   FieldIsArray,
   FieldName,
   FieldPosibleNull,
+} from "../value_object/field_config";
+import {
+  CustomValueField,
+  DefinedValueField,
+  EnumValueField,
   MixedValueField,
   RefValueField,
-} from "@modules/dataset/services/value_object";
-import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema, SchemaInputField, chaca } from "chaca";
+  SequenceValueField,
+  SequentialValueField,
+} from "../value_object/field_type";
 
 export class ChacaSchemaBuilder {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
@@ -57,6 +62,14 @@ export class ChacaSchemaBuilder {
       const schema = this.execute(dataType.object);
       return new MixedValueField(schema);
     } else if (dataType.type === DATA_TYPES.SEQUENCE) {
+      return new SequenceValueField({
+        startsWith: dataType.startsWith,
+        step: dataType.step,
+      });
+    } else if (dataType.type === DATA_TYPES.SEQUENTIAL) {
+      return new SequentialValueField(dataType.values);
+    } else if (dataType.type === DATA_TYPES.ENUM) {
+      return new EnumValueField(dataType.values);
     } else {
       throw new IncorrectDefinedFieldDataTypeException(
         `The field must have a dataType.`,
