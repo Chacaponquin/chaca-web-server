@@ -1885,13 +1885,14 @@
   "resolved" "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001442.tgz"
   "version" "1.0.30001442"
 
-"chaca@^1.5.1":
-  "integrity" "sha512-rRm5peD3PLvKXobOBjahVK9BkMW5Xny5SMOYtM5q0gBAILeOVmVB83hHndgmCUr6PlF0Ah7wCq1GxprAPXEDUQ=="
-  "resolved" "https://registry.npmjs.org/chaca/-/chaca-1.5.1.tgz"
-  "version" "1.5.1"
+"chaca@^1.6.0":
+  "integrity" "sha512-BZ44HwF1J4vtNw4hLV9doaRHjC+zEv4KjnRbaUErD1KL/4XO2roG3+Y2cQLpbdM7PTud+wX7padcKScgqy8SmA=="
+  "resolved" "https://registry.npmjs.org/chaca/-/chaca-1.6.0.tgz"
+  "version" "1.6.0"
   dependencies:
     "adm-zip" "^0.5.9"
     "lorem-ipsum" "^2.0.8"
+    "yargs" "^17.7.2"
 
 "chalk@^2.0.0":
   "integrity" "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="
@@ -5575,10 +5576,10 @@
   "resolved" "https://registry.npmjs.org/yargs-parser/-/yargs-parser-21.1.1.tgz"
   "version" "21.1.1"
 
-"yargs@^17.3.1":
-  "integrity" "sha512-1/9UrdHjDZc0eOU0HxOHoS78C69UD3JRMvzlJ7S79S2nTaWRA/whGCTV8o9e/N/1Va9YIV7Q4sOxD8VV4pCWOw=="
-  "resolved" "https://registry.npmjs.org/yargs/-/yargs-17.6.2.tgz"
-  "version" "17.6.2"
+"yargs@^17.3.1", "yargs@^17.7.2":
+  "integrity" "sha512-7dSzzRQ++CKnNI/krKnYRV7JKKPUXMEh61soaHKg9mrWEhzFWhFnxPxGl+69cD1Ou63C13NUPCnmIcrvqCuM6w=="
+  "resolved" "https://registry.npmjs.org/yargs/-/yargs-17.7.2.tgz"
+  "version" "17.7.2"
   dependencies:
     "cliui" "^8.0.1"
     "escalade" "^3.1.1"

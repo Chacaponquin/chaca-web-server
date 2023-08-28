@@ -2,13 +2,13 @@ import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
+import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import {
   CustomValueField,
   DefinedValueField,
   FieldIsArray,
   FieldName,
   FieldPosibleNull,
-  ISchemaField,
   MixedValueField,
   RefValueField,
 } from "@modules/dataset/services/value_object";
@@ -56,6 +56,7 @@ export class ChacaSchemaBuilder {
     } else if (dataType.type === DATA_TYPES.MIXED) {
       const schema = this.execute(dataType.object);
       return new MixedValueField(schema);
+    } else if (dataType.type === DATA_TYPES.SEQUENCE) {
     } else {
       throw new IncorrectDefinedFieldDataTypeException(
         `The field must have a dataType.`,

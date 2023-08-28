@@ -1,23 +1,21 @@
-import { FieldIsArray } from "./FieldsArray";
-import { FieldName } from "./FieldName";
-import { FieldPosibleNull } from "./FieldPosibleNull";
-import { FileExt } from "./FileExt";
-import { SchemaLimit } from "./SchemaLimit";
+import { FieldIsArray } from "./field_config/FieldsArray";
+import { FieldName } from "./field_config/FieldName";
+import { FieldPosibleNull } from "./field_config/FieldPosibleNull";
+import { FileExt } from "./schema_config/FileExt";
+import { SchemaLimit } from "./schema_config/SchemaLimit";
 import { SchemaName } from "./SchemaName";
 import {
   RefValueField,
   CustomValueField,
   DefinedValueField,
-  ISchemaField,
   MixedValueField,
-} from "./ValueFields";
+} from "./field_type/ValueFields";
 
 export {
   SchemaLimit,
   RefValueField,
   CustomValueField,
   DefinedValueField,
-  ISchemaField,
   MixedValueField,
   SchemaName,
   FieldIsArray,
