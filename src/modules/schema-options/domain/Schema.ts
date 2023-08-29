@@ -1,5 +1,5 @@
+import { SchemaOption } from "./SchemaOption";
 import { chaca } from "chaca";
-import { SchemaOption } from "../interfaces/options";
 
 interface SchemaProps {
   name: string;

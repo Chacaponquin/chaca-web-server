@@ -8,12 +8,12 @@ import { IdOptions } from "./Id";
 import { ImageOptions } from "./Image";
 import { InternetOptions } from "./Internet";
 import { LoremOptions } from "./Lorem";
-import { PersonOptions } from "./Person/Person";
-import { PhoneOptions } from "./Phone/Phone";
-import { SystemOptions } from "./System/System";
-import { VehicleOptions } from "./Vehicle/Vehicle";
-import { VideoOptions } from "./Video/Video";
-import { WordOptions } from "./Word/Word";
+import { PersonOptions } from "./Person";
+import { PhoneOptions } from "./Phone";
+import { SystemOptions } from "./System";
+import { VehicleOptions } from "./Vehicle";
+import { VideoOptions } from "./Video";
+import { WordOptions } from "./Word";
 
 export const SCHEMAS: Array<Schema> = [
   new Schema({ name: "Address", options: AddressOptions }),

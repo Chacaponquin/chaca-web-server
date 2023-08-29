@@ -4,7 +4,7 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { AppModule } from "@modules/app/app.module";
 import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
 import { Schema } from "../interfaces/options";
-import { SCHEMAS } from "../constants/Phone/Phone";
+import { SCHEMAS } from "../constants/Phone";
 
 describe("# Schema Options Service Tests", () => {
   let app: INestApplication;

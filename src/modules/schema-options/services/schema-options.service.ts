@@ -1,10 +1,9 @@
 import { Injectable } from "@nestjs/common";
-import { SchemaOption } from "../interfaces/options";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
 import { OptionValueLimit } from "../value-object";
 import { ParamsObject } from "@modules/api/services/value-object";
 import { LanguageService } from "@modules/app/modules/language/services/language.service";
-import { Schema } from "../domain";
+import { Schema, SchemaOption } from "../domain";
 
 @Injectable()
 export class SchemaOptionsService {

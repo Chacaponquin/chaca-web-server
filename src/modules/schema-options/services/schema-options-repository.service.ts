@@ -1,9 +1,8 @@
 import { Injectable } from "@nestjs/common";
-import { SchemaOption } from "../interfaces/options";
 import { SCHEMAS } from "../constants";
 import { chaca } from "chaca";
 import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
-import { Schema } from "../domain";
+import { Schema, SchemaOption } from "../domain";
 
 @Injectable()
 export class SchemaOptionsRepository {
