@@ -44,10 +44,10 @@ export type SequenceDataType = {
 
 export type SequentialDataType = {
   type: DATA_TYPES.SEQUENTIAL;
-  values: Array<string>;
+  values: Array<unknown>;
 };
 
 export type EnumDataType = {
   type: DATA_TYPES.ENUM;
-  values: Array<string>;
+  values: Array<unknown>;
 };

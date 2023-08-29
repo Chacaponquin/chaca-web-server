@@ -8,7 +8,7 @@ export class ArrayValues {
       this._values = values;
     }
 
-    if (this._values.length) {
+    if (this._values.length === 0) {
       throw new IncorrectDefinedFieldDataTypeException(
         `A sequential field must have an array of values to select`,
       );

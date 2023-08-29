@@ -35,7 +35,7 @@ export class ChacaSchemaBuilder {
       const fieldConfig = {
         type: fieldType,
         isArray: fieldIsArray,
-        posibleNull: fieldPosibleNull,
+        possibleNull: fieldPosibleNull,
       } as SchemaInputField;
 
       schemaFields = {
