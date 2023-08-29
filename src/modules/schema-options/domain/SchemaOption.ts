@@ -1,5 +1,5 @@
 import { OptionArgument } from "@modules/schema-options/interfaces/argument";
-import { SchemaField } from "chaca";
+import { SchemaField, chaca } from "chaca";
 
 type SchemaFieldFunction = (a?: any) => SchemaField;
 
@@ -30,5 +30,9 @@ export class SchemaOption {
 
   get schemaField() {
     return this._schemaField;
+  }
+
+  get showName(){
+    return chaca.utils.camelCase(this._name)
   }
 }

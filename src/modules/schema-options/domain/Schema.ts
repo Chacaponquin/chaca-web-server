@@ -9,12 +9,10 @@ interface SchemaProps {
 export class Schema {
   private _name: string;
   private _options: Array<SchemaOption>;
-  private _showName: string;
 
   constructor({ name, options }: SchemaProps) {
     this._name = name;
     this._options = options;
-    this._showName = chaca.utils.camelCase(this._name);
   }
 
   public get name() {
@@ -26,6 +24,6 @@ export class Schema {
   }
 
   public get showName() {
-    return this._showName;
+    return chaca.utils.camelCase(this._name);
   }
 }

@@ -29,7 +29,7 @@ export class WebApiService {
           });
         }
 
-        return { arguments: saveArguments, name: o.name };
+        return { arguments: saveArguments, name: o.name, showName: o.showName };
       });
 
       returnSchemas.push({

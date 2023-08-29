@@ -9,6 +9,7 @@ export interface ApiSchema {
 export interface ApiSchemaOption {
   name: string;
   arguments: Array<ApiArgument>;
+  showName: string;
 }
 
 export interface ApiArgument {
