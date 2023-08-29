@@ -3,6 +3,7 @@ import { ARGUMENT_TYPE } from "@modules/dataset/constants/ARGUMENT_TYPE";
 export interface ApiSchema {
   name: string;
   options: Array<ApiSchemaOption>;
+  showName: string;
 }
 
 export interface ApiSchemaOption {

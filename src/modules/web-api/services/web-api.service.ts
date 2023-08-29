@@ -32,7 +32,11 @@ export class WebApiService {
         return { arguments: saveArguments, name: o.name };
       });
 
-      returnSchemas.push({ name: s.name, options: saveOptions });
+      returnSchemas.push({
+        name: s.name,
+        options: saveOptions,
+        showName: s.showName,
+      });
     }
 
     return returnSchemas;
