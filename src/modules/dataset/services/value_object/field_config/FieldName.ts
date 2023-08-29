@@ -5,7 +5,7 @@ export class FieldName {
 
   constructor(value: string) {
     if (value && value.trim() !== "") {
-      this._value = value;
+      this._value = value.trim();
     } else {
       throw new IncorrectFieldNameException(`The field must have a name`);
     }

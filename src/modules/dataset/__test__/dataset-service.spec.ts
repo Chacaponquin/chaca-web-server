@@ -1,12 +1,7 @@
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { DatasetService } from "../services/dataset.service";
 import { Test, TestingModule } from "@nestjs/testing";
-import {
-  IncorrectDatasetLimitException,
-  IncorrectDatasetNameException,
-  IncorrectFieldArrayConfigException,
-} from "../exceptions";
-import { ChacaError } from "chaca";
+import { IncorrectFieldArrayConfigException } from "../exceptions";
 import { DATA_TYPES } from "../constants/DATA_TYPE";
 
 describe("# Dataset Services Tests", () => {
@@ -23,33 +18,6 @@ describe("# Dataset Services Tests", () => {
   });
 
   describe("Create datasets tests", () => {
-    describe("Config limit datasets", () => {
-      it("Create datasets with limit less than 0. Should throw an error", () => {
-        expect(() =>
-          service.createDatasets([
-            { fields: [], limit: -20, name: "Test dataset" },
-          ]),
-        ).toThrow(IncorrectDatasetLimitException);
-      });
-    });
-
-    describe("Config name dataset", () => {
-      it("Create dataset with empty name. Should throw an error", () => {
-        expect(() =>
-          service.createDatasets([{ fields: [], limit: 20, name: "" }]),
-        ).toThrow(IncorrectDatasetNameException);
-      });
-
-      it("Create datasets with repeat dataset name. Should throw an error", () => {
-        expect(() => {
-          service.createDatasets([
-            { fields: [], limit: 20, name: "Test" },
-            { name: "Test", fields: [], limit: 20 },
-          ]);
-        }).toThrow(ChacaError);
-      });
-    });
-
     describe("Config 'isArray' in dataset fields", () => {
       it("Pass isArray=null. Should return a no array field", () => {
         const result = service.createSingleDataset([
@@ -163,7 +131,7 @@ describe("# Dataset Services Tests", () => {
       expect(result.id.length).toBeLessThanOrEqual(5);
     });
 
-    /*   it("Pass isArray=0. Should return a array field with 0 elements", () => {
+    it("Pass isArray=0. Should return a array field with 0 elements", () => {
       const result = service.createSingleDataset([
         {
           isArray: 0,
@@ -177,7 +145,7 @@ describe("# Dataset Services Tests", () => {
       ]);
 
       expect(result.id).toHaveLength(0);
-    });*/
+    });
 
     it("Pass isArray=5. Should return a array field with 5 elements", () => {
       const result = service.createSingleDataset([

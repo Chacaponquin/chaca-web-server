@@ -8,7 +8,7 @@ export class SchemaName {
       throw new IncorrectDatasetNameException(`The dataset must have a name`);
     }
 
-    this._value = value;
+    this._value = value.trim();
   }
 
   public get value() {
