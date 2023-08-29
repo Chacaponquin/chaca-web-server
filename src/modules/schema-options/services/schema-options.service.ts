@@ -2,18 +2,14 @@ import { Injectable } from "@nestjs/common";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
 import { OptionValueLimit } from "../value-object";
 import { ParamsObject } from "@modules/api/services/value-object";
-import { LanguageService } from "@modules/app/modules/language/services/language.service";
 import { Schema, SchemaOption } from "../domain";
 
 @Injectable()
 export class SchemaOptionsService {
-  constructor(
-    private readonly languageService: LanguageService,
-    private readonly repository: SchemaOptionsRepository,
-  ) {}
+  constructor(private readonly repository: SchemaOptionsRepository) {}
 
-  public getAllSchemas(): Array<Schema> {
-    return this.repository.getAllSchemas();
+  public allSchemas(): Array<Schema> {
+    return this.repository.allSchemas();
   }
 
   public findSchemaOption(schema: string, option: string): SchemaOption {
@@ -44,11 +40,5 @@ export class SchemaOptionsService {
       const value = option.schemaField().getValue(args);
       return value;
     }
-  }
-
-  public getApiSchemas(): Array<Schema> {
-    const allSchemas = this.repository.getAllSchemas();
-
-    return allSchemas;
   }
 }

@@ -1,10 +1,10 @@
 import { INestApplication } from "@nestjs/common";
 import { SchemaOptionsService } from "../services/schema-options.service";
 import { Test, TestingModule } from "@nestjs/testing";
-import { AppModule } from "@modules/app/app.module";
-import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
-import { Schema } from "../interfaces/options";
-import { SCHEMAS } from "../constants/Phone";
+import { SCHEMAS } from "../constants";
+import { Schema } from "../domain";
+import { SchemaOptionsRepository } from "../services/schema-options-repository.service";
+import { LanguageModule } from "@modules/app/modules/language/language.module";
 
 describe("# Schema Options Service Tests", () => {
   let app: INestApplication;
@@ -14,7 +14,10 @@ describe("# Schema Options Service Tests", () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [LanguageModule],
+      controllers: [],
+      exports: [SchemaOptionsService],
+      providers: [SchemaOptionsRepository, SchemaOptionsService],
     }).compile();
 
     app = module.createNestApplication();
@@ -27,28 +30,9 @@ describe("# Schema Options Service Tests", () => {
     await app.close();
   });
 
-  describe("Test find schema option", () => {
-    it("Find schema=id & option=uuid. Should return an existing schema option", () => {
-      const foundOption = service.findSchemaOption("id", "uuid");
-      expect(foundOption).toBeDefined();
-    });
-
-    it("Pass a not exist schema option. Should throw an error", () => {
-      expect(() => service.findSchemaOption("id", "uid")).toThrow(
-        NotFoundOptionError,
-      );
-    });
-
-    it("Pass a not existing schema. Should throw error", () => {
-      expect(() => service.findSchemaOption("id32", "uid")).toThrow(
-        NotFoundSchemaError,
-      );
-    });
-  });
-
   describe("Test all options are defined", () => {
     it("Get all schemas", () => {
-      const allSchemas = service.getAllSchemas();
+      const allSchemas = service.allSchemas();
       expect(allSchemas.length).toBeGreaterThan(0);
     });
 

@@ -12,12 +12,12 @@ export class SchemaOptionsRepository {
     return chaca.utils.camelCase(name).trim().toLowerCase();
   }
 
-  public getAllSchemas(): Array<Schema> {
+  public allSchemas(): Array<Schema> {
     return this.SCHEMAS;
   }
 
   public findSchema(schema: string): Schema | null {
-    const allSchemas = this.getAllSchemas();
+    const allSchemas = this.allSchemas();
     const foundSchema = allSchemas.find(
       (s) =>
         this._stringToCompareName(s.name) === this._stringToCompareName(schema),

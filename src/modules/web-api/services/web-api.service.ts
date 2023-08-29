@@ -14,7 +14,7 @@ export class WebApiService {
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
   getApiSchemas(): ApiSchema[] {
-    const schemas = this.schemaOptionsService.getApiSchemas();
+    const schemas = this.schemaOptionsService.allSchemas();
     const returnSchemas = [] as Array<ApiSchema>;
 
     for (const s of schemas) {
