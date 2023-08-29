@@ -48,7 +48,7 @@ export class SchemaInput {
 
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray();
-        const fieldPosibleNull = new FieldPosibleNull();
+        const fieldPossibleNull = new FieldPosibleNull();
         const fieldType = new FieldType(fieldConfig);
 
         const fieldDataType = this.mapTypeStringToDataType(fieldType);
@@ -56,7 +56,7 @@ export class SchemaInput {
         schemaFields.push({
           name: fieldName,
           isArray: fieldIsArray.value,
-          isPosibleNull: fieldPosibleNull.value,
+          isPossibleNull: fieldPossibleNull.value,
           dataType: fieldDataType,
         });
       } else if (typeof fieldConfig === "object") {
@@ -70,7 +70,7 @@ export class SchemaInput {
         schemaFields.push({
           name: fieldName,
           isArray: fieldIsArray.value,
-          isPosibleNull: fieldPosibleNull.value,
+          isPossibleNull: fieldPosibleNull.value,
           dataType: fieldDataType,
         });
       }

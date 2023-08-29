@@ -30,7 +30,7 @@ export class ChacaSchemaBuilder {
       const fieldName = new FieldName(field.name).value;
       const fieldType = this.mapDataTypeToField(field.dataType).getField();
       const fieldIsArray = new FieldIsArray(field.isArray).value;
-      const fieldPosibleNull = new FieldPosibleNull(field.isPosibleNull).value;
+      const fieldPosibleNull = new FieldPosibleNull(field.isPossibleNull).value;
 
       const fieldConfig = {
         type: fieldType,
