@@ -1,5 +1,5 @@
 import { FILE_TYPE } from "@modules/dataset/constants/FILE_TYPE";
-import { OptionArgument } from "@modules/dataset/dto/argument";
+import { OptionArgument } from "@modules/schema-options/interfaces/argument";
 
 export interface InputConfigSchema {
   file: InputFileTypeConfig;

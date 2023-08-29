@@ -1,119 +1,81 @@
-import { SchemaOption } from "@modules/schema-options/interfaces/options";
+import { SchemaOption } from "@modules/schema-options/domain";
 import { schemas } from "chaca";
 
 export const ImageOptions: SchemaOption[] = [
-  {
+  new SchemaOption({
     name: "Animal",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.animal(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Architecture",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.architecture(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Art",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.art(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Event",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.event(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Fashion",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.fashion(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Film",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.film(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Food",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.food(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Health",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.health(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "History",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.history(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "House",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.house(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Nature",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.nature(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "People",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.people(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Spiritual",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.spiritual(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Sport",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.sport(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Street",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.street(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Travel",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.travel(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "3D",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.treeDimension(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Wallpaper",
-    description: { en: "", es: "" },
     schemaField: () => schemas.image.wallpaper(),
-    arguments: [],
-  },
-  {
+  }),
+  new SchemaOption({
     name: "Animate Avatar",
     schemaField: () => schemas.image.animateAvatar(),
-    arguments: [],
-    description: { en: "", es: "" },
-  },
+  }),
 ];

@@ -1,3 +1,4 @@
 import { Schema } from "./Schema";
+import { SchemaOption } from "./SchemaOption";
 
-export { Schema };
+export { Schema, SchemaOption };
