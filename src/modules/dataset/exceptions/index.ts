@@ -12,6 +12,12 @@ export class IncorrectDatasetLimitException extends HttpException {
   }
 }
 
+export class RepeatDatasetNameException extends HttpException {
+  constructor(msg: string) {
+    super(msg, HttpStatus.BAD_REQUEST);
+  }
+}
+
 export class IncorrectDatasetNameException extends HttpException {
   constructor(msg: string) {
     super(msg, HttpStatus.BAD_REQUEST);

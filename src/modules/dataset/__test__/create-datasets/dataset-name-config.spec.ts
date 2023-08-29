@@ -1,8 +1,10 @@
-import { IncorrectDatasetNameException } from "@modules/dataset/exceptions";
+import {
+  IncorrectDatasetNameException,
+  RepeatDatasetNameException,
+} from "@modules/dataset/exceptions";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
-import { ChacaError } from "chaca";
 
 describe("Config name dataset", () => {
   let service: DatasetService;
@@ -29,6 +31,6 @@ describe("Config name dataset", () => {
         { fields: [], limit: 20, name: "Test" },
         { name: "Test", fields: [], limit: 20 },
       ]);
-    }).toThrow(ChacaError);
+    }).toThrow(RepeatDatasetNameException);
   });
 });

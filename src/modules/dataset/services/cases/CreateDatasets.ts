@@ -4,6 +4,7 @@ import { SchemaOptionsService } from "@modules/schema-options/services/schema-op
 import { MultiGenerateSchema } from "chaca";
 import { SchemaLimit, SchemaName } from "../value_object/schema_config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
+import { RepeatDatasetNameException } from "@modules/dataset/exceptions";
 
 export class CreateDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
@@ -21,12 +22,18 @@ export class CreateDatasets {
     datasetsConfig: Array<InputDatasetDTO>,
   ): Array<MultiGenerateSchema> {
     const multiGenerateConfig: Array<MultiGenerateSchema> = [];
+
     for (const dataset of datasetsConfig) {
       const schemaBuilder = new ChacaSchemaBuilder(this.schemaOptionsServices);
 
       const documentsLimit = new SchemaLimit(dataset.limit).value;
       const datasetSchema = schemaBuilder.execute(dataset.fields);
       const datasetName = new SchemaName(dataset.name).value;
+
+      this.validateNotRepeatDatasetName(
+        datasetName,
+        multiGenerateConfig.map((d) => d.name),
+      );
 
       multiGenerateConfig.push({
         name: datasetName,
@@ -36,5 +43,16 @@ export class CreateDatasets {
     }
 
     return multiGenerateConfig;
+  }
+
+  private validateNotRepeatDatasetName(
+    name: string,
+    allSchemas: Array<string>,
+  ): void {
+    if (allSchemas.some((s) => s === name)) {
+      throw new RepeatDatasetNameException(
+        `Aldready exists a schema with the name "${name}"`,
+      );
+    }
   }
 }
