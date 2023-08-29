@@ -72,7 +72,7 @@ export class ChacaSchemaBuilder {
       return new EnumValueField(dataType.values);
     } else {
       throw new IncorrectDefinedFieldDataTypeException(
-        `The field must have a dataType.`,
+        `The field must have a data type.`,
       );
     }
   }
