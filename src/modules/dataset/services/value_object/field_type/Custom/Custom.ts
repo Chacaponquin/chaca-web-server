@@ -1,20 +1,22 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
-import { CustomField } from "chaca";
+import { CustomField, schemas } from "chaca";
 
 export class CustomValueField implements ISchemaField {
-  private fun: CustomField;
+  private _fun: CustomField;
 
   constructor(stringFunction: string) {
-    const contentCode: string = stringFunction.slice(
-      stringFunction.indexOf("{") + 1,
-      stringFunction.lastIndexOf("}"),
-    );
+    const contentCode: string = stringFunction
+      .trim()
+      .slice(stringFunction.indexOf("{") + 1, stringFunction.lastIndexOf("}"));
 
     const func = new Function("fields", "utils", contentCode);
-    this.fun = func as CustomField;
+
+    this._fun = ({ currentFields, store }) => {
+      func({ currentFields, store, schemas });
+    };
   }
 
   getField() {
-    return this.fun;
+    return this._fun;
   }
 }
