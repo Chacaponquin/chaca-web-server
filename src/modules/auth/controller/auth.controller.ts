@@ -1,27 +1,18 @@
-import {
-  NotFoundException,
-  Get,
-  Post,
-  Controller,
-  Req,
-  Body,
-  Res,
-} from "@nestjs/common";
+import { Get, Post, Controller, Req, Body, Res } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
 import { AuthGuard } from "@nestjs/passport";
 import { SignInDTO } from "../dto/signIn";
 import { ReturnUser } from "../interfaces/auth";
 import { AuthService } from "../services/auth.service";
 import { Response } from "express";
-import { ConfigService } from "@nestjs/config";
 import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
-import { NotFoundUserToLoginException } from "../exceptions";
+import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Controller("auth")
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
-    private configService: ConfigService,
+    private readonly envServices: EnvService,
   ) {}
 
   @Get("/google")
@@ -64,23 +55,13 @@ export class AuthController {
 
   @Post("/signIn")
   async signIn(@Body() userSignInDTO: SignInDTO) {
-    try {
-      const token = await this.authService.loginUser(userSignInDTO);
-      return token;
-    } catch (error) {
-      if (error instanceof NotFoundUserToLoginException) {
-        throw new NotFoundException();
-      } else {
-        throw error;
-      }
-    }
+    const token = await this.authService.loginUser(userSignInDTO);
+    return token;
   }
 
   private sendAuthCookies(response: Response, token: string): void {
     response
       .cookie("access_token", token, {})
-      .redirect(
-        this.configService.get<string>("CLIENT_REDIRECT_URL") as string,
-      );
+      .redirect(this.envServices.CLIENT_REDIRECT_URL);
   }
 }

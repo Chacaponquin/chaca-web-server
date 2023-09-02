@@ -40,4 +40,8 @@ export class EnvService {
   public get CLAUDINARY_API_SECRET() {
     return this.configService.get<string>("CLAUDINARY_API_SECRET");
   }
+
+  public get CLIENT_REDIRECT_URL() {
+    return this.configService.get<string>("CLIENT_REDIRECT_URL") as string;
+  }
 }
