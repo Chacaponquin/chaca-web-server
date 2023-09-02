@@ -11,6 +11,10 @@ export class SequentialValueField implements ISchemaField {
     this._values = new ArrayValues(values).values();
   }
 
+  get values() {
+    return this._values;
+  }
+
   getField(): SequentialField {
     return chaca.sequential(this._values, { loop: this.loop });
   }

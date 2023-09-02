@@ -16,6 +16,14 @@ export class SequenceValueField implements ISchemaField {
     this._step = new Step(step).value();
   }
 
+  get startsWith() {
+    return this._startsWith;
+  }
+
+  get step() {
+    return this._step;
+  }
+
   getField(): SequenceField {
     return chaca.sequence({ starsWith: this._startsWith, step: this._step });
   }

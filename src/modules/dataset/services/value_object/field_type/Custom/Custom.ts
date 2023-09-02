@@ -9,7 +9,7 @@ export class CustomValueField implements ISchemaField {
       .trim()
       .slice(stringFunction.indexOf("{") + 1, stringFunction.lastIndexOf("}"));
 
-    const func = new Function("fields", "utils", contentCode);
+    const func = new Function("props", contentCode);
 
     this._fun = ({ currentFields, store }) => {
       func({ currentFields, store, schemas });

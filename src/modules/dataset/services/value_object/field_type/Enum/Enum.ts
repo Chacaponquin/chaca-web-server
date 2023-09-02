@@ -9,6 +9,10 @@ export class EnumValueField implements ISchemaField {
     this._values = new ArrayValues(values).values();
   }
 
+  get values() {
+    return this._values;
+  }
+
   getField(): EnumField {
     return chaca.enum(this._values);
   }

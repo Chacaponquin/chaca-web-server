@@ -14,6 +14,11 @@ import {
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
 import { SchemaOption } from "./SchemaOption";
+import {
+  EnumValueField,
+  SequenceValueField,
+  SequentialValueField,
+} from "@modules/dataset/services/value_object/field_type";
 
 export class SchemaInput {
   private _value?: SimpleSchemaConfig;
@@ -85,14 +90,44 @@ export class SchemaInput {
   ): FieldDataType {
     const fieldType = new FieldType(type, params);
 
+    // mixed
     if (fieldType.type === "schema") {
       const subSchemaFields = this.mapToSchemaInputFields(
         fieldType.params as SimpleSchemaConfig,
       );
 
       return { type: DATA_TYPES.MIXED, object: subSchemaFields };
-    } else {
+    }
+
+    // sequence
+    else if (fieldType.type === "sequence") {
+      const config = new SequenceValueField(fieldType.params);
+
+      return {
+        type: DATA_TYPES.SEQUENCE,
+        startsWith: config.startsWith,
+        step: config.step,
+      };
+    }
+
+    // sequential
+    else if (fieldType.type === "sequential") {
+      const config = new SequentialValueField(fieldType.params);
+
+      return { type: DATA_TYPES.SEQUENTIAL, values: config.values };
+    }
+
+    // enum
+    else if (fieldType.type === "enum") {
+      const config = new EnumValueField(fieldType.params);
+
+      return { type: DATA_TYPES.ENUM, values: config.values };
+    }
+
+    // schema value
+    else {
       const dataType = this.mapTypeStringToDataType(fieldType);
+
       return dataType;
     }
   }
