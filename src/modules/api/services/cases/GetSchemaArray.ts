@@ -7,7 +7,7 @@ export class GetSchemaArray {
   constructor(private readonly datasetService: DatasetService) {}
 
   public execute(schemaConfig: CompleteSchemaConfig) {
-    const schemaFields = new SchemaInput(schemaConfig.schema).getFields();
+    const schemaFields = new SchemaInput(schemaConfig.schema).fields();
     const count = new SchemaLimit(schemaConfig.count).value;
     const schema = this.datasetService.buildSchema(schemaFields);
 
