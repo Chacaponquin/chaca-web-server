@@ -4,7 +4,6 @@ import {
 } from "@modules/api/dto/schema_config";
 import { InvalidSchemaException } from "@modules/api/exceptions";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
-import { FieldParams } from "./FieldParams";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import {
   FieldIsArray,
@@ -13,12 +12,12 @@ import {
 } from "@modules/dataset/services/value_object/field_config";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
-import { SchemaOption } from "./SchemaOption";
 import {
   EnumValueField,
   SequenceValueField,
   SequentialValueField,
 } from "@modules/dataset/services/value_object/field_type";
+import { StringSchemaValue } from "./StringSchemaValue";
 
 export class SchemaInput {
   private _value?: SimpleSchemaConfig;
@@ -49,20 +48,20 @@ export class SchemaInput {
     const schemaFields = [] as Array<InputDatasetFieldDTO>;
 
     for (const [fieldKey, fieldConfig] of Object.entries(schema)) {
-      const fieldName = new FieldName(fieldKey).value;
+      const fieldName = new FieldName(fieldKey);
 
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray();
         const fieldPossibleNull = new FieldPosibleNull();
         const fieldType = new FieldType(fieldConfig);
 
-        const fieldDataType = this.mapTypeStringToDataType(fieldType);
+        const fieldDataType = new StringSchemaValue(fieldType);
 
         schemaFields.push({
-          name: fieldName,
+          name: fieldName.value,
           isArray: fieldIsArray.value,
           isPossibleNull: fieldPossibleNull.value,
-          dataType: fieldDataType,
+          dataType: fieldDataType.value(),
         });
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
@@ -73,7 +72,7 @@ export class SchemaInput {
         );
 
         schemaFields.push({
-          name: fieldName,
+          name: fieldName.value,
           isArray: fieldIsArray.value,
           isPossibleNull: fieldPosibleNull.value,
           dataType: fieldDataType,
@@ -126,41 +125,8 @@ export class SchemaInput {
 
     // schema value
     else {
-      const dataType = this.mapTypeStringToDataType(fieldType);
-
-      return dataType;
-    }
-  }
-
-  private mapTypeStringToDataType(type: FieldType): FieldDataType {
-    const indexFirstArgument = type.type.indexOf("<");
-
-    if (indexFirstArgument !== -1) {
-      const argsString = type.type.slice(indexFirstArgument).trim();
-      const schemaString = type.type.slice(0, indexFirstArgument);
-
-      const args = new FieldParams(argsString).value;
-      const option = new SchemaOption(schemaString);
-
-      return {
-        type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: {
-          args: { ...type.params, ...args },
-          parent: option.schema,
-          type: option.option,
-        },
-      };
-    } else {
-      const option = new SchemaOption(type.type);
-
-      return {
-        type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: {
-          args: type.params,
-          parent: option.schema,
-          type: option.option,
-        },
-      };
+      const dataType = new StringSchemaValue(fieldType);
+      return dataType.value();
     }
   }
 
