@@ -11,9 +11,16 @@ export class SequenceValueField implements ISchemaField {
   private _startsWith: number;
   private _step: number;
 
-  constructor({ startsWith, step }: SequenceProps) {
-    this._startsWith = new StartsWith(startsWith).value();
-    this._step = new Step(step).value();
+  constructor(props: SequenceProps) {
+    if (typeof props === "object" && props !== null) {
+      const { startsWith, step } = props;
+
+      this._startsWith = new StartsWith(startsWith).value();
+      this._step = new Step(step).value();
+    } else {
+      this._startsWith = new StartsWith().value();
+      this._step = new Step().value();
+    }
   }
 
   get startsWith() {

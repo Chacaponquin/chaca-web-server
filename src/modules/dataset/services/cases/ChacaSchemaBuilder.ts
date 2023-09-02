@@ -8,7 +8,7 @@ import { ChacaSchema, SchemaInputField, chaca } from "chaca";
 import {
   FieldIsArray,
   FieldName,
-  FieldPosibleNull,
+  FieldPossibleNull,
 } from "../value_object/field_config";
 import {
   CustomValueField,
@@ -27,20 +27,20 @@ export class ChacaSchemaBuilder {
     let schemaFields: Record<string, SchemaInputField> = {};
 
     for (const field of datasetFields) {
-      const fieldName = new FieldName(field.name).value;
-      const fieldType = this.mapDataTypeToField(field.dataType).getField();
-      const fieldIsArray = new FieldIsArray(field.isArray).value;
-      const fieldPosibleNull = new FieldPosibleNull(field.isPossibleNull).value;
+      const fieldName = new FieldName(field.name);
+      const fieldType = this.mapDataTypeToField(field.dataType);
+      const fieldIsArray = new FieldIsArray(field.isArray);
+      const fieldPossibleNull = new FieldPossibleNull(field.isPossibleNull);
 
       const fieldConfig = {
-        type: fieldType,
-        isArray: fieldIsArray,
-        possibleNull: fieldPosibleNull,
+        type: fieldType.getField(),
+        isArray: fieldIsArray.value,
+        possibleNull: fieldPossibleNull.value,
       } as SchemaInputField;
 
       schemaFields = {
         ...schemaFields,
-        [fieldName]: fieldConfig,
+        [fieldName.value]: fieldConfig,
       };
     }
 

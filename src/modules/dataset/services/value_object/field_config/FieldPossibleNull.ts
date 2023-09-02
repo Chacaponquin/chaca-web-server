@@ -1,4 +1,4 @@
-export class FieldPosibleNull {
+export class FieldPossibleNull {
   private _value = 0;
 
   constructor(value?: number) {

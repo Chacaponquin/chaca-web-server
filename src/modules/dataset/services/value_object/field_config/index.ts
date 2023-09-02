@@ -1,5 +1,5 @@
 import { FieldName } from "./FieldName";
-import { FieldPosibleNull } from "./FieldPosibleNull";
+import { FieldPossibleNull } from "./FieldPossibleNull";
 import { FieldIsArray } from "./FieldsArray";
 
-export { FieldIsArray, FieldName, FieldPosibleNull };
+export { FieldIsArray, FieldName, FieldPossibleNull };

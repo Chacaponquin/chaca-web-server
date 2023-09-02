@@ -8,7 +8,7 @@ import { FieldDataType } from "@modules/dataset/dto/data_type";
 import {
   FieldIsArray,
   FieldName,
-  FieldPosibleNull,
+  FieldPossibleNull,
 } from "@modules/dataset/services/value_object/field_config";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
@@ -52,7 +52,7 @@ export class SchemaInput {
 
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray();
-        const fieldPossibleNull = new FieldPosibleNull();
+        const fieldPossibleNull = new FieldPossibleNull();
         const fieldType = new FieldType(fieldConfig);
 
         const fieldDataType = new StringSchemaValue(fieldType);
@@ -65,7 +65,7 @@ export class SchemaInput {
         });
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
-        const fieldPosibleNull = new FieldPosibleNull(fieldConfig.posibleNull);
+        const fieldPosibleNull = new FieldPossibleNull(fieldConfig.posibleNull);
         const fieldDataType = this.mapSchemaConfigToDataType(
           fieldConfig.fieldType,
           fieldConfig.params,
@@ -130,7 +130,7 @@ export class SchemaInput {
     }
   }
 
-  public getFields() {
+  public fields() {
     return this.mapToSchemaInputFields(this._value);
   }
 }

@@ -6,7 +6,7 @@ export class GetSchemaObject {
   constructor(private readonly datasetService: DatasetService) {}
 
   public execute(schemaConfigInput?: SimpleSchemaConfig) {
-    const schemaFields = new SchemaInput(schemaConfigInput).getFields();
+    const schemaFields = new SchemaInput(schemaConfigInput).fields();
     const schema = this.datasetService.buildSchema(schemaFields);
 
     return schema.generateObject();
