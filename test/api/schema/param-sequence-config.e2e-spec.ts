@@ -3,7 +3,6 @@ import { HttpStatus, INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import * as request from "supertest";
 
-
 describe("Create schemas with sequence fields in configuration", () => {
   let app: INestApplication;
 
@@ -37,7 +36,6 @@ describe("Create schemas with sequence fields in configuration", () => {
 
         expect(response.body).toHaveProperty("id");
         expect(response.body.id).toBe(1);
-        
       })
       .end(done);
   });

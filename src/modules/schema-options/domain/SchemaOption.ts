@@ -32,7 +32,7 @@ export class SchemaOption {
     return this._schemaField;
   }
 
-  get showName(){
-    return chaca.utils.camelCase(this._name)
+  get showName() {
+    return chaca.utils.camelCase(this._name);
   }
 }
