@@ -4,7 +4,7 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 @Schema()
 class UserMessage {
   @Prop({ required: true })
-  name: string;
+  title: string;
   @Prop({
     required: true,
     validate: {
@@ -13,7 +13,7 @@ class UserMessage {
       },
     },
   })
-  userEmail: string;
+  email: string;
   @Prop({ required: true })
   message: string;
 }

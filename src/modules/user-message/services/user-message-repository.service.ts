@@ -7,9 +7,9 @@ import { UserMessage } from "../domain/UserMessage";
 export class UserMessageRepository {
   constructor(private readonly mongoRepository: UserMessageMongoRepository) {}
 
-  public async create(createUserMessageDTO: CreateUserMessageDTO) {
-    const newUser = await this.mongoRepository.create(createUserMessageDTO);
-    return newUser;
+  public async create(dto: CreateUserMessageDTO) {
+    const newMessage = await this.mongoRepository.create(dto);
+    return newMessage;
   }
 
   public async findById(id: string): Promise<UserMessage | null> {

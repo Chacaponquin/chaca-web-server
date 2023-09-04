@@ -13,14 +13,15 @@ export class UserMessageMongoRepository {
     private readonly model: Model<IUserMessage>,
   ) {}
 
-  public async create(
-    createUserMessageDTO: CreateUserMessageDTO,
-  ): Promise<UserMessage> {
-    const { message, name, userEmail } = createUserMessageDTO;
-    const newMessage = new this.model({ userEmail, name, message });
+  public async create(createDTO: CreateUserMessageDTO): Promise<UserMessage> {
+    const newMessage = new this.model({
+      message: createDTO.message,
+      email: createDTO.email,
+      title: createDTO.title,
+    });
 
     try {
-      const returnMessage = this._mapToUserMessage(newMessage);
+      const returnMessage = this.map(newMessage);
       await newMessage.save();
       return returnMessage;
     } catch (error) {
@@ -31,7 +32,7 @@ export class UserMessageMongoRepository {
 
   public async findById(id: string): Promise<UserMessage | null> {
     const foundUser = await this.model.findById(id);
-    return foundUser === null ? null : this._mapToUserMessage(foundUser);
+    return foundUser === null ? null : this.map(foundUser);
   }
 
   public async delete(messageID: string): Promise<void> {
@@ -42,12 +43,12 @@ export class UserMessageMongoRepository {
     await this.model.deleteMany({});
   }
 
-  private _mapToUserMessage(message: IUserMessage): UserMessage {
+  private map(message: IUserMessage): UserMessage {
     const returnMessage = new UserMessage({
       id: message.id,
       message: message.message,
-      name: message.name,
-      userEmail: message.userEmail,
+      title: message.title,
+      email: message.email,
     });
 
     return returnMessage;
