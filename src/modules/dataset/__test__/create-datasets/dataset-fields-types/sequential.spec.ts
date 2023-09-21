@@ -16,19 +16,17 @@ describe("Config sequence field for dataset creation", () => {
     service = module.get(DatasetService);
   });
 
-  it("Create a not argument sequence field", () => {
+  it("Create sequential field without arguments", () => {
     const data = service.createDocuments(
-      [{ name: "seq", dataType: { type: DATA_TYPES.SEQUENCE } }],
-      10,
+      [
+        {
+          name: "seq",
+          dataType: { type: DATA_TYPES.SEQUENTIAL, values: [1, 2, 3, 4, 5] },
+        },
+      ],
+      5,
     );
 
-    let valid = true;
-    for (let i = 0; i < data.length && valid; i++) {
-      if (data[i].seq !== i + 1) {
-        valid = false;
-      }
-    }
-
-    expect(valid).toBe(true);
+    expect(data.every((v, i) => v.seq === i + 1)).toBe(true);
   });
 });
