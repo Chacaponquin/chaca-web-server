@@ -1885,10 +1885,10 @@ caniuse-lite@^1.0.30001400:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001442.tgz"
   integrity sha512-239m03Pqy0hwxYPYR5JwOIxRJfLTWtle9FV8zosfV5pHg+/51uD4nxcUlM8+mWWGfwKtt8lJNHnD3cWw9VZ6ow==
 
-chaca@^1.6.0:
-  version "1.6.0"
-  resolved "https://registry.npmjs.org/chaca/-/chaca-1.6.0.tgz"
-  integrity sha512-BZ44HwF1J4vtNw4hLV9doaRHjC+zEv4KjnRbaUErD1KL/4XO2roG3+Y2cQLpbdM7PTud+wX7padcKScgqy8SmA==
+chaca@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.npmjs.org/chaca/-/chaca-1.6.2.tgz"
+  integrity sha512-ba3BcOs9+D2KafS0pYpqyLN7Ph1NMcyefPMN0M0CZ2a1+2HfFEtokUDKbrPNLymqS7nOUg4Jbn9MCWjRo+SKZg==
   dependencies:
     adm-zip "^0.5.9"
     lorem-ipsum "^2.0.8"

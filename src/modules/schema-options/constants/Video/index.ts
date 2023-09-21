@@ -60,7 +60,7 @@ export const VideoOptions: SchemaOption[] = [
   }),
   new SchemaOption({
     name: "3D",
-    schemaField: () => schemas.video.treeDimension(),
+    schemaField: () => schemas.video.threeDimension(),
   }),
   new SchemaOption({
     name: "Wallpaper",

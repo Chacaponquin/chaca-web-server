@@ -4,7 +4,7 @@ import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema, SchemaInputField, chaca } from "chaca";
+import { ChacaSchema, chaca, FieldSchemaConfig } from "chaca";
 import {
   FieldIsArray,
   FieldName,
@@ -24,7 +24,7 @@ export class ChacaSchemaBuilder {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public execute(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {
-    let schemaFields: Record<string, SchemaInputField> = {};
+    const schemaFields: Record<string, FieldSchemaConfig> = {};
 
     for (const field of datasetFields) {
       const fieldName = new FieldName(field.name);
@@ -32,16 +32,13 @@ export class ChacaSchemaBuilder {
       const fieldIsArray = new FieldIsArray(field.isArray);
       const fieldPossibleNull = new FieldPossibleNull(field.isPossibleNull);
 
-      const fieldConfig = {
+      const fieldConfig: FieldSchemaConfig = {
         type: fieldType.getField(),
         isArray: fieldIsArray.value,
         possibleNull: fieldPossibleNull.value,
-      } as SchemaInputField;
-
-      schemaFields = {
-        ...schemaFields,
-        [fieldName.value]: fieldConfig,
       };
+
+      schemaFields[fieldName.value] = fieldConfig;
     }
 
     const schema = chaca.schema(schemaFields);

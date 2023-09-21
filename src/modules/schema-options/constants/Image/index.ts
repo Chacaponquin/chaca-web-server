@@ -68,7 +68,7 @@ export const ImageOptions: SchemaOption[] = [
   }),
   new SchemaOption({
     name: "3D",
-    schemaField: () => schemas.image.treeDimension(),
+    schemaField: () => schemas.image.threeDimension(),
   }),
   new SchemaOption({
     name: "Wallpaper",

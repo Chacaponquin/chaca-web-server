@@ -2,7 +2,7 @@ import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 
-export class CreateSingleDataset {
+export class CreateSingleDocument {
   constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
 
   public execute(datasetFields: Array<InputDatasetFieldDTO>) {

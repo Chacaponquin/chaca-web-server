@@ -4,7 +4,8 @@ import {
   ChacaSchemaBuilder,
   CreateAndExportDatasets,
   CreateDatasets,
-  CreateSingleDataset,
+  CreateDocuments,
+  CreateSingleDocument,
 } from "./cases";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { ChacaSchema } from "chaca";
@@ -19,9 +20,17 @@ export class DatasetService {
     return useCase.execute(datasetsConfig);
   }
 
-  public createSingleDataset(datasetFields: Array<InputDatasetFieldDTO>) {
-    const useCase = new CreateSingleDataset(this.schemaOptionsServices);
+  public createSingleDocument(datasetFields: Array<InputDatasetFieldDTO>) {
+    const useCase = new CreateSingleDocument(this.schemaOptionsServices);
     return useCase.execute(datasetFields);
+  }
+
+  public createDocuments(
+    datasetFields: Array<InputDatasetFieldDTO>,
+    count: number,
+  ) {
+    const useCase = new CreateDocuments(this.schemaOptionsServices);
+    return useCase.execute({ count, fields: datasetFields });
   }
 
   public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {

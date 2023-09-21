@@ -38,8 +38,8 @@ export type DefinedValueType = {
 
 export type SequenceDataType = {
   type: DATA_TYPES.SEQUENCE;
-  startsWith: number;
-  step: number;
+  startsWith?: number;
+  step?: number;
 };
 
 export type SequentialDataType = {

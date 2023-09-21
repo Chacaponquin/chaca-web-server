@@ -3,7 +3,7 @@ import {
   NORMAL_USER_LIMITS,
   SUPER_USER_LIMITS,
 } from "../constants/USER_LIMITS.enum";
-import { UserEmail, UserImage, UserName } from "../value-object";
+import { UserEmail, UserImage, Username } from "../value-object";
 
 export type UserParams = {
   username: string;
@@ -41,7 +41,7 @@ export abstract class User {
     this._image = new UserImage(image).value;
     this._isSuperUser = isSuperUser;
     this._models = models;
-    this._username = new UserName(username).value;
+    this._username = new Username(username).value;
     this._email = new UserEmail(email).value;
     this._modelsId = modelsId;
   }

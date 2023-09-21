@@ -19,7 +19,7 @@ describe("Config enum field for dataset creation", () => {
 
   it("Pass an empty array of values. Should throw an error", () => {
     expect(() =>
-      service.createSingleDataset([
+      service.createSingleDocument([
         { name: "id", dataType: { type: DATA_TYPES.ENUM, values: [] } },
       ]),
     ).toThrow(IncorrectDefinedFieldDataTypeException);
@@ -28,7 +28,7 @@ describe("Config enum field for dataset creation", () => {
   it("Pass an array of values", () => {
     const values = [1, 2, 3, 4, 5];
 
-    const data = service.createSingleDataset([
+    const data = service.createSingleDocument([
       { name: "number", dataType: { type: DATA_TYPES.ENUM, values } },
     ]);
 
@@ -37,7 +37,7 @@ describe("Config enum field for dataset creation", () => {
 
   it("Pass a not array values. Should throw an error", () => {
     expect(() =>
-      service.createSingleDataset([
+      service.createSingleDocument([
         {
           name: "number",
           dataType: { type: DATA_TYPES.ENUM, values: 5 as any },

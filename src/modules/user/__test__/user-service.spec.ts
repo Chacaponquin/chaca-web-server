@@ -11,7 +11,7 @@ import { GithubUser, GoogleUser, SimpleUser } from "../domain/User";
 import {
   InvalidUserEmailException,
   InvalidUserPasswordException,
-  InvalidUsernameException,
+  InvalidusernameException,
   RepeatUserEmailError,
 } from "../exceptions";
 import { schemas } from "chaca";
@@ -41,7 +41,7 @@ describe("# User Service Tests", () => {
       const params: CreateGithubUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: schemas.image.people().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const newUser = await service.createGithubUser(params);
@@ -55,13 +55,13 @@ describe("# User Service Tests", () => {
       const params1: CreateGithubUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: null,
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const params2: CreateGithubUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: "   ",
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const newUser1 = await service.createGithubUser(params1);
@@ -85,7 +85,7 @@ describe("# User Service Tests", () => {
       const params: CreateGoogleUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: schemas.image.people().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const newUser = await service.createGoogleUser(params);
@@ -99,13 +99,13 @@ describe("# User Service Tests", () => {
       const params1: CreateGithubUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: null,
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const params2: CreateGithubUserDTO = {
         email: schemas.internet.email().getValue(),
         picture: "   ",
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const newUser1 = await service.createGoogleUser(params1);
@@ -148,14 +148,14 @@ describe("# User Service Tests", () => {
 
       await expect(
         async () => await service.createSimpleUser(params),
-      ).rejects.toThrow(InvalidUsernameException);
+      ).rejects.toThrow(InvalidusernameException);
     });
 
     it("Create user with empty password. Should throw an error", async () => {
       const params: CreateSimpleUserDTO = {
         email: schemas.internet.email().getValue(),
         password: "",
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       await expect(
@@ -167,7 +167,7 @@ describe("# User Service Tests", () => {
       const params: CreateSimpleUserDTO = {
         email: "",
         password: schemas.internet.password().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       await expect(
@@ -179,7 +179,7 @@ describe("# User Service Tests", () => {
       const params: CreateSimpleUserDTO = {
         email: schemas.internet.email().getValue(),
         password: schemas.internet.password().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const newUser = await service.createSimpleUser(params);

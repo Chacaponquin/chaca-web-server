@@ -19,7 +19,7 @@ describe("Config field name tests in dataset creation", () => {
 
   it("Pass an empty string. Should throw an error", () => {
     expect(() =>
-      service.createSingleDataset([
+      service.createSingleDocument([
         { name: "", dataType: { type: DATA_TYPES.ENUM, values: [] } },
       ]),
     ).toThrowError(IncorrectFieldNameException);
@@ -27,19 +27,19 @@ describe("Config field name tests in dataset creation", () => {
 
   it("Pass a '  '. Should throw an error", () => {
     expect(() =>
-      service.createSingleDataset([
+      service.createSingleDocument([
         { name: "     ", dataType: { type: DATA_TYPES.ENUM, values: [] } },
       ]),
     ).toThrowError(IncorrectFieldNameException);
   });
 
   it("Pass two fields with the same name should return an object with only 1 field. Should throw an error", () => {
-    const dataset = service.createSingleDataset([
+    const dataset = service.createSingleDocument([
       { name: "id", dataType: { type: DATA_TYPES.MIXED, object: [] } },
       { name: "id", dataType: { type: DATA_TYPES.MIXED, object: [] } },
     ]);
 
-    const dataset2 = service.createSingleDataset([
+    const dataset2 = service.createSingleDocument([
       { name: "  id ", dataType: { type: DATA_TYPES.MIXED, object: [] } },
       {
         name: "id            ",

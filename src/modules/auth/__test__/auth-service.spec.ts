@@ -8,7 +8,7 @@ import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
 import {
   InvalidUserEmailException,
   InvalidUserPasswordException,
-  InvalidUsernameException,
+  InvalidusernameException,
 } from "@modules/user/exceptions";
 import { NotFoundUserToLoginException } from "../exceptions";
 
@@ -42,7 +42,7 @@ describe("# Auth Service Tests", () => {
       const userParams: CreateSimpleUserDTO = {
         email: userEmail,
         password: userPassword,
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const regToken = await authService.signUp(userParams);
@@ -64,7 +64,7 @@ describe("# Auth Service Tests", () => {
       const userParams: CreateSimpleUserDTO = {
         email: userEmail,
         password: userPassword,
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const regToken = await authService.signUp(userParams);
@@ -103,14 +103,14 @@ describe("# Auth Service Tests", () => {
 
       await expect(
         async () => await authService.signUp(params),
-      ).rejects.toThrow(InvalidUsernameException);
+      ).rejects.toThrow(InvalidusernameException);
     });
 
     it("Create user with empty password. Should throw an error", async () => {
       const params: CreateSimpleUserDTO = {
         email: schemas.internet.email().getValue(),
         password: "",
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       await expect(
@@ -122,7 +122,7 @@ describe("# Auth Service Tests", () => {
       const params: CreateSimpleUserDTO = {
         email: "",
         password: schemas.internet.password().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       await expect(
@@ -134,7 +134,7 @@ describe("# Auth Service Tests", () => {
       const params: CreateSimpleUserDTO = {
         email: schemas.internet.email().getValue(),
         password: schemas.internet.password().getValue(),
-        username: schemas.internet.userName().getValue(),
+        username: schemas.internet.username().getValue(),
       };
 
       const token = await authService.signUp(params);
