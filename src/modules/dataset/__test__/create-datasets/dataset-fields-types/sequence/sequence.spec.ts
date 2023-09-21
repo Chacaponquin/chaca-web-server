@@ -17,10 +17,10 @@ describe("Config sequence field for dataset creation", () => {
   });
 
   it("Create a not argument sequence field", () => {
-    const data = service.createDocuments(
-      [{ name: "seq", dataType: { type: DATA_TYPES.SEQUENCE } }],
-      10,
-    );
+    const data = service.createDocuments({
+      datasetFields: [{ name: "seq", dataType: { type: DATA_TYPES.SEQUENCE } }],
+      count: 10,
+    });
 
     let valid = true;
     for (let i = 0; i < data.length && valid; i++) {

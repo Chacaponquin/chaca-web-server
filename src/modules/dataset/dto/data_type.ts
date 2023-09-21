@@ -33,7 +33,7 @@ export type CustomDataType = {
 export type DefinedValueType = {
   parent: string;
   type: string;
-  args: Record<string, unknown>;
+  args?: Record<string, unknown>;
 };
 
 export type SequenceDataType = {

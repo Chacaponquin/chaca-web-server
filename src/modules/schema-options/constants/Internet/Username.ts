@@ -4,7 +4,7 @@ import { schemas } from "chaca";
 
 export default new SchemaOption({
   schemaField: (a) => schemas.internet.username(a),
-  name: "User Name",
+  name: "Username",
   args: [
     {
       argument: "firstName",

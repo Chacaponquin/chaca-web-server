@@ -17,15 +17,15 @@ describe("Config sequence field for dataset creation", () => {
   });
 
   it("Create sequential field without arguments", () => {
-    const data = service.createDocuments(
-      [
+    const data = service.createDocuments({
+      datasetFields: [
         {
           name: "seq",
           dataType: { type: DATA_TYPES.SEQUENTIAL, values: [1, 2, 3, 4, 5] },
         },
       ],
-      5,
-    );
+      count: 5,
+    });
 
     expect(data.every((v, i) => v.seq === i + 1)).toBe(true);
   });

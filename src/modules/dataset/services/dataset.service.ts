@@ -25,10 +25,13 @@ export class DatasetService {
     return useCase.execute(datasetFields);
   }
 
-  public createDocuments(
-    datasetFields: Array<InputDatasetFieldDTO>,
-    count: number,
-  ) {
+  public createDocuments({
+    count,
+    datasetFields,
+  }: {
+    datasetFields: Array<InputDatasetFieldDTO>;
+    count: number;
+  }) {
     const useCase = new CreateDocuments(this.schemaOptionsServices);
     return useCase.execute({ count, fields: datasetFields });
   }
