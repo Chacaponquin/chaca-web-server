@@ -22,7 +22,7 @@ describe("Config 'isArray' in dataset fields", () => {
       {
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { args: {}, option: "uuid", schema: "id" },
         },
         name: "id",
       },
@@ -38,7 +38,7 @@ describe("Config 'isArray' in dataset fields", () => {
           isArray: { min: 20, max: 10 },
           dataType: {
             type: DATA_TYPES.SINGLE_VALUE,
-            fieldType: { args: {}, type: "uuid", parent: "id" },
+            fieldType: { args: {}, option: "uuid", schema: "id" },
           },
           name: "id",
         },
@@ -53,7 +53,7 @@ describe("Config 'isArray' in dataset fields", () => {
           isArray: { min: -20, max: 10 },
           dataType: {
             type: DATA_TYPES.SINGLE_VALUE,
-            fieldType: { args: {}, type: "uuid", parent: "id" },
+            fieldType: { args: {}, option: "uuid", schema: "id" },
           },
           name: "id",
         },
@@ -66,7 +66,7 @@ describe("Config 'isArray' in dataset fields", () => {
           isArray: { max: -10 },
           dataType: {
             type: DATA_TYPES.SINGLE_VALUE,
-            fieldType: { args: {}, type: "uuid", parent: "id" },
+            fieldType: { args: {}, option: "uuid", schema: "id" },
           },
           name: "id",
         },
@@ -80,7 +80,7 @@ describe("Config 'isArray' in dataset fields", () => {
         isArray: { max: 20, min: 10 },
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { args: {}, option: "uuid", schema: "id" },
         },
         name: "id",
       },
@@ -96,7 +96,7 @@ describe("Config 'isArray' in dataset fields", () => {
         isArray: { min: 10 },
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { args: {}, option: "uuid", schema: "id" },
         },
         name: "id",
       },
@@ -111,7 +111,7 @@ describe("Config 'isArray' in dataset fields", () => {
         isArray: { max: 5 },
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { args: {}, option: "uuid", schema: "id" },
         },
         name: "id",
       },
@@ -126,7 +126,7 @@ describe("Config 'isArray' in dataset fields", () => {
         isArray: 0,
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { args: {}, option: "uuid", schema: "id" },
         },
         name: "id",
       },
@@ -141,7 +141,7 @@ describe("Config 'isArray' in dataset fields", () => {
         isArray: 5,
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { args: {}, type: "uuid", parent: "id" },
+          fieldType: { option: "uuid", schema: "id" },
         },
         name: "id",
       },

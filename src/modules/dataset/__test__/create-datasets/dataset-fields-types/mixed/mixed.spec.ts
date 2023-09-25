@@ -28,8 +28,8 @@ describe("Config mixed field for dataset creation", () => {
               dataType: {
                 type: DATA_TYPES.SINGLE_VALUE,
                 fieldType: {
-                  parent: "id",
-                  type: "uuid",
+                  schema: "id",
+                  option: "uuid",
                 },
               },
             },
@@ -37,7 +37,7 @@ describe("Config mixed field for dataset creation", () => {
               name: "username",
               dataType: {
                 type: DATA_TYPES.SINGLE_VALUE,
-                fieldType: { parent: "internet", type: "username" },
+                fieldType: { schema: "internet", option: "username" },
               },
             },
           ],

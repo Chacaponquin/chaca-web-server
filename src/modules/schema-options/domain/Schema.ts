@@ -32,6 +32,6 @@ export class Schema {
   }
 
   public equal(name: string) {
-    return this._stringToCompare(name) === this._stringToCompare(name);
+    return this._stringToCompare(this.name) === this._stringToCompare(name);
   }
 }

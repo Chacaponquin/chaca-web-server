@@ -33,9 +33,9 @@ describe("Test find schema option", () => {
   });
 
   it("Pass a not exist schema option. Should throw an error", () => {
-    expect(() => service.findSchemaOption("id", "uid")).toThrow(
-      NotFoundOptionError,
-    );
+    expect(() => {
+      service.findSchemaOption("id", "uid");
+    }).toThrow(NotFoundOptionError);
   });
 
   it("Pass a not existing schema. Should throw error", () => {

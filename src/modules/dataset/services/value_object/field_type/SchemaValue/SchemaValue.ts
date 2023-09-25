@@ -17,8 +17,8 @@ export class DefinedValueField implements ISchemaField {
   ) {
     try {
       const foundOption = this.schemaOptionsServices.findSchemaOption(
-        definedValue.parent,
-        definedValue.type,
+        definedValue.schema,
+        definedValue.option,
       );
 
       this._schemaField = foundOption.schemaField(definedValue.args || {});

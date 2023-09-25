@@ -22,7 +22,7 @@ describe("Config mixed field for dataset creation", () => {
         name: "id",
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
-          fieldType: { parent: "id", type: "uuid" },
+          fieldType: { schema: "id", option: "uuid" },
         },
       },
     ]);

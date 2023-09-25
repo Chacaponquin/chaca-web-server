@@ -25,8 +25,8 @@ export class StringSchemaValue {
         type: DATA_TYPES.SINGLE_VALUE,
         fieldType: {
           args: { ...this._type.params, ...args.value },
-          parent: option.schema,
-          type: option.option,
+          schema: option.schema,
+          option: option.option,
         },
       };
     } else {
@@ -36,8 +36,8 @@ export class StringSchemaValue {
         type: DATA_TYPES.SINGLE_VALUE,
         fieldType: {
           args: this._type.params,
-          parent: option.schema,
-          type: option.option,
+          schema: option.schema,
+          option: option.option,
         },
       };
     }

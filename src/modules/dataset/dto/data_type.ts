@@ -31,8 +31,8 @@ export type CustomDataType = {
 };
 
 export type DefinedValueType = {
-  parent: string;
-  type: string;
+  schema: string;
+  option: string;
   args?: Record<string, unknown>;
 };
 
