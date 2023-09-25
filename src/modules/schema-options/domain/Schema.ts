@@ -26,4 +26,12 @@ export class Schema {
   public get showName() {
     return chaca.utils.camelCase(this._name);
   }
+
+  private _stringToCompare(name: string): string {
+    return chaca.utils.camelCase(name).trim().toLowerCase();
+  }
+
+  public equal(name: string) {
+    return this._stringToCompare(name) === this._stringToCompare(name);
+  }
 }

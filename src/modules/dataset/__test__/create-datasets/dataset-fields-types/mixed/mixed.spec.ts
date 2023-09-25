@@ -3,7 +3,7 @@ import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
 
-describe("Config sequence field for dataset creation", () => {
+describe("Config mixed field for dataset creation", () => {
   let service: DatasetService;
 
   beforeEach(async () => {

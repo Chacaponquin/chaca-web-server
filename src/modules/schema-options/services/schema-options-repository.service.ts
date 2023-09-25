@@ -18,10 +18,7 @@ export class SchemaOptionsRepository {
 
   public findSchema(schema: string): Schema | null {
     const allSchemas = this.allSchemas();
-    const foundSchema = allSchemas.find(
-      (s) =>
-        this._stringToCompareName(s.name) === this._stringToCompareName(schema),
-    );
+    const foundSchema = allSchemas.find((s) => s.equal(schema));
 
     return foundSchema ? foundSchema : null;
   }
@@ -30,9 +27,7 @@ export class SchemaOptionsRepository {
     const foundSchema = this.findSchema(schema);
 
     if (foundSchema) {
-      const findOption = foundSchema.options.find(
-        (o) => chaca.utils.camelCase(o.name) === chaca.utils.camelCase(option),
-      );
+      const findOption = foundSchema.options.find((o) => o.equal(option));
 
       if (findOption) {
         return findOption;
