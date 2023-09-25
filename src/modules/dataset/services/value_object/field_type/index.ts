@@ -1,5 +1,6 @@
 import { CustomValueField } from "./Custom/Custom";
 import { EnumValueField } from "./Enum/Enum";
+import { KeyValueField } from "./Key/Key";
 import { MixedValueField } from "./Mixed/Mixed";
 import { RefValueField } from "./Ref/Ref";
 import { DefinedValueField } from "./SchemaValue/SchemaValue";
@@ -14,4 +15,5 @@ export {
   DefinedValueField,
   SequenceValueField,
   SequentialValueField,
+  KeyValueField,
 };

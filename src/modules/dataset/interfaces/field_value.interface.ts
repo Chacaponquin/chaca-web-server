@@ -2,6 +2,7 @@ import {
   ChacaSchema,
   CustomField,
   EnumField,
+  KeyField,
   RefField,
   SchemaField,
   SequenceField,
@@ -16,5 +17,6 @@ export interface ISchemaField {
     | CustomField
     | SequenceField
     | SequentialField
-    | EnumField;
+    | EnumField
+    | KeyField;
 }

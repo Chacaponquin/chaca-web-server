@@ -14,6 +14,7 @@ import {
   CustomValueField,
   DefinedValueField,
   EnumValueField,
+  KeyValueField,
   MixedValueField,
   RefValueField,
   SequenceValueField,
@@ -28,7 +29,7 @@ export class ChacaSchemaBuilder {
 
     for (const field of datasetFields) {
       const fieldName = new FieldName(field.name);
-      const fieldType = this.mapDataTypeToField(field.dataType);
+      const fieldType = this._mapDataTypeToField(field.dataType, field.isKey);
       const fieldIsArray = new FieldIsArray(field.isArray);
       const fieldPossibleNull = new FieldPossibleNull(field.isPossibleNull);
 
@@ -45,27 +46,59 @@ export class ChacaSchemaBuilder {
     return schema;
   }
 
-  private mapDataTypeToField(dataType: FieldDataType): ISchemaField {
+  private _mapDataTypeToField(
+    dataType: FieldDataType,
+    isKey?: boolean,
+  ): ISchemaField {
+    // defined value
     if (dataType.type === DATA_TYPES.SINGLE_VALUE) {
-      return new DefinedValueField(
+      const field = new DefinedValueField(
         this.schemaOptionsServices,
         dataType.fieldType,
       );
-    } else if (dataType.type === DATA_TYPES.REF) {
-      return new RefValueField(dataType.ref);
-    } else if (dataType.type === DATA_TYPES.CUSTOM) {
-      return new CustomValueField(dataType.code);
-    } else if (dataType.type === DATA_TYPES.MIXED) {
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // ref
+    else if (dataType.type === DATA_TYPES.REF) {
+      const field = new RefValueField(dataType.ref);
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // custom
+    else if (dataType.type === DATA_TYPES.CUSTOM) {
+      const field = new CustomValueField(dataType.code);
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // mixed
+    else if (dataType.type === DATA_TYPES.MIXED) {
       const schema = this.execute(dataType.object);
       return new MixedValueField(schema);
-    } else if (dataType.type === DATA_TYPES.SEQUENCE) {
-      return new SequenceValueField({
+    }
+
+    // sequence
+    else if (dataType.type === DATA_TYPES.SEQUENCE) {
+      const field = new SequenceValueField({
         startsWith: dataType.startsWith,
         step: dataType.step,
       });
-    } else if (dataType.type === DATA_TYPES.SEQUENTIAL) {
-      return new SequentialValueField(dataType.values);
-    } else if (dataType.type === DATA_TYPES.ENUM) {
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // sequential
+    else if (dataType.type === DATA_TYPES.SEQUENTIAL) {
+      const field = new SequentialValueField(dataType.values);
+
+      return field;
+    }
+
+    // enum
+    else if (dataType.type === DATA_TYPES.ENUM) {
       return new EnumValueField(dataType.values);
     } else {
       throw new IncorrectDefinedFieldDataTypeException(
