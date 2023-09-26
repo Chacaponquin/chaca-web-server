@@ -41,4 +41,25 @@ describe("Config enum field for dataset creation", () => {
 
     expect(data.custom).toBe("Hello world");
   });
+
+  it("Create a custom that returns the value of a existing field", () => {
+    const data = service.createSingleDocument([
+      {
+        name: "id",
+        dataType: {
+          type: DATA_TYPES.SINGLE_VALUE,
+          fieldType: { schema: "id", option: "uuid" },
+        },
+      },
+      {
+        name: "custom",
+        dataType: {
+          type: DATA_TYPES.CUSTOM,
+          code: `${START_FUNCTION_STRING} return props.currentFields.id }`,
+        },
+      },
+    ]);
+
+    expect(data.custom).toBe(data.id);
+  });
 });

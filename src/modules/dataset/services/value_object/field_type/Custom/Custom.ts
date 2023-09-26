@@ -5,8 +5,7 @@ import { CustomField, schemas } from "chaca";
 export class CustomValueField implements ISchemaField {
   private _fun: CustomField;
 
-  public static START_FUNCTION_STRING =
-    "function getValue({ schemas, currentFields, store }) {";
+  public static START_FUNCTION_STRING = "function getValue(props) {";
 
   constructor(stringFunction: string) {
     if (stringFunction.startsWith(CustomValueField.START_FUNCTION_STRING)) {
