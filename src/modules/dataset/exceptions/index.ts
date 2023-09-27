@@ -1,5 +1,11 @@
 import { HttpException, HttpStatus } from "@nestjs/common";
 
+export class DatasetCreationError extends HttpException {
+  constructor(msg: string) {
+    super(msg, HttpStatus.BAD_REQUEST);
+  }
+}
+
 export class IncorrectDefinedFieldDataTypeException extends HttpException {
   constructor(msg: string) {
     super(msg, HttpStatus.BAD_REQUEST);

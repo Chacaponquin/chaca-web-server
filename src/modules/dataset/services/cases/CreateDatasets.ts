@@ -1,21 +1,33 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
-import { chaca } from "chaca";
+import { NotExistFieldError, chaca } from "chaca";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { MultiGenerateSchema } from "chaca";
 import { SchemaLimit, SchemaName } from "../value_object/schema_config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
-import { RepeatDatasetNameException } from "@modules/dataset/exceptions";
+import {
+  DatasetCreationError,
+  RepeatDatasetNameException,
+} from "@modules/dataset/exceptions";
 
 export class CreateDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public execute(datasetsConfig: Array<InputDatasetDTO>) {
     const multiGenerateConfig = this.buildSchemas(datasetsConfig);
-    const allData = chaca.multiGenerate(multiGenerateConfig, {
-      verbose: false,
-    });
 
-    return allData;
+    try {
+      const allData = chaca.multiGenerate(multiGenerateConfig, {
+        verbose: false,
+      });
+
+      return allData;
+    } catch (error) {
+      if (error instanceof NotExistFieldError) {
+        throw new DatasetCreationError(error.message);
+      } else {
+        throw error;
+      }
+    }
   }
 
   public buildSchemas(
