@@ -8,13 +8,15 @@ export class CustomValueField implements ISchemaField {
   public static START_FUNCTION_STRING = "function getValue(props) {";
 
   constructor(stringFunction: string) {
-    if (stringFunction.startsWith(CustomValueField.START_FUNCTION_STRING)) {
-      const contentCode: string = stringFunction
-        .trim()
-        .slice(
-          CustomValueField.START_FUNCTION_STRING.length + 1,
-          stringFunction.lastIndexOf("}"),
-        );
+    const str = stringFunction.trim();
+    if (
+      str.startsWith(CustomValueField.START_FUNCTION_STRING) &&
+      str.endsWith("}")
+    ) {
+      const contentCode = str.slice(
+        CustomValueField.START_FUNCTION_STRING.length + 1,
+        stringFunction.lastIndexOf("}"),
+      );
 
       const func = new Function("props", contentCode);
 
