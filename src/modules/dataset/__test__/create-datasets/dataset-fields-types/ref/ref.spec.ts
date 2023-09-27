@@ -49,6 +49,37 @@ describe("Config enum field for dataset creation", () => {
     expect(datasets.Dataset2.some((v) => v === datasets.Dataset1[0]));
   });
 
+  it("Try ref a not key field. Should throw an error", () => {
+    const LIMIT = 30;
+    expect(() =>
+      service.createDatasets([
+        {
+          name: "Dataset1",
+          limit: LIMIT,
+          fields: [
+            {
+              name: "id",
+              dataType: {
+                type: DATA_TYPES.SINGLE_VALUE,
+                fieldType: { schema: "id", option: "uuid" },
+              },
+            },
+          ],
+        },
+        {
+          name: "Dataset2",
+          limit: LIMIT,
+          fields: [
+            {
+              name: "ref",
+              dataType: { type: DATA_TYPES.REF, ref: ["Dataset1.id"] },
+            },
+          ],
+        },
+      ]),
+    ).toThrow(DatasetCreationError);
+  });
+
   it("Ref a not existing dataset field. Should throw an error", () => {
     const LIMIT = 30;
     expect(() =>

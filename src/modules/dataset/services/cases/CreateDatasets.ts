@@ -1,7 +1,11 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
-import { NotExistFieldError, chaca } from "chaca";
+import {
+  NotExistFieldError,
+  chaca,
+  MultiGenerateSchema,
+  TryRefANoKeyFieldError,
+} from "chaca";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { MultiGenerateSchema } from "chaca";
 import { SchemaLimit, SchemaName } from "../value_object/schema_config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
 import {
@@ -23,6 +27,8 @@ export class CreateDatasets {
       return allData;
     } catch (error) {
       if (error instanceof NotExistFieldError) {
+        throw new DatasetCreationError(error.message);
+      } else if (error instanceof TryRefANoKeyFieldError) {
         throw new DatasetCreationError(error.message);
       } else {
         throw error;
