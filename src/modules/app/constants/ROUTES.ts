@@ -5,7 +5,7 @@ export const ROUTES = {
     GOOGLE_REDIRECT: "google/redirect",
     GITHUB: "github",
     GITHUB_REDIRECT: "github/redirect",
-    USER_BY_TOKEN: "userByToken",
+    USER_BY_TOKEN: "userToken",
     SIGN_UP: "signUp",
     SIGN_IN: "signIn",
   },
