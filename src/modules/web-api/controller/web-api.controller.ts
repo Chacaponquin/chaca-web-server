@@ -1,35 +1,36 @@
 import { Controller, Get, Param } from "@nestjs/common";
 import { UserService } from "src/modules/user/services/user.service";
 import { WebApiService } from "../services/web-api.service";
+import { ROUTES } from "@modules/app/constants";
 
-@Controller("web_api")
+@Controller(ROUTES.WEB_API.ROOT)
 export class WebApiController {
   constructor(
     private readonly services: WebApiService,
     private readonly userService: UserService,
   ) {}
 
-  @Get("/downloadData/:file")
+  @Get(ROUTES.WEB_API.DOWNLOAD_FILE)
   downloadFile(@Param("file") fileName: string) {
     return this.services.fileToDownload(fileName);
   }
 
-  @Get("/schemas")
+  @Get(ROUTES.WEB_API.SCHEMAS)
   getApiSchemas() {
     return this.services.getApiSchemas();
   }
 
-  @Get("/fileConfig")
+  @Get(ROUTES.WEB_API.FILE_CONFIG)
   getFileConfig() {
     return this.services.fileConfig();
   }
 
-  @Get("/faq")
+  @Get(ROUTES.WEB_API.FAQ)
   getFAQ() {
     return this.services.faq();
   }
 
-  @Get("/noUserLimits")
+  @Get(ROUTES.WEB_API.NO_USER_LIMITS)
   getNoUserLimits() {
     return this.userService.noUserLimits();
   }
