@@ -4,56 +4,68 @@ import { AuthGuard } from "@nestjs/passport";
 import { SignInDTO } from "../dto/signIn";
 import { ReturnUser } from "../interfaces/auth";
 import { AuthService } from "../services/auth.service";
-import { Response } from "express";
-import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
+import { Response, Request } from "express";
+import {
+  CreateGithubUserDTO,
+  CreateGoogleUserDTO,
+  CreateSimpleUserDTO,
+} from "@modules/user/dto/create.dto";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
+import { User } from "@modules/user/domain/User";
+import { ROUTES } from "@modules/app/constants";
 
-@Controller("auth")
+@Controller(ROUTES.AUTH.ROOT)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly envServices: EnvService,
   ) {}
 
-  @Get("/google")
+  @Get(ROUTES.AUTH.GOOGLE)
   @UseGuards(AuthGuard("google"))
   async googleAuth() {
     // Google Auth
   }
 
-  @Get("/google/redirect")
+  @Get(ROUTES.AUTH.GOOGLE_REDIRECT)
   @UseGuards(AuthGuard("google"))
-  async googleAuthRedirect(@Req() req, @Res() res: Response) {
+  async googleAuthRedirect(
+    @Req() req: Request & { user: CreateGoogleUserDTO },
+    @Res() res: Response,
+  ) {
     const token = await this.authService.googleSignUp(req.user);
     this.sendAuthCookies(res, token);
   }
 
-  @Get("/github")
+  @Get(ROUTES.AUTH.GITHUB)
   @UseGuards(AuthGuard("github"))
   async githubLogin() {
     // Github Auth
   }
 
-  @Get("/github/redirect")
+  @Get(ROUTES.AUTH.GITHUB_REDIRECT)
   @UseGuards(AuthGuard("github"))
-  async authCallback(@Req() req, @Res() res: Response) {
+  async authCallback(
+    @Req() req: Request & { user: CreateGithubUserDTO },
+    @Res() res: Response,
+  ) {
     const token = await this.authService.githubSignUp(req.user);
     this.sendAuthCookies(res, token);
   }
 
-  @Get("/userByToken")
+  @Get(ROUTES.AUTH.USER_BY_TOKEN)
   @UseGuards(AuthGuard("jwt"))
-  userByToken(@Req() req: any): ReturnUser | null {
+  userByToken(@Req() req: Request & { user: User }): ReturnUser | null {
     return this.authService.getReturnUser(req.user);
   }
 
-  @Post("/signUp")
+  @Post(ROUTES.AUTH.SIGN_UP)
   async signUp(@Body() userSignUpDTO: CreateSimpleUserDTO): Promise<string> {
     const userToken = await this.authService.signUp(userSignUpDTO);
     return userToken;
   }
 
-  @Post("/signIn")
+  @Post(ROUTES.AUTH.SIGN_IN)
   async signIn(@Body() userSignInDTO: SignInDTO) {
     const token = await this.authService.loginUser(userSignInDTO);
     return token;
