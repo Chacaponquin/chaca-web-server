@@ -27,13 +27,14 @@ export class DatasetSocketGateway {
     @ConnectedSocket() socket: any,
   ) {
     try {
-      const fileURL = await this.socketService.createDatasets(
+      const fileName = await this.socketService.createDatasets(
         body.datasets,
         body.config,
       );
 
-      socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileURL);
+      socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileName);
     } catch (error) {
+      console.log(error);
       socket.emit(SOCKET_EVENTS.CREATION_ERROR, error.message);
     }
   }

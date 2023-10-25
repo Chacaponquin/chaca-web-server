@@ -52,9 +52,8 @@ export class WebApiService {
 
   fileToDownload(fileName: string) {
     try {
-      const file = fs.createReadStream(
-        path.join(__dirname, "../../../data", fileName),
-      );
+      const filePath = path.join(__dirname, "../../../data", fileName);
+      const file = fs.createReadStream(filePath);
 
       return new StreamableFile(file);
     } catch (error) {

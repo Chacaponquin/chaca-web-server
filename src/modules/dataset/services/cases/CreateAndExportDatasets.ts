@@ -25,17 +25,18 @@ export class CreateAndExportDatasets {
     config: FileConfigDTO,
   ): Promise<string> {
     const fileExt = new FileExt(config.fileType);
+    const fileName = chacaSchemas.id.uuid().getValue();
 
-    const fileURL = await chaca.exportFromSchemas(
+    const filePath = await chaca.exportFromSchemas(
       schemas,
       {
-        format: fileExt.chacaFile,
+        format: fileExt.value,
         location: path.join(__dirname, this.PUBLIC_ROUTE),
-        fileName: chacaSchemas.id.uuid().getValue(),
+        fileName: fileName,
       },
       { verbose: false },
     );
 
-    return fileURL;
+    return filePath.split("\\").at(-1) as string;
   }
 }

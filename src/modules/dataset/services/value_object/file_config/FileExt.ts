@@ -9,7 +9,7 @@ export class FileExt {
     this._type = type;
   }
 
-  public get chacaFile(): ExportFormat {
+  public get value(): ExportFormat {
     switch (this._type) {
       case FILE_TYPE.CSV:
         return "csv";

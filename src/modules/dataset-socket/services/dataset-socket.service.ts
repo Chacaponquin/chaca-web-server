@@ -11,11 +11,11 @@ export class SocketService {
     inputDatasets: Array<InputDatasetDTO>,
     fileConfig: FileConfigDTO,
   ): Promise<string> {
-    const datasetURL = await this.datasetService.createAndExportDatasets(
+    const datasetName = await this.datasetService.createAndExportDatasets(
       inputDatasets,
       fileConfig,
     );
 
-    return datasetURL;
+    return datasetName;
   }
 }
