@@ -21,6 +21,16 @@ describe("Config enum field for dataset creation", () => {
     const LIMIT = 30;
     const datasets = service.createDatasets([
       {
+        name: "Dataset2",
+        limit: LIMIT,
+        fields: [
+          {
+            name: "ref",
+            dataType: { type: DATA_TYPES.REF, ref: "Dataset1.id" },
+          },
+        ],
+      },
+      {
         name: "Dataset1",
         limit: LIMIT,
         fields: [
@@ -31,16 +41,6 @@ describe("Config enum field for dataset creation", () => {
               fieldType: { schema: "id", option: "uuid" },
             },
             isKey: true,
-          },
-        ],
-      },
-      {
-        name: "Dataset2",
-        limit: LIMIT,
-        fields: [
-          {
-            name: "ref",
-            dataType: { type: DATA_TYPES.REF, ref: ["Dataset1.id"] },
           },
         ],
       },
@@ -72,7 +72,7 @@ describe("Config enum field for dataset creation", () => {
           fields: [
             {
               name: "ref",
-              dataType: { type: DATA_TYPES.REF, ref: ["Dataset1.id"] },
+              dataType: { type: DATA_TYPES.REF, ref: "Dataset1.id" },
             },
           ],
         },
@@ -90,7 +90,7 @@ describe("Config enum field for dataset creation", () => {
           fields: [
             {
               name: "ref",
-              dataType: { type: DATA_TYPES.REF, ref: ["Dataset1.id"] },
+              dataType: { type: DATA_TYPES.REF, ref: "Dataset1.id" },
             },
           ],
         },

@@ -12,7 +12,7 @@ export type FieldDataType =
 
 export type RefDataType = {
   type: DATA_TYPES.REF;
-  ref: Array<string>;
+  ref: string;
 };
 
 export type DefinedValueDataType = {

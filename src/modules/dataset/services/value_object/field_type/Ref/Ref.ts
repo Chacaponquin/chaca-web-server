@@ -5,8 +5,11 @@ import { FieldName } from "../../field_config";
 export class RefValueField implements ISchemaField {
   private refField: string;
 
-  constructor(refField: Array<string>) {
-    this.refField = refField.map((r) => new FieldName(r).value).join(".");
+  constructor(refField: string) {
+    this.refField = refField
+      .split(".")
+      .map((r) => new FieldName(r).value)
+      .join(".");
   }
 
   getField() {
