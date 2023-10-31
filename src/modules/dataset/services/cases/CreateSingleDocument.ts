@@ -8,6 +8,6 @@ export class CreateSingleDocument {
   public execute(datasetFields: Array<InputDatasetFieldDTO>) {
     const schemaBuilder = new ChacaSchemaBuilder(this.schemaOptionsService);
     const schema = schemaBuilder.execute(datasetFields);
-    return schema.generateObject();
+    return schema.genObject();
   }
 }

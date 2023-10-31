@@ -1,5 +1,4 @@
 import {
-  ChacaSchema,
   CustomField,
   EnumField,
   KeyField,
@@ -8,11 +7,12 @@ import {
   SequenceField,
   SequentialField,
 } from "chaca";
+import { Schema } from "../services/value_object/schemas";
 
 export interface ISchemaField {
   getField():
     | SchemaField
-    | ChacaSchema
+    | Schema
     | RefField
     | CustomField
     | SequenceField

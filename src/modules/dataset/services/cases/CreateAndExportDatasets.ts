@@ -15,12 +15,12 @@ export class CreateAndExportDatasets {
     datasetsConfig: Array<InputDatasetDTO>,
     fileConfig: FileConfigDTO,
   ): Promise<string> {
-    const createDatasetCase = new CreateDatasets(this.schemaOptionsServices);
-    const multiGenerateConfig = createDatasetCase.buildSchemas(datasetsConfig);
-    return await this.exportByConfig(multiGenerateConfig, fileConfig);
+    const createDatasetsCase = new CreateDatasets(this.schemaOptionsServices);
+    const multiGenerateConfig = createDatasetsCase.buildSchemas(datasetsConfig);
+    return await this._exportByConfig(multiGenerateConfig, fileConfig);
   }
 
-  private async exportByConfig(
+  private async _exportByConfig(
     schemas: Array<MultiGenerateSchema>,
     config: FileConfigDTO,
   ): Promise<string> {

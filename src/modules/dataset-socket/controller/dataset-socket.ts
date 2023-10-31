@@ -5,7 +5,7 @@ import {
   SubscribeMessage,
   MessageBody,
 } from "@nestjs/websockets";
-import { Server } from "socket.io";
+import { Server, Socket } from "socket.io";
 import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS";
 import { SocketService } from "../services/dataset-socket.service";
 import { CreateDatasetDTO } from "../dto/dataset";
@@ -24,7 +24,7 @@ export class DatasetSocketGateway {
   @SubscribeMessage(SOCKET_EVENTS.CREATE_DATASETS)
   public async createDatasets(
     @MessageBody() body: CreateDatasetDTO,
-    @ConnectedSocket() socket: any,
+    @ConnectedSocket() socket: Socket,
   ) {
     try {
       const fileName = await this.socketService.createDatasets(

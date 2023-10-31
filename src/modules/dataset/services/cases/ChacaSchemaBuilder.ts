@@ -1,10 +1,9 @@
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
-import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema, chaca, FieldSchemaConfig } from "chaca";
+import { chaca, FieldSchemaConfig } from "chaca";
 import {
   FieldIsArray,
   FieldName,
@@ -20,16 +19,18 @@ import {
   SequenceValueField,
   SequentialValueField,
 } from "../value_object/field_type";
+import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
+import { Schema } from "../value_object/schemas";
 
 export class ChacaSchemaBuilder {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
-  public execute(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {
+  public execute(datasetFields: Array<InputDatasetFieldDTO>): Schema {
     const schemaFields: Record<string, FieldSchemaConfig> = {};
 
     for (const field of datasetFields) {
       const fieldName = new FieldName(field.name);
-      const fieldType = this._mapDataTypeToField(field.dataType, field.isKey);
+      const fieldType = this._mapDatatypeToField(field.dataType, field.isKey);
       const fieldIsArray = new FieldIsArray(field.isArray);
       const fieldPossibleNull = new FieldPossibleNull(field.isPossibleNull);
 
@@ -43,10 +44,10 @@ export class ChacaSchemaBuilder {
     }
 
     const schema = chaca.schema(schemaFields);
-    return schema;
+    return new Schema(schema);
   }
 
-  private _mapDataTypeToField(
+  private _mapDatatypeToField(
     dataType: FieldDataType,
     isKey?: boolean,
   ): ISchemaField {
@@ -101,7 +102,7 @@ export class ChacaSchemaBuilder {
     else if (dataType.type === DATA_TYPES.ENUM) {
       return new EnumValueField(dataType.values);
     } else {
-      throw new IncorrectDefinedFieldDataTypeException(
+      throw new IncorrectDefinedFieldDatatypeException(
         `The field must have a data type.`,
       );
     }

@@ -1,51 +1,27 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
-import {
-  NotExistFieldError,
-  chaca,
-  MultiGenerateSchema,
-  TryRefANoKeyFieldError,
-} from "chaca";
+import { MultiGenerateSchema } from "chaca";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { SchemaLimit, SchemaName } from "../value_object/schema_config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
-import {
-  DatasetCreationError,
-  RepeatDatasetNameException,
-} from "@modules/dataset/exceptions";
+import { RepeatDatasetNameException } from "@modules/dataset/exceptions/dataset";
+import { MultiSchema } from "../value_object/schemas";
 
 export class CreateDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public execute(datasetsConfig: Array<InputDatasetDTO>) {
-    const multiGenerateConfig = this.buildSchemas(datasetsConfig);
-
-    try {
-      const allData = chaca.multiGenerate(multiGenerateConfig, {
-        verbose: false,
-      });
-
-      return allData;
-    } catch (error) {
-      if (error instanceof NotExistFieldError) {
-        throw new DatasetCreationError(error.message);
-      } else if (error instanceof TryRefANoKeyFieldError) {
-        throw new DatasetCreationError(error.message);
-      } else {
-        throw error;
-      }
-    }
+    const multi = this.buildSchemas(datasetsConfig);
+    return multi.generate();
   }
 
-  public buildSchemas(
-    datasetsConfig: Array<InputDatasetDTO>,
-  ): Array<MultiGenerateSchema> {
+  public buildSchemas(datasetsConfig: Array<InputDatasetDTO>): MultiSchema {
     const multiGenerateConfig: Array<MultiGenerateSchema> = [];
 
     for (const dataset of datasetsConfig) {
-      const schemaBuilder = new ChacaSchemaBuilder(this.schemaOptionsServices);
+      const builder = new ChacaSchemaBuilder(this.schemaOptionsServices);
 
       const documentsLimit = new SchemaLimit(dataset.limit).value;
-      const datasetSchema = schemaBuilder.execute(dataset.fields);
+      const datasetSchema = builder.execute(dataset.fields);
       const datasetName = new SchemaName(dataset.name).value;
 
       this.validateNotRepeatDatasetName(
@@ -55,12 +31,12 @@ export class CreateDatasets {
 
       multiGenerateConfig.push({
         name: datasetName,
-        schema: datasetSchema,
+        schema: datasetSchema.schema,
         documents: documentsLimit,
       });
     }
 
-    return multiGenerateConfig;
+    return new MultiSchema(multiGenerateConfig);
   }
 
   private validateNotRepeatDatasetName(

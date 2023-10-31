@@ -1,10 +1,10 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
-import { ChacaSchema } from "chaca";
+import { Schema } from "../../schemas";
 
 export class MixedValueField implements ISchemaField {
-  private schema: ChacaSchema;
+  private schema: Schema;
 
-  constructor(schema: ChacaSchema) {
+  constructor(schema: Schema) {
     this.schema = schema;
   }
 

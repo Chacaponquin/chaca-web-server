@@ -11,6 +11,11 @@ import { SchemaOptionsService } from "@modules/schema-options/services/schema-op
 import { ChacaSchema } from "chaca";
 import { FileConfigDTO } from "../dto/file";
 
+interface CreateDatasetProps {
+  datasetFields: Array<InputDatasetFieldDTO>;
+  count: number;
+}
+
 @Injectable()
 export class DatasetService {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
@@ -25,13 +30,7 @@ export class DatasetService {
     return useCase.execute(datasetFields);
   }
 
-  public createDocuments({
-    count,
-    datasetFields,
-  }: {
-    datasetFields: Array<InputDatasetFieldDTO>;
-    count: number;
-  }) {
+  public createDocuments({ count, datasetFields }: CreateDatasetProps) {
     const useCase = new CreateDocuments(this.schemaOptionsServices);
     return useCase.execute({ count, fields: datasetFields });
   }
