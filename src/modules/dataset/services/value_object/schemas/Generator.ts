@@ -14,7 +14,7 @@ import {
 } from "chaca";
 
 export abstract class Generator {
-  protected gen(func: () => any) {
+  protected gen(func: () => unknown) {
     try {
       return func();
     } catch (error) {
@@ -25,7 +25,7 @@ export abstract class Generator {
         });
       } else if (error instanceof TryRefANoKeyFieldError) {
         throw new DatasetRefNotKeyFieldError({
-          field: error.fieldRoute.join("."),
+          field: error.fieldRoute,
         });
       } else if (error instanceof CyclicAccessDataError) {
         throw new DatasetCyclicAccessError({ message: error.message });
