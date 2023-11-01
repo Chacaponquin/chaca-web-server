@@ -9,6 +9,8 @@ import { Server, Socket } from "socket.io";
 import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS";
 import { SocketService } from "../services/dataset-socket.service";
 import { CreateDatasetDTO } from "../dto/dataset";
+import { DatasetCreationError } from "@modules/dataset/exceptions/dataset";
+import { DATASETS_ERROR_HTTP_STATUS } from "@modules/dataset/constants/DATASETS_ERROR_HTTP_STATUS";
 
 @WebSocketGateway({
   cors: {
@@ -34,8 +36,17 @@ export class DatasetSocketGateway {
 
       socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileName);
     } catch (error) {
-      console.log(error);
-      socket.emit(SOCKET_EVENTS.CREATION_ERROR, error.message);
+      if (error instanceof DatasetCreationError) {
+        socket.emit(SOCKET_EVENTS.CREATION_ERROR, {
+          content: error.content,
+          code: error.code,
+        });
+      } else {
+        socket.emit(SOCKET_EVENTS.CREATION_ERROR, {
+          content: "Error in datasets creation",
+          code: DATASETS_ERROR_HTTP_STATUS.DEFAULT,
+        });
+      }
     }
   }
 }
