@@ -11,6 +11,6 @@ export class GetSchemaArray {
     const count = new SchemaLimit(schemaConfig.count).value;
     const schema = this.datasetService.buildSchema(schemaFields);
 
-    return schema.generate(count);
+    return schema.genArray(count);
   }
 }

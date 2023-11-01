@@ -8,8 +8,8 @@ import {
   CreateSingleDocument,
 } from "./cases";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema } from "chaca";
 import { FileConfigDTO } from "../dto/file";
+import { Schema } from "./value_object/schemas";
 
 interface CreateDatasetProps {
   datasetFields: Array<InputDatasetFieldDTO>;
@@ -35,7 +35,7 @@ export class DatasetService {
     return useCase.execute({ count, fields: datasetFields });
   }
 
-  public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {
+  public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): Schema {
     const useCase = new ChacaSchemaBuilder(this.schemaOptionsServices);
     return useCase.execute(datasetFields);
   }

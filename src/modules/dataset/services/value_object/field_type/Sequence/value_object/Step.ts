@@ -1,4 +1,4 @@
-import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
+import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
 
 export class Step {
   private _value = 1;
@@ -8,7 +8,7 @@ export class Step {
       if (v > 0) {
         this._value = v;
       } else {
-        throw new IncorrectDefinedFieldDataTypeException(
+        throw new IncorrectDefinedFieldDatatypeException(
           `The sequence value must have a step greater than 0`,
         );
       }

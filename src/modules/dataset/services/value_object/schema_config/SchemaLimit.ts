@@ -1,4 +1,4 @@
-import { IncorrectDatasetLimitException } from "@modules/dataset/exceptions";
+import { IncorrectDatasetLimitException } from "@modules/dataset/exceptions/dataset";
 import { schemas } from "chaca";
 
 export class SchemaLimit {

@@ -41,7 +41,7 @@ export class SchemaInput {
     }
   }
 
-  private mapToSchemaInputFields(
+  private _mapToSchemaInputFields(
     schemaInput?: SimpleSchemaConfig,
   ): Array<InputDatasetFieldDTO> {
     const schema = this.validate(schemaInput);
@@ -66,7 +66,7 @@ export class SchemaInput {
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
         const fieldPosibleNull = new FieldPossibleNull(fieldConfig.posibleNull);
-        const fieldDataType = this.mapSchemaConfigToDataType(
+        const fieldDatatype = this._mapSchemaConfigToDataType(
           fieldConfig.fieldType,
           fieldConfig.params,
         );
@@ -75,7 +75,7 @@ export class SchemaInput {
           name: fieldName.value,
           isArray: fieldIsArray.value,
           isPossibleNull: fieldPosibleNull.value,
-          dataType: fieldDataType,
+          dataType: fieldDatatype,
         });
       }
     }
@@ -83,7 +83,7 @@ export class SchemaInput {
     return schemaFields;
   }
 
-  private mapSchemaConfigToDataType(
+  private _mapSchemaConfigToDataType(
     type?: string,
     params?: SchemaFieldParams,
   ): FieldDataType {
@@ -91,7 +91,7 @@ export class SchemaInput {
 
     // mixed
     if (fieldType.type === "schema") {
-      const subSchemaFields = this.mapToSchemaInputFields(
+      const subSchemaFields = this._mapToSchemaInputFields(
         fieldType.params as SimpleSchemaConfig,
       );
 
@@ -131,6 +131,6 @@ export class SchemaInput {
   }
 
   public fields() {
-    return this.mapToSchemaInputFields(this._value);
+    return this._mapToSchemaInputFields(this._value);
   }
 }

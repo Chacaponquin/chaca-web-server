@@ -1,14 +1,12 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { CreateDatasets } from "./CreateDatasets";
-import { MultiGenerateSchema, chaca, schemas as chacaSchemas } from "chaca";
+import { schemas as chacaSchemas } from "chaca";
 import { FileConfigDTO } from "@modules/dataset/dto/file";
 import { FileExt } from "../value_object/file_config";
-import * as path from "path";
+import { ExportSchemas, MultiSchema } from "../value_object/schemas";
 
 export class CreateAndExportDatasets {
-  private readonly PUBLIC_ROUTE = "../../../../data";
-
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public async execute(
@@ -21,22 +19,19 @@ export class CreateAndExportDatasets {
   }
 
   private async _exportByConfig(
-    schemas: Array<MultiGenerateSchema>,
+    schemas: MultiSchema,
     config: FileConfigDTO,
   ): Promise<string> {
     const fileExt = new FileExt(config.fileType);
     const fileName = chacaSchemas.id.uuid().getValue();
 
-    const filePath = await chaca.exportFromSchemas(
-      schemas,
-      {
-        format: fileExt.value,
-        location: path.join(__dirname, this.PUBLIC_ROUTE),
-        fileName: fileName,
-      },
-      { verbose: false },
-    );
+    const exportSchemas = new ExportSchemas(schemas.schemas);
 
-    return filePath.split("\\").at(-1) as string;
+    const path = await exportSchemas.generate({
+      filename: fileName,
+      extension: fileExt.value,
+    });
+
+    return path.split("\\").at(-1) as string;
   }
 }

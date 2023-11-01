@@ -1,4 +1,4 @@
-import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
+import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
 
 export class ArrayValues {
   private _values: Array<unknown> = [];
@@ -9,7 +9,7 @@ export class ArrayValues {
     }
 
     if (this._values.length === 0) {
-      throw new IncorrectDefinedFieldDataTypeException(
+      throw new IncorrectDefinedFieldDatatypeException(
         `A sequential field must have an array of values to select`,
       );
     }

@@ -9,6 +9,6 @@ export class GetSchemaObject {
     const schemaFields = new SchemaInput(schemaConfigInput).fields();
     const schema = this.datasetService.buildSchema(schemaFields);
 
-    return schema.generateObject();
+    return schema.genObject();
   }
 }

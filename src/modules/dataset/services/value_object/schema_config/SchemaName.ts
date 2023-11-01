@@ -1,4 +1,4 @@
-import { IncorrectDatasetNameException } from "@modules/dataset/exceptions";
+import { IncorrectDatasetNameException } from "@modules/dataset/exceptions/dataset";
 
 export class SchemaName {
   private _value: string;

@@ -11,4 +11,8 @@ export class MultiSchema extends Generator {
       chaca.multiGenerate(this.multiSchemas, { verbose: false });
     return this.gen(func);
   }
+
+  get schemas() {
+    return this.multiSchemas;
+  }
 }

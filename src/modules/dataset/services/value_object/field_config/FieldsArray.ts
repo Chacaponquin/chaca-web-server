@@ -1,5 +1,5 @@
 import { ConfigIsArray, ConfigIsArrayObject } from "@modules/dataset/dto/field";
-import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions";
+import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions/field";
 import { schemas } from "chaca";
 
 export class FieldIsArray {

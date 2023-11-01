@@ -1,4 +1,4 @@
-import { IncorrectFieldNameException } from "@modules/dataset/exceptions";
+import { IncorrectFieldNameException } from "@modules/dataset/exceptions/field";
 
 export class FieldName {
   private _value: string;

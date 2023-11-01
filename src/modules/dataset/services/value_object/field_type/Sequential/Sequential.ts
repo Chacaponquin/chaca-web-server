@@ -4,7 +4,6 @@ import { ArrayValues } from "./value_object";
 
 export class SequentialValueField implements ISchemaField {
   private _values: Array<unknown> = [];
-
   private loop = false;
 
   constructor(values?: Array<unknown>) {

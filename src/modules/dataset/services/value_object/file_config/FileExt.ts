@@ -1,5 +1,5 @@
 import { FILE_TYPE } from "@modules/dataset/constants/FILE_TYPE";
-import { IncorrectFileExportFormatException } from "@modules/dataset/exceptions";
+import { IncorrectFileExportFormatException } from "@modules/dataset/exceptions/file";
 import { ExportFormat } from "chaca";
 
 export class FileExt {

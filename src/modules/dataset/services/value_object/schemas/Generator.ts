@@ -14,9 +14,9 @@ import {
 } from "chaca";
 
 export abstract class Generator {
-  protected gen(func: () => unknown) {
+  protected async gen(func: () => unknown): Promise<unknown> {
     try {
-      return func();
+      return await func();
     } catch (error) {
       if (error instanceof NotExistFieldError) {
         throw new DatasetNotExistFieldError({
