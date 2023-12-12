@@ -45,6 +45,6 @@ export class DatasetService {
     fileConfig: FileConfigDTO,
   ): Promise<string> {
     const useCase = new CreateAndExportDatasets(this.schemaOptionsServices);
-    return await useCase.execute(datasetsConfig, fileConfig);
+    return await useCase.execute({ datasetsConfig, fileConfig });
   }
 }

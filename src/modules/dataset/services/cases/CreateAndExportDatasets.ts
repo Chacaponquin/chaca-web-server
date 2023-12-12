@@ -6,13 +6,15 @@ import { FileConfigDTO } from "@modules/dataset/dto/file";
 import { FileExt } from "../value_object/file_config";
 import { ExportSchemas, MultiSchema } from "../value_object/schemas";
 
+interface Props {
+  datasetsConfig: Array<InputDatasetDTO>;
+  fileConfig: FileConfigDTO;
+}
+
 export class CreateAndExportDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
-  public async execute(
-    datasetsConfig: Array<InputDatasetDTO>,
-    fileConfig: FileConfigDTO,
-  ): Promise<string> {
+  public async execute({ datasetsConfig, fileConfig }: Props): Promise<string> {
     const createDatasetsCase = new CreateDatasets(this.schemaOptionsServices);
     const multiGenerateConfig = createDatasetsCase.buildSchemas(datasetsConfig);
     return await this._exportByConfig(multiGenerateConfig, fileConfig);
