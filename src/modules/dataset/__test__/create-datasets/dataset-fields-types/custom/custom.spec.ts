@@ -1,7 +1,7 @@
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
-import { CustomValueField } from "@modules/dataset/services/value_object/field_type";
+import { CustomValueField } from "@modules/dataset/services/value_object/field-type";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
 
@@ -21,15 +21,15 @@ describe("Config enum field for dataset creation", () => {
   });
 
   it("Create a custom field with empty string as function. Should throw an error", () => {
-    expect(() =>
-      service.createSingleDocument([
+    expect(async () => {
+      await service.createSingleDocument([
         { name: "custom", dataType: { type: DATA_TYPES.CUSTOM, code: "" } },
-      ]),
-    ).toThrow(IncorrectFieldTypeException);
+      ]);
+    }).rejects.toThrow(IncorrectFieldTypeException);
   });
 
-  it("Create a custom that returns 'Hello world'", () => {
-    const data = service.createSingleDocument([
+  it("Create a custom that returns 'Hello world'", async () => {
+    const data = await service.createSingleDocument([
       {
         name: "custom",
         dataType: {
@@ -42,8 +42,8 @@ describe("Config enum field for dataset creation", () => {
     expect(data.custom).toBe("Hello world");
   });
 
-  it("Create a custom that returns the value of a existing field", () => {
-    const data = service.createSingleDocument([
+  it("Create a custom that returns the value of a existing field", async () => {
+    const data = await service.createSingleDocument([
       {
         name: "id",
         dataType: {

@@ -16,8 +16,8 @@ describe("Config mixed field for dataset creation", () => {
     service = module.get(DatasetService);
   });
 
-  it("Create field with id.uuid option without arguments", () => {
-    const data = service.createSingleDocument([
+  it("Create field with id.uuid option without arguments", async () => {
+    const data = await service.createSingleDocument([
       {
         name: "id",
         dataType: {
@@ -26,6 +26,7 @@ describe("Config mixed field for dataset creation", () => {
         },
       },
     ]);
+
     expect(typeof data.id).toBe("string");
   });
 });

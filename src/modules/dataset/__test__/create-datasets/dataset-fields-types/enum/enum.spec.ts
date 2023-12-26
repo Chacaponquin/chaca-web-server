@@ -1,5 +1,5 @@
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
-import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
+import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -18,17 +18,17 @@ describe("Config enum field for dataset creation", () => {
   });
 
   it("Pass an empty array of values. Should throw an error", () => {
-    expect(() =>
-      service.createSingleDocument([
+    expect(async () => {
+      await service.createSingleDocument([
         { name: "id", dataType: { type: DATA_TYPES.ENUM, values: [] } },
-      ]),
-    ).toThrow(IncorrectDefinedFieldDataTypeException);
+      ]);
+    }).rejects.toThrow(IncorrectDefinedFieldDatatypeException);
   });
 
-  it("Pass an array of values", () => {
+  it("Pass an array of values", async () => {
     const values = [1, 2, 3, 4, 5];
 
-    const data = service.createSingleDocument([
+    const data = await service.createSingleDocument([
       { name: "number", dataType: { type: DATA_TYPES.ENUM, values } },
     ]);
 
@@ -36,13 +36,13 @@ describe("Config enum field for dataset creation", () => {
   });
 
   it("Pass a not array values. Should throw an error", () => {
-    expect(() =>
-      service.createSingleDocument([
+    expect(async () => {
+      await service.createSingleDocument([
         {
           name: "number",
           dataType: { type: DATA_TYPES.ENUM, values: 5 as any },
         },
-      ]),
-    ).toThrow(IncorrectDefinedFieldDataTypeException);
+      ]);
+    }).rejects.toThrow(IncorrectDefinedFieldDatatypeException);
   });
 });

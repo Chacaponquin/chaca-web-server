@@ -9,14 +9,14 @@ import {
   FieldIsArray,
   FieldName,
   FieldPossibleNull,
-} from "@modules/dataset/services/value_object/field_config";
+} from "@modules/dataset/services/value_object/field-config";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
 import {
   EnumValueField,
   SequenceValueField,
   SequentialValueField,
-} from "@modules/dataset/services/value_object/field_type";
+} from "@modules/dataset/services/value_object/field-type";
 import { StringSchemaValue } from "./StringSchemaValue";
 
 export class SchemaInput {

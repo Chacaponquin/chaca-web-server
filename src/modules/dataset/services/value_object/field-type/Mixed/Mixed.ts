@@ -9,6 +9,6 @@ export class MixedValueField implements ISchemaField {
   }
 
   public getField() {
-    return this.schema;
+    return this.schema.schema;
   }
 }

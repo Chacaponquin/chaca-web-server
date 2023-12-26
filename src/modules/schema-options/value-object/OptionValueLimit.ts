@@ -1,4 +1,4 @@
-import { FieldIsArray } from "@modules/dataset/services/value_object/field_config";
+import { FieldIsArray } from "@modules/dataset/services/value_object/field-config";
 import { InvalidOptionValueLimitException } from "../exceptions";
 import { ConfigIsArray } from "@modules/dataset/dto/field";
 import { Param } from "@modules/api/services/value-object";

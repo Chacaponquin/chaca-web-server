@@ -1,4 +1,4 @@
-import { IncorrectDatasetLimitException } from "@modules/dataset/exceptions";
+import { IncorrectDatasetLimitException } from "@modules/dataset/exceptions/dataset";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -17,10 +17,10 @@ describe("Config limit datasets", () => {
   });
 
   it("Create datasets with limit less than 0. Should throw an error", () => {
-    expect(() =>
-      service.createDatasets([
+    expect(async () => {
+      await service.createDatasets([
         { fields: [], limit: -20, name: "Test dataset" },
-      ]),
-    ).toThrow(IncorrectDatasetLimitException);
+      ]);
+    }).rejects.toThrow(IncorrectDatasetLimitException);
   });
 });

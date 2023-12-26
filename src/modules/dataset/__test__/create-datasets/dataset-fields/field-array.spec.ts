@@ -1,5 +1,5 @@
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
-import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions";
+import { IncorrectFieldArrayConfigException } from "@modules/dataset/exceptions/field";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -17,8 +17,8 @@ describe("Config 'isArray' in dataset fields", () => {
     service = module.get(DatasetService);
   });
 
-  it("Pass isArray=null. Should return a no array field", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray=null. Should return a no array field", async () => {
+    const result = await service.createSingleDocument([
       {
         dataType: {
           type: DATA_TYPES.SINGLE_VALUE,
@@ -32,8 +32,8 @@ describe("Config 'isArray' in dataset fields", () => {
   });
 
   it("Pass isArray.min greater than isArray.max. Should throw an error", () => {
-    expect(() =>
-      service.createSingleDocument([
+    expect(async () => {
+      await service.createSingleDocument([
         {
           isArray: { min: 20, max: 10 },
           dataType: {
@@ -42,13 +42,13 @@ describe("Config 'isArray' in dataset fields", () => {
           },
           name: "id",
         },
-      ]),
-    ).toThrow(IncorrectFieldArrayConfigException);
+      ]);
+    }).rejects.toThrow(IncorrectFieldArrayConfigException);
   });
 
   it("Pass isArray.min or isArray.max less than 0. Should throw an error", () => {
-    expect(() =>
-      service.createSingleDocument([
+    expect(async () => {
+      await service.createSingleDocument([
         {
           isArray: { min: -20, max: 10 },
           dataType: {
@@ -57,25 +57,26 @@ describe("Config 'isArray' in dataset fields", () => {
           },
           name: "id",
         },
-      ]),
-    ).toThrow(IncorrectFieldArrayConfigException);
+      ]);
+    }).rejects.toThrow(IncorrectFieldArrayConfigException);
 
-    expect(() =>
-      service.createSingleDocument([
-        {
-          isArray: { max: -10 },
-          dataType: {
-            type: DATA_TYPES.SINGLE_VALUE,
-            fieldType: { args: {}, option: "uuid", schema: "id" },
+    expect(
+      async () =>
+        await service.createSingleDocument([
+          {
+            isArray: { max: -10 },
+            dataType: {
+              type: DATA_TYPES.SINGLE_VALUE,
+              fieldType: { args: {}, option: "uuid", schema: "id" },
+            },
+            name: "id",
           },
-          name: "id",
-        },
-      ]),
-    ).toThrow(IncorrectFieldArrayConfigException);
+        ]),
+    ).rejects.toThrow(IncorrectFieldArrayConfigException);
   });
 
-  it("Pass isArray.min=10 & isArray.max=20. Should return a array field", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray.min=10 & isArray.max=20. Should return a array field", async () => {
+    const result = await service.createSingleDocument([
       {
         isArray: { max: 20, min: 10 },
         dataType: {
@@ -90,8 +91,8 @@ describe("Config 'isArray' in dataset fields", () => {
     expect(result.id.length).toBeLessThanOrEqual(20);
   });
 
-  it("Pass isArray.min=10. Should return a array field with 10 elements as minimun", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray.min=10. Should return a array field with 10 elements as minimun", async () => {
+    const result = await service.createSingleDocument([
       {
         isArray: { min: 10 },
         dataType: {
@@ -105,8 +106,8 @@ describe("Config 'isArray' in dataset fields", () => {
     expect(result.id.length).toBeGreaterThanOrEqual(10);
   });
 
-  it("Pass isArray.max=5. Should return a array field with 5 elements as maximun", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray.max=5. Should return a array field with 5 elements as maximun", async () => {
+    const result = await service.createSingleDocument([
       {
         isArray: { max: 5 },
         dataType: {
@@ -120,8 +121,8 @@ describe("Config 'isArray' in dataset fields", () => {
     expect(result.id.length).toBeLessThanOrEqual(5);
   });
 
-  it("Pass isArray=0. Should return a array field with 0 elements", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray=0. Should return a array field with 0 elements", async () => {
+    const result = await service.createSingleDocument([
       {
         isArray: 0,
         dataType: {
@@ -135,8 +136,8 @@ describe("Config 'isArray' in dataset fields", () => {
     expect(result.id).toHaveLength(0);
   });
 
-  it("Pass isArray=5. Should return a array field with 5 elements", () => {
-    const result = service.createSingleDocument([
+  it("Pass isArray=5. Should return a array field with 5 elements", async () => {
+    const result = await service.createSingleDocument([
       {
         isArray: 5,
         dataType: {

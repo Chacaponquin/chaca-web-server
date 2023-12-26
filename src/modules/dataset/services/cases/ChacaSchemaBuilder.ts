@@ -8,7 +8,7 @@ import {
   FieldIsArray,
   FieldName,
   FieldPossibleNull,
-} from "../value_object/field_config";
+} from "../value_object/field-config";
 import {
   CustomValueField,
   DefinedValueField,
@@ -18,7 +18,7 @@ import {
   RefValueField,
   SequenceValueField,
   SequentialValueField,
-} from "../value_object/field_type";
+} from "../value_object/field-type";
 import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
 import { Schema } from "../value_object/schemas";
 

@@ -1,7 +1,7 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
 import { MultiGenerateSchema } from "chaca";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { SchemaLimit, SchemaName } from "../value_object/schema_config";
+import { SchemaLimit, SchemaName } from "../value_object/schema-config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
 import { RepeatDatasetNameException } from "@modules/dataset/exceptions/dataset";
 import { MultiSchema } from "../value_object/schemas";

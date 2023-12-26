@@ -1,5 +1,5 @@
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
-import { DatasetCreationError } from "@modules/dataset/exceptions";
+import { DatasetCreationError } from "@modules/dataset/exceptions/dataset";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -17,9 +17,9 @@ describe("Config enum field for dataset creation", () => {
     service = module.get(DatasetService);
   });
 
-  it("Create a ref field that ref a id", () => {
+  it("Create a ref field that ref a id", async () => {
     const LIMIT = 30;
-    const datasets = service.createDatasets([
+    const datasets = await service.createDatasets([
       {
         name: "Dataset2",
         limit: LIMIT,
@@ -51,8 +51,9 @@ describe("Config enum field for dataset creation", () => {
 
   it("Try ref a not key field. Should throw an error", () => {
     const LIMIT = 30;
-    expect(() =>
-      service.createDatasets([
+
+    expect(async () => {
+      await service.createDatasets([
         {
           name: "Dataset1",
           limit: LIMIT,
@@ -76,14 +77,14 @@ describe("Config enum field for dataset creation", () => {
             },
           ],
         },
-      ]),
-    ).toThrow(DatasetCreationError);
+      ]);
+    }).rejects.toThrow(DatasetCreationError);
   });
 
   it("Ref a not existing dataset field. Should throw an error", () => {
     const LIMIT = 30;
-    expect(() =>
-      service.createDatasets([
+    expect(async () => {
+      await service.createDatasets([
         {
           name: "Dataset2",
           limit: LIMIT,
@@ -94,7 +95,7 @@ describe("Config enum field for dataset creation", () => {
             },
           ],
         },
-      ]),
-    ).toThrow(DatasetCreationError);
+      ]);
+    }).rejects.toThrow(DatasetCreationError);
   });
 });

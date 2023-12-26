@@ -1,6 +1,6 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { chaca } from "chaca";
-import { FieldName } from "../../field_config";
+import { FieldName } from "../../field-config";
 
 export class RefValueField implements ISchemaField {
   private refField: string;

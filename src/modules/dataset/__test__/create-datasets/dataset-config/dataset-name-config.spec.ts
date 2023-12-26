@@ -1,7 +1,7 @@
 import {
   IncorrectDatasetNameException,
   RepeatDatasetNameException,
-} from "@modules/dataset/exceptions";
+} from "@modules/dataset/exceptions/dataset";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
 import { Test, TestingModule } from "@nestjs/testing";
@@ -20,17 +20,17 @@ describe("Config name dataset", () => {
   });
 
   it("Create dataset with empty name. Should throw an error", () => {
-    expect(() =>
-      service.createDatasets([{ fields: [], limit: 20, name: "" }]),
-    ).toThrow(IncorrectDatasetNameException);
+    expect(async () => {
+      await service.createDatasets([{ fields: [], limit: 20, name: "" }]);
+    }).rejects.toThrow(IncorrectDatasetNameException);
   });
 
   it("Create datasets with repeat dataset name. Should throw an error", () => {
-    expect(() => {
-      service.createDatasets([
+    expect(async () => {
+      await service.createDatasets([
         { fields: [], limit: 20, name: "Test" },
         { name: "Test", fields: [], limit: 20 },
       ]);
-    }).toThrow(RepeatDatasetNameException);
+    }).rejects.toThrow(RepeatDatasetNameException);
   });
 });

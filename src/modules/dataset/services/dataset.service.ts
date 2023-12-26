@@ -25,9 +25,11 @@ export class DatasetService {
     return useCase.execute(datasetsConfig);
   }
 
-  public createSingleDocument(datasetFields: Array<InputDatasetFieldDTO>) {
+  public async createSingleDocument(
+    datasetFields: Array<InputDatasetFieldDTO>,
+  ) {
     const useCase = new CreateSingleDocument(this.schemaOptionsServices);
-    return useCase.execute(datasetFields);
+    return await useCase.execute(datasetFields);
   }
 
   public createDocuments({ count, datasetFields }: CreateDatasetProps) {

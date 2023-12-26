@@ -16,8 +16,8 @@ describe("Config mixed field for dataset creation", () => {
     service = module.get(DatasetService);
   });
 
-  it("Create an object with id and username", () => {
-    const data = service.createSingleDocument([
+  it("Create an object with id and username", async () => {
+    const data = await service.createSingleDocument([
       {
         name: "object",
         dataType: {

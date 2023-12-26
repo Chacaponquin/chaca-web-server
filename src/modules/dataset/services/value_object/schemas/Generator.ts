@@ -14,7 +14,7 @@ import {
 } from "chaca";
 
 export abstract class Generator {
-  protected async gen(func: () => unknown): Promise<unknown> {
+  protected async gen(func: () => unknown): Promise<any> {
     try {
       return await func();
     } catch (error) {

@@ -3,7 +3,7 @@ import { SchemaOptionsService } from "@modules/schema-options/services/schema-op
 import { CreateDatasets } from "./CreateDatasets";
 import { schemas as chacaSchemas } from "chaca";
 import { FileConfigDTO } from "@modules/dataset/dto/file";
-import { FileExt } from "../value_object/file_config";
+import { FileExt } from "../value_object/file-config";
 import { ExportSchemas, MultiSchema } from "../value_object/schemas";
 
 interface Props {

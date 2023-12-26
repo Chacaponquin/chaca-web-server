@@ -8,7 +8,7 @@ import {
 } from "../dto/error";
 import { DATASETS_ERROR_HTTP_STATUS } from "../constants/DATASETS_ERROR_HTTP_STATUS";
 
-export abstract class DatasetCreationError<T> extends HttpException {
+export class DatasetCreationError<T> extends HttpException {
   constructor(
     public readonly content: T,
     public readonly code: DATASETS_ERROR_HTTP_STATUS,

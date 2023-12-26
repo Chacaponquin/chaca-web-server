@@ -16,8 +16,8 @@ describe("Config sequence field for dataset creation", () => {
     service = module.get(DatasetService);
   });
 
-  it("Create a not argument sequence field", () => {
-    const data = service.createDocuments({
+  it("Create a not argument sequence field", async () => {
+    const data = await service.createDocuments({
       datasetFields: [{ name: "seq", dataType: { type: DATA_TYPES.SEQUENCE } }],
       count: 10,
     });
