@@ -10,7 +10,7 @@ async function bootstrap() {
   app.useGlobalFilters(new ChacaExceptionFilter());
   app.useWebSocketAdapter(new SocketAdapter(app));
   app.enableCors({ origin: "*" });
-  await app.listen(process.env.PORT as string);
+  await app.listen((process.env.PORT as string) || "8000");
 }
 
 bootstrap();

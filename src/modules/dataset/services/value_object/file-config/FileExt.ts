@@ -1,6 +1,6 @@
 import { FILE_TYPE } from "@modules/dataset/constants/FILE_TYPE";
 import { IncorrectFileExportFormatException } from "@modules/dataset/exceptions/file";
-import { ExportFormat } from "chaca";
+import { Extensions } from "chaca";
 
 export class FileExt {
   private _type: FILE_TYPE;
@@ -9,7 +9,7 @@ export class FileExt {
     this._type = type;
   }
 
-  public get value(): ExportFormat {
+  public get value(): Extensions {
     switch (this._type) {
       case FILE_TYPE.CSV:
         return "csv";
@@ -23,6 +23,10 @@ export class FileExt {
         return "typescript";
       case FILE_TYPE.YAML:
         return "yaml";
+      case FILE_TYPE.POSTGRESQL:
+        return "postgresql";
+      case FILE_TYPE.PYTHON:
+        return "python";
       default:
         throw new IncorrectFileExportFormatException(
           `${this._type} is not a valid export format`,

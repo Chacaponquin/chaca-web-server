@@ -1,9 +1,9 @@
-import { ExportFormat, MultiGenerateSchema, chaca } from "chaca";
+import { MultiGenerateSchema, chaca, Extensions } from "chaca";
 import { Generator } from "./Generator";
 import * as path from "path";
 
 interface Props {
-  extension: ExportFormat;
+  extension: Extensions;
   filename: string;
 }
 
@@ -19,7 +19,7 @@ export class ExportSchemas extends Generator {
       const filePath = await chaca.exportFromSchemas(
         this.schemas,
         {
-          format: extension,
+          format: { ext: extension, zip: true },
           location: path.join(__dirname, this.PUBLIC_ROUTE),
           fileName: filename,
         },

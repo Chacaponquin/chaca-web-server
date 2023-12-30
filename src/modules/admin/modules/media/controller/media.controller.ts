@@ -14,12 +14,12 @@ export class MediaController {
 
   constructor(private readonly mediaService: MediaService) {}
 
-  @Post("/uploadImage")
+  @Post("/upload-image")
   @UseInterceptors(
     FileInterceptor("file", {
       storage: diskStorage({
         destination: path.join(__dirname, "../../../../../temp"),
-        filename: (req, file, callback) => {
+        filename: (_, file, callback) => {
           const filename = file.originalname;
           callback(null, filename);
         },

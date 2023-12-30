@@ -2730,10 +2730,10 @@ caniuse-lite@^1.0.30001400:
   resolved "https://registry.npmjs.org/caniuse-lite/-/caniuse-lite-1.0.30001442.tgz"
   integrity sha512-239m03Pqy0hwxYPYR5JwOIxRJfLTWtle9FV8zosfV5pHg+/51uD4nxcUlM8+mWWGfwKtt8lJNHnD3cWw9VZ6ow==
 
-chaca@^1.7.0:
-  version "1.7.0"
-  resolved "https://registry.yarnpkg.com/chaca/-/chaca-1.7.0.tgz#7237bc02d1ec915bfd0f5776cbb77a7991661a53"
-  integrity sha512-53GP5zu14T4x7F3cTGLGX+wnNcK1or1bG8RukVUm3C6r1r06E9cT/e84Ha5B+mVkOaaPpU+NxnRgt9vxJjxhMQ==
+chaca@^1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/chaca/-/chaca-1.7.1.tgz#0796ddfaa6f3e4e5fc56f47b01f098be0189830f"
+  integrity sha512-GWnxyyd4q1oY0BV8SVseUfaIPGxukKF9iMHY3TqyHYkDFb0pOx17tPeeKfSY05gNWxnT04vldY2MUXb870m6/A==
   dependencies:
     adm-zip "^0.5.9"
     lorem-ipsum "^2.0.8"
