@@ -50,14 +50,12 @@ export class WebApiService {
     return this.ALL_FAQ;
   }
 
-  async fileToDownload(fileName: string): Promise<StreamableFile> {
+  fileToDownload(fileName: string): StreamableFile {
     try {
       const filePath = path.join(__dirname, "../../../data", fileName);
       const file = fs.createReadStream(filePath);
 
       const stream = new StreamableFile(file);
-
-      await fs.promises.unlink(filePath);
 
       return stream;
     } catch (error) {
