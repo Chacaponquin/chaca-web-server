@@ -25,7 +25,7 @@ export class CreateAndExportDatasets {
     config: FileConfigDTO,
   ): Promise<string> {
     const fileExt = new FileExt(config.fileType);
-    const fileName = chacaSchemas.id.uuid().getValue();
+    const fileName = `Dataset${chacaSchemas.id.uuid().getValue()}`;
 
     const exportSchemas = new ExportSchemas(schemas.schemas);
 
