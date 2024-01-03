@@ -1,20 +1,15 @@
 import { Injectable } from "@nestjs/common";
-import { RespApiSchema, Schema, SchemaOption } from "../interfaces/options";
-import { chaca, schemas } from "chaca";
 import { SchemaOptionsRepository } from "./schema-options-repository.service";
 import { OptionValueLimit } from "../value-object";
 import { ParamsObject } from "@modules/api/services/value-object";
-import { LanguageService } from "@modules/app/modules/language/services/language.service";
+import { Schema, SchemaOption } from "../domain";
 
 @Injectable()
 export class SchemaOptionsService {
-  constructor(
-    private readonly languageService: LanguageService,
-    private readonly repository: SchemaOptionsRepository,
-  ) {}
+  constructor(private readonly repository: SchemaOptionsRepository) {}
 
-  public getAllSchemas(): Array<Schema> {
-    return this.repository.getAllSchemas();
+  public allSchemas(): Array<Schema> {
+    return this.repository.allSchemas();
   }
 
   public findSchemaOption(schema: string, option: string): SchemaOption {
@@ -45,32 +40,5 @@ export class SchemaOptionsService {
       const value = option.schemaField().getValue(args);
       return value;
     }
-  }
-
-  public getApiSchemas(language: string): Array<RespApiSchema> {
-    const returnOptions = [] as RespApiSchema[];
-    const allSchemas = this.repository.getAllSchemas();
-
-    for (const schema of allSchemas) {
-      returnOptions.push({
-        id: schemas.id.uuid().getValue(),
-        name: schema.name,
-        options: schema.options.map((o) => {
-          const parent = chaca.utils.camelCase(schema.name);
-          const name = chaca.utils.camelCase(o.name);
-          const route = `/api/${parent}/${name}`;
-
-          return {
-            ...o,
-            route,
-            id: schemas.id.uuid().getValue(),
-            description:
-              o.description[this.languageService.filterLanguage(language)],
-          };
-        }),
-      });
-    }
-
-    return returnOptions;
   }
 }

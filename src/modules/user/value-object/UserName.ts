@@ -1,11 +1,11 @@
-import { InvalidUsernameException } from "../exceptions";
+import { InvalidusernameException } from "../exceptions";
 
-export class UserName {
+export class Username {
   private _name: string;
 
   constructor(name: string) {
     if (name.trim() === "") {
-      throw new InvalidUsernameException(`The username can not be empty`);
+      throw new InvalidusernameException(`The username can not be empty`);
     }
 
     this._name = name.trim();

@@ -1,6 +1,6 @@
 import { UserEmail } from "./UserEmail";
 import { UserImage } from "./UserImage";
-import { UserName } from "./UserName";
+import { Username } from "./Username";
 import { UserPassword } from "./UserPassword";
 
-export { UserEmail, UserImage, UserName, UserPassword };
+export { UserEmail, UserImage, Username, UserPassword };

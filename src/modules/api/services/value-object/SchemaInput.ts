@@ -3,17 +3,21 @@ import {
   SimpleSchemaConfig,
 } from "@modules/api/dto/schema_config";
 import { InvalidSchemaException } from "@modules/api/exceptions";
-import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
-import { FieldParams } from "./FieldParams";
+import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import {
   FieldIsArray,
   FieldName,
-  FieldPosibleNull,
-} from "@modules/dataset/services/value_object";
+  FieldPossibleNull,
+} from "@modules/dataset/services/value_object/field-config";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
 import { FieldType } from "./FieldType";
-import { SchemaOption } from "./SchemaOption";
+import {
+  EnumValueField,
+  SequenceValueField,
+  SequentialValueField,
+} from "@modules/dataset/services/value_object/field-type";
+import { StringSchemaValue } from "./StringSchemaValue";
 
 export class SchemaInput {
   private _value?: SimpleSchemaConfig;
@@ -37,41 +41,41 @@ export class SchemaInput {
     }
   }
 
-  private mapToSchemaInputFields(
+  private _mapToSchemaInputFields(
     schemaInput?: SimpleSchemaConfig,
   ): Array<InputDatasetFieldDTO> {
     const schema = this.validate(schemaInput);
     const schemaFields = [] as Array<InputDatasetFieldDTO>;
 
     for (const [fieldKey, fieldConfig] of Object.entries(schema)) {
-      const fieldName = new FieldName(fieldKey).value;
+      const fieldName = new FieldName(fieldKey);
 
       if (typeof fieldConfig === "string") {
         const fieldIsArray = new FieldIsArray();
-        const fieldPosibleNull = new FieldPosibleNull();
+        const fieldPossibleNull = new FieldPossibleNull();
         const fieldType = new FieldType(fieldConfig);
 
-        const fieldDataType = this.mapTypeStringToDataType(fieldType);
+        const fieldDataType = new StringSchemaValue(fieldType);
 
         schemaFields.push({
-          name: fieldName,
+          name: fieldName.value,
           isArray: fieldIsArray.value,
-          isPosibleNull: fieldPosibleNull.value,
-          dataType: fieldDataType,
+          isPossibleNull: fieldPossibleNull.value,
+          dataType: fieldDataType.value(),
         });
       } else if (typeof fieldConfig === "object") {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
-        const fieldPosibleNull = new FieldPosibleNull(fieldConfig.posibleNull);
-        const fieldDataType = this.mapSchemaConfigToDataType(
+        const fieldPosibleNull = new FieldPossibleNull(fieldConfig.posibleNull);
+        const fieldDatatype = this._mapSchemaConfigToDataType(
           fieldConfig.fieldType,
           fieldConfig.params,
         );
 
         schemaFields.push({
-          name: fieldName,
+          name: fieldName.value,
           isArray: fieldIsArray.value,
-          isPosibleNull: fieldPosibleNull.value,
-          dataType: fieldDataType,
+          isPossibleNull: fieldPosibleNull.value,
+          dataType: fieldDatatype,
         });
       }
     }
@@ -79,57 +83,54 @@ export class SchemaInput {
     return schemaFields;
   }
 
-  private mapSchemaConfigToDataType(
+  private _mapSchemaConfigToDataType(
     type?: string,
     params?: SchemaFieldParams,
   ): FieldDataType {
     const fieldType = new FieldType(type, params);
 
+    // mixed
     if (fieldType.type === "schema") {
-      const subSchemaFields = this.mapToSchemaInputFields(
+      const subSchemaFields = this._mapToSchemaInputFields(
         fieldType.params as SimpleSchemaConfig,
       );
 
       return { type: DATA_TYPES.MIXED, object: subSchemaFields };
-    } else {
-      const dataType = this.mapTypeStringToDataType(fieldType);
-      return dataType;
+    }
+
+    // sequence
+    else if (fieldType.type === "sequence") {
+      const config = new SequenceValueField(fieldType.params);
+
+      return {
+        type: DATA_TYPES.SEQUENCE,
+        startsWith: config.startsWith,
+        step: config.step,
+      };
+    }
+
+    // sequential
+    else if (fieldType.type === "sequential") {
+      const config = new SequentialValueField(fieldType.params);
+
+      return { type: DATA_TYPES.SEQUENTIAL, values: config.values };
+    }
+
+    // enum
+    else if (fieldType.type === "enum") {
+      const config = new EnumValueField(fieldType.params);
+
+      return { type: DATA_TYPES.ENUM, values: config.values };
+    }
+
+    // schema value
+    else {
+      const dataType = new StringSchemaValue(fieldType);
+      return dataType.value();
     }
   }
 
-  private mapTypeStringToDataType(type: FieldType): FieldDataType {
-    const indexFirstArgument = type.type.indexOf("<");
-
-    if (indexFirstArgument !== -1) {
-      const argsString = type.type.slice(indexFirstArgument).trim();
-      const schemaString = type.type.slice(0, indexFirstArgument);
-
-      const args = new FieldParams(argsString).value;
-      const option = new SchemaOption(schemaString);
-
-      return {
-        type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: {
-          args: { ...type.params, ...args },
-          parent: option.schema,
-          type: option.option,
-        },
-      };
-    } else {
-      const option = new SchemaOption(type.type);
-
-      return {
-        type: DATA_TYPES.SINGLE_VALUE,
-        fieldType: {
-          args: type.params,
-          parent: option.schema,
-          type: option.option,
-        },
-      };
-    }
-  }
-
-  public getFields() {
-    return this.mapToSchemaInputFields(this._value);
+  public fields() {
+    return this._mapToSchemaInputFields(this._value);
   }
 }

@@ -1,0 +1,12 @@
+# Build the image as production
+# So we can minimize the size
+FROM node:18.7.0
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . . 
+ENV PORT=8000
+EXPOSE 8000
+
+CMD ["npm", "run", "start:dev"]

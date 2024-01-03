@@ -1,9 +1,9 @@
-export type AdminUserParams = {
+export interface Props {
   username: string;
   password: string;
   email: string;
   id: string;
-};
+}
 
 export class AdminUser {
   private _username: string;
@@ -11,7 +11,7 @@ export class AdminUser {
   private _email: string;
   private _id: string;
 
-  constructor({ email, id, password, username }: AdminUserParams) {
+  constructor({ email, id, password, username }: Props) {
     this._email = email;
     this._password = password;
     this._id = id;

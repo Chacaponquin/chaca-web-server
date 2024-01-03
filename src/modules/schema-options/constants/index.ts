@@ -1,34 +1,36 @@
-import { Schema } from "../interfaces/options";
-import { AddressOptions } from "./AddressOptions";
-import { AnimalOptions } from "./AnimalOptions";
-import { DataTypeOptions } from "./DataTypeOptions";
-import { DateOptions } from "./DateOptions";
-import { FinanceOptions } from "./FinanceOptions";
-import { IdOptions } from "./IdOptions";
-import { ImageOptions } from "./ImageOptions";
-import { InternetOptions } from "./InternetOptions";
-import { LoremOptions } from "./LoremOptions";
-import { PersonOptions } from "./PersonOptions";
-import { PhoneOptions } from "./PhoneOptions";
-import { SystemOptions } from "./SystemOptions";
-import { VehicleOptions } from "./VehicleOptions";
-import { VideoOptions } from "./VideoOptions";
-import { WordOptions } from "./WordOptions";
+import { Schema } from "../domain";
+import { AddressOptions } from "./Address";
+import { AnimalOptions } from "./Animal";
+import { ColorOptions } from "./Color";
+import { DataTypeOptions } from "./DataType";
+import { DateOptions } from "./Date";
+import { FinanceOptions } from "./Finance";
+import { IdOptions } from "./Id";
+import { ImageOptions } from "./Image";
+import { InternetOptions } from "./Internet";
+import { LoremOptions } from "./Lorem";
+import { PersonOptions } from "./Person";
+import { PhoneOptions } from "./Phone";
+import { SystemOptions } from "./System";
+import { VehicleOptions } from "./Vehicle";
+import { VideoOptions } from "./Video";
+import { WordOptions } from "./Word";
 
 export const SCHEMAS: Array<Schema> = [
-  { name: "Address", options: AddressOptions },
-  { name: "Animal", options: AnimalOptions },
-  { name: "DataType", options: DataTypeOptions },
-  { name: "Date", options: DateOptions },
-  { name: "Finance", options: FinanceOptions },
-  { name: "Id", options: IdOptions },
-  { name: "Image", options: ImageOptions },
-  { name: "Internet", options: InternetOptions },
-  { name: "Lorem", options: LoremOptions },
-  { name: "Person", options: PersonOptions },
-  { name: "Phone", options: PhoneOptions },
-  { name: "System", options: SystemOptions },
-  { name: "Vehicle", options: VehicleOptions },
-  { name: "Video", options: VideoOptions },
-  { name: "Word", options: WordOptions },
+  new Schema({ name: "Address", options: AddressOptions }),
+  new Schema({ name: "Animal", options: AnimalOptions }),
+  new Schema({ name: "Color", options: ColorOptions }),
+  new Schema({ name: "DataType", options: DataTypeOptions }),
+  new Schema({ name: "Date", options: DateOptions }),
+  new Schema({ name: "Finance", options: FinanceOptions }),
+  new Schema({ name: "Id", options: IdOptions }),
+  new Schema({ name: "Image", options: ImageOptions }),
+  new Schema({ name: "Internet", options: InternetOptions }),
+  new Schema({ name: "Lorem", options: LoremOptions }),
+  new Schema({ name: "Person", options: PersonOptions }),
+  new Schema({ name: "Phone", options: PhoneOptions }),
+  new Schema({ name: "System", options: SystemOptions }),
+  new Schema({ name: "Vehicle", options: VehicleOptions }),
+  new Schema({ name: "Video", options: VideoOptions }),
+  new Schema({ name: "Word", options: WordOptions }),
 ];

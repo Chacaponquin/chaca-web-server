@@ -23,7 +23,7 @@ export class InvalidUserEmailException extends HttpException {
   }
 }
 
-export class InvalidUsernameException extends HttpException {
+export class InvalidusernameException extends HttpException {
   constructor(msg: string) {
     super(msg, HttpStatus.BAD_REQUEST);
   }

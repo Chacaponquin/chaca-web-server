@@ -1,0 +1,26 @@
+# Docker Compose Configuration
+# visit https://docs.docker.com/compose/
+
+version: "3.8"
+services:
+  app:
+    container_name: chaca-backend-dev
+    build:
+      context: ./
+      dockerfile: Dockerfile.dev
+    env_file:
+      - .env.dev
+    ports:
+      - "${PORT}:${PORT}"
+    depends_on:
+      - database
+
+  database:
+    image: mongo:6.0
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 12345

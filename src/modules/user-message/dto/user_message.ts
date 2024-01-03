@@ -4,10 +4,10 @@ export class CreateUserMessageDTO {
   @IsNotEmpty()
   @IsString()
   @IsEmail()
-  userEmail: string;
+  email: string;
   @IsNotEmpty()
   @IsString()
-  name: string;
+  title: string;
   @IsNotEmpty()
   @IsString()
   message: string;

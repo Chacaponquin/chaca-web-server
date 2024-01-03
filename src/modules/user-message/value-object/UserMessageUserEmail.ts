@@ -8,7 +8,7 @@ export class UserMessageUserEmail {
   constructor(email: string) {
     this.validateNotEmpty(email);
     this.validateRegExp(email);
-    this._email = email;
+    this._email = email.trim();
   }
 
   private validateNotEmpty(email: string): void {

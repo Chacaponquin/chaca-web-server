@@ -1,41 +1,39 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { CreateDatasets } from "./CreateDatasets";
-import { MultiGenerateSchema, chaca, schemas as chacaSchemas } from "chaca";
+import { schemas as chacaSchemas } from "chaca";
 import { FileConfigDTO } from "@modules/dataset/dto/file";
-import { FileExt } from "../value_object";
-import * as path from "path";
+import { FileExt } from "../value_object/file-config";
+import { ExportSchemas, MultiSchema } from "../value_object/schemas";
+
+interface Props {
+  datasetsConfig: Array<InputDatasetDTO>;
+  fileConfig: FileConfigDTO;
+}
 
 export class CreateAndExportDatasets {
-  private readonly PUBLIC_ROUTE = "../../../../data";
-
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
-  public async execute(
-    datasetsConfig: Array<InputDatasetDTO>,
-    fileConfig: FileConfigDTO,
-  ): Promise<string> {
-    const createDatasetCase = new CreateDatasets(this.schemaOptionsServices);
-    const multiGenerateConfig = createDatasetCase.buildSchemas(datasetsConfig);
-    return await this.exportByConfig(multiGenerateConfig, fileConfig);
+  public async execute({ datasetsConfig, fileConfig }: Props): Promise<string> {
+    const createDatasetsCase = new CreateDatasets(this.schemaOptionsServices);
+    const multiGenerateConfig = createDatasetsCase.buildSchemas(datasetsConfig);
+    return await this._exportByConfig(multiGenerateConfig, fileConfig);
   }
 
-  private async exportByConfig(
-    schemas: Array<MultiGenerateSchema>,
+  private async _exportByConfig(
+    schemas: MultiSchema,
     config: FileConfigDTO,
   ): Promise<string> {
     const fileExt = new FileExt(config.fileType);
+    const fileName = `Dataset${chacaSchemas.id.uuid().getValue()}`;
 
-    const fileURL = await chaca.exportFromSchemas(
-      schemas,
-      {
-        format: fileExt.chacaFile,
-        location: path.join(__dirname, this.PUBLIC_ROUTE),
-        fileName: chacaSchemas.id.uuid().getValue(),
-      },
-      { verbose: false },
-    );
+    const exportSchemas = new ExportSchemas(schemas.schemas);
 
-    return fileURL;
+    const path = await exportSchemas.generate({
+      filename: fileName,
+      extension: fileExt.value,
+    });
+
+    return path.split("\\").at(-1) as string;
   }
 }

@@ -9,7 +9,7 @@ export type SchemaFieldConfig = {
   posibleNull?: ConfigPosibleNull;
 };
 
-export type SchemaFieldParams = Record<string, unknown>;
+export type SchemaFieldParams = any;
 
 export type CompleteSchemaConfig = {
   schema?: SimpleSchemaConfig;

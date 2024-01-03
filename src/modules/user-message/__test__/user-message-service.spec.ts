@@ -33,8 +33,8 @@ describe("# User Message Services Test", () => {
     it("Create a user message with correct arguments. Should return an created user", async () => {
       const params: CreateUserMessageDTO = {
         message: "Test message",
-        name: "Test title",
-        userEmail: "user@gmail.com",
+        title: "Test title",
+        email: "user@gmail.com",
       };
 
       const message = await service.createUserMessage(params);
@@ -45,8 +45,8 @@ describe("# User Message Services Test", () => {
     it("Create a user message without message. Should throw an error", async () => {
       const params: CreateUserMessageDTO = {
         message: "",
-        name: "Test title",
-        userEmail: "user@gmail.com",
+        title: "Test title",
+        email: "user@gmail.com",
       };
 
       await expect(
@@ -57,8 +57,8 @@ describe("# User Message Services Test", () => {
     it("Create a user message without title. Should throw an error", async () => {
       const params: CreateUserMessageDTO = {
         message: "Test message",
-        name: "",
-        userEmail: "user@gmail.com",
+        title: "",
+        email: "user@gmail.com",
       };
 
       await expect(
@@ -69,8 +69,8 @@ describe("# User Message Services Test", () => {
     it("Create a user message without email. Should throw an error", async () => {
       const params: CreateUserMessageDTO = {
         message: "Test message",
-        name: "Test name",
-        userEmail: "",
+        title: "Test name",
+        email: "",
       };
 
       await expect(
@@ -81,8 +81,8 @@ describe("# User Message Services Test", () => {
     it("Create a user message with incorrect pattern for email. Should throw an error", async () => {
       const params: CreateUserMessageDTO = {
         message: "Test message",
-        name: "Test name",
-        userEmail: "email.com",
+        title: "Test name",
+        email: "email.com",
       };
 
       await expect(

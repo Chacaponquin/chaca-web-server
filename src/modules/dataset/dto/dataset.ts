@@ -10,6 +10,7 @@ export interface InputDatasetDTO {
 export interface InputDatasetFieldDTO<T = FieldDataType> {
   name: string;
   dataType: T;
-  isPosibleNull: ConfigPosibleNull;
-  isArray: ConfigIsArray;
+  isPossibleNull?: ConfigPosibleNull;
+  isArray?: ConfigIsArray;
+  isKey?: boolean;
 }

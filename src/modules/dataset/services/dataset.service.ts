@@ -4,11 +4,17 @@ import {
   ChacaSchemaBuilder,
   CreateAndExportDatasets,
   CreateDatasets,
-  CreateSingleDataset,
+  CreateDocuments,
+  CreateSingleDocument,
 } from "./cases";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema } from "chaca";
 import { FileConfigDTO } from "../dto/file";
+import { Schema } from "./value_object/schemas";
+
+interface CreateDatasetProps {
+  datasetFields: Array<InputDatasetFieldDTO>;
+  count: number;
+}
 
 @Injectable()
 export class DatasetService {
@@ -19,12 +25,19 @@ export class DatasetService {
     return useCase.execute(datasetsConfig);
   }
 
-  public createSingleDataset(datasetFields: Array<InputDatasetFieldDTO>) {
-    const useCase = new CreateSingleDataset(this.schemaOptionsServices);
-    return useCase.execute(datasetFields);
+  public async createSingleDocument(
+    datasetFields: Array<InputDatasetFieldDTO>,
+  ) {
+    const useCase = new CreateSingleDocument(this.schemaOptionsServices);
+    return await useCase.execute(datasetFields);
   }
 
-  public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {
+  public createDocuments({ count, datasetFields }: CreateDatasetProps) {
+    const useCase = new CreateDocuments(this.schemaOptionsServices);
+    return useCase.execute({ count, fields: datasetFields });
+  }
+
+  public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): Schema {
     const useCase = new ChacaSchemaBuilder(this.schemaOptionsServices);
     return useCase.execute(datasetFields);
   }
@@ -34,6 +47,6 @@ export class DatasetService {
     fileConfig: FileConfigDTO,
   ): Promise<string> {
     const useCase = new CreateAndExportDatasets(this.schemaOptionsServices);
-    return await useCase.execute(datasetsConfig, fileConfig);
+    return await useCase.execute({ datasetsConfig, fileConfig });
   }
 }

@@ -1,15 +1,13 @@
-import {
-  IncorrectFieldParamsException,
-  IncorrectFieldTypeException,
-} from "../../exceptions";
+import { SchemaFieldParams } from "@modules/api/dto/schema_config";
+import { IncorrectFieldTypeException } from "../../exceptions";
 
 export class FieldType {
   private _type: string;
-  private _params: Record<string, unknown> = {};
+  private _params: SchemaFieldParams = {};
 
-  constructor(type?: string, params?: Record<string, unknown>) {
+  constructor(type?: string, params?: SchemaFieldParams) {
     this.validateType(type);
-    this.validateParams(params);
+    this._params = params;
   }
 
   private validateType(type?: string): void {
@@ -19,18 +17,6 @@ export class FieldType {
       );
     } else {
       this._type = type;
-    }
-  }
-
-  private validateParams(params?: Record<string, unknown>): void {
-    if (params !== undefined) {
-      if (typeof params !== "object" || params === null) {
-        throw new IncorrectFieldParamsException(
-          `The field type params must be an object with the values`,
-        );
-      } else {
-        this._params = params;
-      }
     }
   }
 

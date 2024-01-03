@@ -1,27 +1,19 @@
 import { Injectable } from "@nestjs/common";
-import { Schema, SchemaOption } from "../interfaces/options";
 import { SCHEMAS } from "../constants";
-import { chaca } from "chaca";
 import { NotFoundOptionError, NotFoundSchemaError } from "../exceptions";
+import { Schema, SchemaOption } from "../domain";
 
 @Injectable()
 export class SchemaOptionsRepository {
   private SCHEMAS: Array<Schema> = SCHEMAS;
 
-  private _stringToCompareName(name: string): string {
-    return chaca.utils.camelCase(name).trim().toLowerCase();
-  }
-
-  public getAllSchemas(): Array<Schema> {
+  public allSchemas(): Array<Schema> {
     return this.SCHEMAS;
   }
 
   public findSchema(schema: string): Schema | null {
-    const allSchemas = this.getAllSchemas();
-    const foundSchema = allSchemas.find(
-      (s) =>
-        this._stringToCompareName(s.name) === this._stringToCompareName(schema),
-    );
+    const allSchemas = this.allSchemas();
+    const foundSchema = allSchemas.find((s) => s.equal(schema) === true);
 
     return foundSchema ? foundSchema : null;
   }
@@ -30,9 +22,7 @@ export class SchemaOptionsRepository {
     const foundSchema = this.findSchema(schema);
 
     if (foundSchema) {
-      const findOption = foundSchema.options.find(
-        (o) => chaca.utils.camelCase(o.name) === chaca.utils.camelCase(option),
-      );
+      const findOption = foundSchema.options.find((o) => o.equal(option));
 
       if (findOption) {
         return findOption;

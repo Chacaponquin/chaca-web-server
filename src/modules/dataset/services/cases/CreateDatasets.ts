@@ -1,40 +1,52 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
-import { chaca } from "chaca";
-import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { MultiGenerateSchema } from "chaca";
-import { SchemaLimit, SchemaName } from "../value_object";
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
+import { SchemaLimit, SchemaName } from "../value_object/schema-config";
 import { ChacaSchemaBuilder } from "./ChacaSchemaBuilder";
+import { RepeatDatasetNameException } from "@modules/dataset/exceptions/dataset";
+import { MultiSchema } from "../value_object/schemas";
 
 export class CreateDatasets {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
   public execute(datasetsConfig: Array<InputDatasetDTO>) {
-    const multiGenerateConfig = this.buildSchemas(datasetsConfig);
-    const allData = chaca.multiGenerate(multiGenerateConfig, {
-      verbose: false,
-    });
-
-    return allData;
+    const multi = this.buildSchemas(datasetsConfig);
+    return multi.generate();
   }
 
-  public buildSchemas(
-    datasetsConfig: Array<InputDatasetDTO>,
-  ): Array<MultiGenerateSchema> {
+  public buildSchemas(datasetsConfig: Array<InputDatasetDTO>): MultiSchema {
     const multiGenerateConfig: Array<MultiGenerateSchema> = [];
+
     for (const dataset of datasetsConfig) {
-      const schemaBuilder = new ChacaSchemaBuilder(this.schemaOptionsServices);
+      const builder = new ChacaSchemaBuilder(this.schemaOptionsServices);
 
       const documentsLimit = new SchemaLimit(dataset.limit).value;
-      const datasetSchema = schemaBuilder.execute(dataset.fields);
+      const datasetSchema = builder.execute(dataset.fields);
       const datasetName = new SchemaName(dataset.name).value;
+
+      this.validateNotRepeatDatasetName(
+        datasetName,
+        multiGenerateConfig.map((d) => d.name),
+      );
 
       multiGenerateConfig.push({
         name: datasetName,
-        schema: datasetSchema,
+        schema: datasetSchema.schema,
         documents: documentsLimit,
       });
     }
 
-    return multiGenerateConfig;
+    return new MultiSchema(multiGenerateConfig);
+  }
+
+  private validateNotRepeatDatasetName(
+    name: string,
+    allSchemas: Array<string>,
+  ): void {
+    if (allSchemas.some((s) => s === name)) {
+      throw new RepeatDatasetNameException(
+        `Aldready exists a schema with the name "${name}"`,
+      );
+    }
   }
 }

@@ -7,6 +7,7 @@ export class MediaCloudinaryRepository {
     const result = await cloudinary.uploader.upload(imageURL, {
       folder: "chaca",
     });
+
     return result.url;
   }
 }

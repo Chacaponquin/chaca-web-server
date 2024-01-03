@@ -1,64 +1,109 @@
-import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE.enum";
+import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { FieldDataType } from "@modules/dataset/dto/data_type";
 import { InputDatasetFieldDTO } from "@modules/dataset/dto/dataset";
-import { IncorrectDefinedFieldDataTypeException } from "@modules/dataset/exceptions";
+import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
+import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
+import { chaca, FieldSchemaConfig } from "chaca";
+import {
+  FieldIsArray,
+  FieldName,
+  FieldPossibleNull,
+} from "../value_object/field-config";
 import {
   CustomValueField,
   DefinedValueField,
-  FieldIsArray,
-  FieldName,
-  FieldPosibleNull,
-  ISchemaField,
+  EnumValueField,
+  KeyValueField,
   MixedValueField,
   RefValueField,
-} from "@modules/dataset/services/value_object";
-import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { ChacaSchema, SchemaInputField, chaca } from "chaca";
+  SequenceValueField,
+  SequentialValueField,
+} from "../value_object/field-type";
+import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
+import { Schema } from "../value_object/schemas";
 
 export class ChacaSchemaBuilder {
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 
-  public execute(datasetFields: Array<InputDatasetFieldDTO>): ChacaSchema {
-    let schemaFields: Record<string, SchemaInputField> = {};
+  public execute(datasetFields: Array<InputDatasetFieldDTO>): Schema {
+    const schemaFields: Record<string, FieldSchemaConfig> = {};
 
     for (const field of datasetFields) {
-      const fieldName = new FieldName(field.name).value;
-      const fieldType = this.mapDataTypeToField(field.dataType).getField();
-      const fieldIsArray = new FieldIsArray(field.isArray).value;
-      const fieldPosibleNull = new FieldPosibleNull(field.isPosibleNull).value;
+      const fieldName = new FieldName(field.name);
+      const fieldType = this._mapDatatypeToField(field.dataType, field.isKey);
+      const fieldIsArray = new FieldIsArray(field.isArray);
+      const fieldPossibleNull = new FieldPossibleNull(field.isPossibleNull);
 
-      const fieldConfig = {
-        type: fieldType,
-        isArray: fieldIsArray,
-        posibleNull: fieldPosibleNull,
-      } as SchemaInputField;
-
-      schemaFields = {
-        ...schemaFields,
-        [fieldName]: fieldConfig,
+      const fieldConfig: FieldSchemaConfig = {
+        type: fieldType.getField(),
+        isArray: fieldIsArray.value,
+        possibleNull: fieldPossibleNull.value,
       };
+
+      schemaFields[fieldName.value] = fieldConfig;
     }
 
     const schema = chaca.schema(schemaFields);
-    return schema;
+    return new Schema(schema);
   }
 
-  private mapDataTypeToField(dataType: FieldDataType): ISchemaField {
+  private _mapDatatypeToField(
+    dataType: FieldDataType,
+    isKey?: boolean,
+  ): ISchemaField {
+    // defined value
     if (dataType.type === DATA_TYPES.SINGLE_VALUE) {
-      return new DefinedValueField(
+      const field = new DefinedValueField(
         this.schemaOptionsServices,
         dataType.fieldType,
       );
-    } else if (dataType.type === DATA_TYPES.REF) {
-      return new RefValueField(dataType.ref);
-    } else if (dataType.type === DATA_TYPES.CUSTOM) {
-      return new CustomValueField(dataType.code);
-    } else if (dataType.type === DATA_TYPES.MIXED) {
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // ref
+    else if (dataType.type === DATA_TYPES.REF) {
+      const field = new RefValueField(dataType.ref);
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // custom
+    else if (dataType.type === DATA_TYPES.CUSTOM) {
+      const field = new CustomValueField(dataType.code);
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // mixed
+    else if (dataType.type === DATA_TYPES.MIXED) {
       const schema = this.execute(dataType.object);
       return new MixedValueField(schema);
+    }
+
+    // sequence
+    else if (dataType.type === DATA_TYPES.SEQUENCE) {
+      const field = new SequenceValueField({
+        startsWith: dataType.startsWith,
+        step: dataType.step,
+      });
+
+      return isKey ? new KeyValueField(field) : field;
+    }
+
+    // sequential
+    else if (dataType.type === DATA_TYPES.SEQUENTIAL) {
+      const field = new SequentialValueField(dataType.values);
+
+      return field;
+    }
+
+    // enum
+    else if (dataType.type === DATA_TYPES.ENUM) {
+      return new EnumValueField(dataType.values);
     } else {
-      throw new IncorrectDefinedFieldDataTypeException(
-        `The field must have a dataType.`,
+      throw new IncorrectDefinedFieldDatatypeException(
+        `The field must have a data type.`,
       );
     }
   }
