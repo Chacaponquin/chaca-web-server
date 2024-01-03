@@ -1,6 +1,7 @@
 import { Schema } from "../domain";
 import { AddressOptions } from "./Address";
 import { AnimalOptions } from "./Animal";
+import { ColorOptions } from "./Color";
 import { DataTypeOptions } from "./DataType";
 import { DateOptions } from "./Date";
 import { FinanceOptions } from "./Finance";
@@ -18,6 +19,7 @@ import { WordOptions } from "./Word";
 export const SCHEMAS: Array<Schema> = [
   new Schema({ name: "Address", options: AddressOptions }),
   new Schema({ name: "Animal", options: AnimalOptions }),
+  new Schema({ name: "Color", options: ColorOptions }),
   new Schema({ name: "DataType", options: DataTypeOptions }),
   new Schema({ name: "Date", options: DateOptions }),
   new Schema({ name: "Finance", options: FinanceOptions }),

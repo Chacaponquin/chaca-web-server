@@ -3,7 +3,7 @@ import { SchemaField, chaca } from "chaca";
 
 type SchemaFieldFunction = (a?: any) => SchemaField;
 
-interface SchemaOptionProps {
+interface Props {
   name: string;
   args?: Array<OptionArgument>;
   schemaField: SchemaFieldFunction;
@@ -14,7 +14,7 @@ export class SchemaOption {
   private _arguments: Array<OptionArgument>;
   private _schemaField: SchemaFieldFunction;
 
-  constructor({ args, name, schemaField }: SchemaOptionProps) {
+  constructor({ args, name, schemaField }: Props) {
     this._name = name;
     this._arguments = args ?? [];
     this._schemaField = schemaField;

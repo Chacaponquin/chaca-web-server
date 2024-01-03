@@ -1,7 +1,7 @@
 import { SchemaOption } from "./SchemaOption";
 import { chaca } from "chaca";
 
-interface SchemaProps {
+interface Props {
   name: string;
   options: Array<SchemaOption>;
 }
@@ -10,7 +10,7 @@ export class Schema {
   private _name: string;
   private _options: Array<SchemaOption>;
 
-  constructor({ name, options }: SchemaProps) {
+  constructor({ name, options }: Props) {
     this._name = name;
     this._options = options;
   }
