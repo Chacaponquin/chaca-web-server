@@ -1,11 +1,11 @@
 import { IncorrectFieldTypeException } from "@modules/api/exceptions";
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
-import { CustomField, schemas } from "chaca";
+import { CustomField, chaca, schemas } from "chaca";
 
 export class CustomValueField implements ISchemaField {
   private _fun: CustomField;
 
-  public static START_FUNCTION_STRING = "function getValue(props) {";
+  public static START_FUNCTION_STRING = "function getValue(props){";
 
   constructor(stringFunction: string) {
     const str = stringFunction.trim();
@@ -21,7 +21,7 @@ export class CustomValueField implements ISchemaField {
       const func = new Function("props", contentCode);
 
       this._fun = ({ currentFields, store }) => {
-        return func({ currentFields, store, schemas });
+        return func({ currentFields, store, schemas, utils: chaca.utils });
       };
     } else {
       throw new IncorrectFieldTypeException(
