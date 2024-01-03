@@ -4,7 +4,7 @@ import Domain from "./Domain";
 import Email from "./Email";
 import Password from "./Password";
 import Url from "./Url";
-import username from "./username";
+import Username from "./Username";
 
 export const InternetOptions: SchemaOption[] = [
   new SchemaOption({
@@ -47,5 +47,5 @@ export const InternetOptions: SchemaOption[] = [
   Email,
   Password,
   Url,
-  username,
+  Username,
 ];
