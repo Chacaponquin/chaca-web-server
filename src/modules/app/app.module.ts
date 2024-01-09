@@ -15,15 +15,10 @@ import { LanguageModule } from "./modules/language/language.module";
 import { EnvModule } from "./modules/env/env.module";
 import { ThrottlerModule } from "@nestjs/throttler";
 
-function load() {
-  console.log(process.env.MONGO_URI);
-  return MongooseModule.forRoot(process.env.MONGO_URI as string, {});
-}
-
 @Module({
   imports: [
     EnvModule,
-    load(),
+    MongooseModule.forRoot(process.env.MONGO_URI as string, {}),
     ThrottlerModule.forRoot({
       ttl: 60,
       limit: 10,
