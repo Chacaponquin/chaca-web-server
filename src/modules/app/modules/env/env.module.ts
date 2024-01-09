@@ -2,7 +2,7 @@ import { Module } from "@nestjs/common";
 import { EnvService } from "./services/env.service";
 import { ConfigModule } from "@nestjs/config";
 
-const filterEnv = () => {
+function filterEnv() {
   const NODE_ENV = process.env.NODE_ENV;
 
   if (NODE_ENV === "test") {
@@ -12,7 +12,7 @@ const filterEnv = () => {
   } else {
     return ".env";
   }
-};
+}
 
 const envFile = filterEnv();
 
