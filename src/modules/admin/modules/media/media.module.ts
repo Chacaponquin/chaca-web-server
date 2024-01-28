@@ -1,5 +1,4 @@
 import { Module } from "@nestjs/common";
-import { MediaController } from "./controller/media.controller";
 import { MediaService } from "./services/media.service";
 import { MediaRepository } from "./services/media-repository.service";
 import { MediaCloudinaryRepository } from "./insfrastructure/cloudinary/media-cloudinary-repository.service";
@@ -26,6 +25,6 @@ import { EnvModule } from "@modules/app/modules/env/env.module";
     MediaCloudinaryRepository,
   ],
   exports: [MediaService],
-  controllers: [MediaController],
+  controllers: [],
 })
 export class MediaModule {}
