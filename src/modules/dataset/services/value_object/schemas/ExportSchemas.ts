@@ -16,24 +16,24 @@ export class ExportSchemas extends Generator {
   }
 
   public async generate({ extension, filename }: Props): Promise<string> {
-    const filenames = await fs.promises.readdir(path.join(__dirname));
-
-    console.log("\nFilenames in directory:");
-
-    filenames.forEach((file) => {
-      console.log("File:", file);
-    });
-
     const func = async () => {
       const filePath = await chaca.exportFromSchemas(
         this.schemas,
         {
           format: { ext: extension, zip: true },
-          location: "/dev/xvda", // path.join(__dirname, this.PUBLIC_ROUTE),
+          location: path.join(__dirname),
           fileName: filename,
         },
         { verbose: false },
       );
+
+      const filenames = await fs.promises.readdir(path.join(__dirname));
+
+      console.log("\nFilenames in directory:");
+
+      filenames.forEach((file) => {
+        console.log("File:", file);
+      });
 
       return filePath;
     };
