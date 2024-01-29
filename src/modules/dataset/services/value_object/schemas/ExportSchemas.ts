@@ -9,7 +9,7 @@ interface Props {
 }
 
 export class ExportSchemas extends Generator {
-  private readonly ROUTE = "/modules/dataset/infrastructure/local";
+  private readonly ROUTE = "/modules/dataset/infrastructure/s3/core";
 
   constructor(private readonly schemas: Array<MultiGenerateSchema>) {
     super();
