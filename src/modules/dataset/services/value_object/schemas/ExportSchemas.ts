@@ -1,7 +1,6 @@
 import { MultiGenerateSchema, chaca, Extensions } from "chaca";
 import { Generator } from "./Generator";
 import * as path from "path";
-import * as fs from "fs";
 
 interface Props {
   extension: Extensions;
@@ -26,14 +25,6 @@ export class ExportSchemas extends Generator {
         },
         { verbose: false },
       );
-
-      const filenames = await fs.promises.readdir(this.ROUTE);
-
-      console.log("\nFilenames in directory:");
-
-      filenames.forEach((file) => {
-        console.log("File:", file);
-      });
 
       return filePath;
     };
