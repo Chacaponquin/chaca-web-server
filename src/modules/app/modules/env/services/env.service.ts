@@ -44,4 +44,20 @@ export class EnvService {
   public get CLIENT_REDIRECT_URL() {
     return this.configService.get<string>("CLIENT_REDIRECT_URL") as string;
   }
+
+  public get AWS_S3_ACCESS_KEY_ID() {
+    return this.configService.get<string>("AWS_ACCESS_KEY_ID") as string;
+  }
+
+  public get AWS_S3_SECRET_ACCESS_KEY() {
+    return this.configService.get<string>("AWS_SECRET_ACCESS_KEY") as string;
+  }
+
+  public get AWS_S3_REGION() {
+    return this.configService.get<string>("S3_REGION") as string;
+  }
+
+  public get AWS_S3_BUCKET() {
+    return this.configService.get<string>("S3_BUCKET") as string;
+  }
 }

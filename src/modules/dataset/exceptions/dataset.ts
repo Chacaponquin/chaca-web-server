@@ -65,3 +65,9 @@ export class IncorrectDatasetLimitException extends HttpException {
     super(msg, HttpStatus.BAD_REQUEST);
   }
 }
+
+export class UploadDatasetException extends HttpException {
+  constructor() {
+    super("Error uploading dataset to cloud", HttpStatus.BAD_REQUEST);
+  }
+}
