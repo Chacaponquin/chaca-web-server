@@ -1,6 +1,6 @@
 import { MultiGenerateSchema, chaca, Extensions } from "chaca";
 import { Generator } from "./Generator";
-import * as path from "path";
+// import * as path from "path";
 
 interface Props {
   extension: Extensions;
@@ -20,7 +20,7 @@ export class ExportSchemas extends Generator {
         this.schemas,
         {
           format: { ext: extension, zip: true },
-          location: path.join(__dirname, this.PUBLIC_ROUTE),
+          location: "/dev/xvda", // path.join(__dirname, this.PUBLIC_ROUTE),
           fileName: filename,
         },
         { verbose: false },
