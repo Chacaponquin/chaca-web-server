@@ -23,13 +23,13 @@ export class ExportSchemas extends Generator {
         this.schemas,
         {
           format: { ext: extension, zip: true },
-          location: location,
+          location: path.join(),
           fileName: filename,
         },
         { verbose: false },
       );
 
-      const filenames = await fs.promises.readdir(path.join(__dirname));
+      const filenames = await fs.promises.readdir(path.join());
 
       console.log("\nFilenames in directory:");
 
