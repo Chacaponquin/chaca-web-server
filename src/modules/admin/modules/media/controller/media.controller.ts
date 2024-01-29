@@ -1,8 +1,4 @@
-import { MediaService } from "../services/media.service";
-import { Controller, Post } from "@nestjs/common";
-import { UploadedFile, UseInterceptors } from "@nestjs/common/decorators";
-import { FileInterceptor } from "@nestjs/platform-express";
-import { diskStorage } from "multer";
+import { Controller } from "@nestjs/common";
 import * as path from "path";
 
 @Controller("admin/media")
@@ -12,9 +8,7 @@ export class MediaController {
     "../../../../../temp",
   );
 
-  constructor(private readonly mediaService: MediaService) {}
-
-  @Post("/upload-image")
+  /* @Post("/upload-image")
   @UseInterceptors(
     FileInterceptor("file", {
       storage: diskStorage({
@@ -29,9 +23,6 @@ export class MediaController {
   public async uploadImage(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    const imageURL = path.join(this.TEMP_FOLDER_DIR, `/${file.filename}`);
-    const imageResultURL = await this.mediaService.uploadImage(imageURL);
-
-    return imageResultURL;
-  }
+   
+  }*/
 }
