@@ -16,9 +16,7 @@ export class ExportSchemas extends Generator {
   }
 
   public async generate({ extension, filename }: Props): Promise<string> {
-    const filenames = await fs.promises.readdir(
-      path.join(__dirname, this.PUBLIC_ROUTE),
-    );
+    const filenames = await fs.promises.readdir(path.join(__dirname));
 
     console.log("\nFilenames in directory:");
 
