@@ -9,27 +9,25 @@ interface Props {
 }
 
 export class ExportSchemas extends Generator {
-  private readonly PUBLIC_ROUTE = "../../../../../data";
+  private readonly ROUTE = "/modules/dataset/infrastructure/local";
 
   constructor(private readonly schemas: Array<MultiGenerateSchema>) {
     super();
   }
 
   public async generate({ extension, filename }: Props): Promise<string> {
-    const location = path.join(__dirname);
-
     const func = async () => {
       const filePath = await chaca.exportFromSchemas(
         this.schemas,
         {
           format: { ext: extension, zip: true },
-          location: path.join(),
+          location: path.join(this.ROUTE),
           fileName: filename,
         },
         { verbose: false },
       );
 
-      const filenames = await fs.promises.readdir(path.join());
+      const filenames = await fs.promises.readdir(this.ROUTE);
 
       console.log("\nFilenames in directory:");
 
