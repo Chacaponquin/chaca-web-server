@@ -71,3 +71,9 @@ export class UploadDatasetException extends HttpException {
     super("Error uploading dataset to cloud", HttpStatus.BAD_REQUEST);
   }
 }
+
+export class DownloadDatasetException extends HttpException {
+  constructor() {
+    super("Error download dataset", HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+}

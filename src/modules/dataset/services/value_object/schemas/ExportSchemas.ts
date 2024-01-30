@@ -1,6 +1,7 @@
 import { MultiGenerateSchema, chaca, Extensions } from "chaca";
 import { Generator } from "./Generator";
 import * as path from "path";
+import { LOCAL_EXPORT_ROUTE } from "@modules/dataset/constants/EXPORT";
 
 interface Props {
   extension: Extensions;
@@ -8,8 +9,6 @@ interface Props {
 }
 
 export class ExportSchemas extends Generator {
-  private readonly ROUTE = "dist/src/modules/dataset/infrastructure/s3/core";
-
   constructor(private readonly schemas: Array<MultiGenerateSchema>) {
     super();
   }
@@ -20,7 +19,7 @@ export class ExportSchemas extends Generator {
         this.schemas,
         {
           format: { ext: extension, zip: true },
-          location: path.join(this.ROUTE),
+          location: path.join(LOCAL_EXPORT_ROUTE),
           fileName: filename,
         },
         { verbose: false },

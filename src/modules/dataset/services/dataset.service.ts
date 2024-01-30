@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, StreamableFile } from "@nestjs/common";
 import { InputDatasetDTO, InputDatasetFieldDTO } from "../dto/dataset";
 import {
   ChacaSchemaBuilder,
@@ -10,15 +10,29 @@ import {
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { FileConfigDTO } from "../dto/file";
 import { Schema } from "./value_object/schemas";
+import { S3Repository } from "../infrastructure/s3/core";
 
 interface CreateDatasetProps {
   datasetFields: Array<InputDatasetFieldDTO>;
   count: number;
 }
 
+interface DownloadProps {
+  key: string;
+}
+
 @Injectable()
 export class DatasetService {
-  constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
+  constructor(
+    private readonly schemaOptionsServices: SchemaOptionsService,
+    private readonly repository: S3Repository,
+  ) {}
+
+  public async downloadDataset({
+    key,
+  }: DownloadProps): Promise<StreamableFile> {
+    return await this.repository.downloadDataset(key);
+  }
 
   public createDatasets(datasetsConfig: Array<InputDatasetDTO>) {
     const useCase = new CreateDatasets(this.schemaOptionsServices);
@@ -46,7 +60,11 @@ export class DatasetService {
     datasetsConfig: Array<InputDatasetDTO>,
     fileConfig: FileConfigDTO,
   ): Promise<string> {
-    const useCase = new CreateAndExportDatasets(this.schemaOptionsServices);
+    const useCase = new CreateAndExportDatasets(
+      this.schemaOptionsServices,
+      this.repository,
+    );
+
     return await useCase.execute({ datasetsConfig, fileConfig });
   }
 }

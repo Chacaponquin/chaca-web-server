@@ -2,16 +2,18 @@ import { Injectable, NotFoundException, StreamableFile } from "@nestjs/common";
 import { FILE_CONFIG } from "../constants/FILE_CONFIG";
 import { ALL_FAQ } from "../constants/FAQ";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import * as path from "path";
-import * as fs from "fs";
 import { ApiArgument, ApiSchema, ApiSchemaOption } from "../dto/schema";
+import { DatasetService } from "@modules/dataset/services/dataset.service";
 
 @Injectable()
 export class WebApiService {
   private FILE_CONFIG = FILE_CONFIG;
   private ALL_FAQ = ALL_FAQ;
 
-  constructor(private readonly schemaOptionsService: SchemaOptionsService) {}
+  constructor(
+    private readonly schemaOptionsService: SchemaOptionsService,
+    private readonly datasetServices: DatasetService,
+  ) {}
 
   getApiSchemas(): ApiSchema[] {
     const schemas = this.schemaOptionsService.allSchemas();
@@ -50,16 +52,7 @@ export class WebApiService {
     return this.ALL_FAQ;
   }
 
-  fileToDownload(fileName: string): StreamableFile {
-    try {
-      const filePath = path.join(__dirname, "../../../data", fileName);
-      const file = fs.createReadStream(filePath);
-
-      const stream = new StreamableFile(file);
-
-      return stream;
-    } catch (error) {
-      throw new NotFoundException();
-    }
+  async fileToDownload(key: string): Promise<StreamableFile> {
+    return await this.datasetServices.downloadDataset({ key: key });
   }
 }

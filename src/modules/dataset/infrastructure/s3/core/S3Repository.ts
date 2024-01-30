@@ -1,9 +1,14 @@
-import { S3Client } from "@aws-sdk/client-s3";
+import { GetObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
-import { Injectable } from "@nestjs/common";
+import { Injectable, StreamableFile } from "@nestjs/common";
 import { Upload } from "@aws-sdk/lib-storage";
 import * as fs from "fs";
-import { UploadDatasetException } from "@modules/dataset/exceptions/dataset";
+import {
+  DownloadDatasetException,
+  UploadDatasetException,
+} from "@modules/dataset/exceptions/dataset";
+import { schemas } from "chaca";
+import { Readable } from "stream";
 
 interface UploadDatasetProps {
   filePath: string;
@@ -11,40 +16,50 @@ interface UploadDatasetProps {
 
 @Injectable()
 export class S3Repository {
+  private readonly client = new S3Client({
+    credentials: {
+      accessKeyId: this.envServices.AWS_S3_ACCESS_KEY_ID,
+      secretAccessKey: this.envServices.AWS_S3_SECRET_ACCESS_KEY,
+    },
+    region: this.envServices.AWS_S3_REGION,
+  });
+
   constructor(private readonly envServices: EnvService) {}
 
-  public async uploadDataset({ filePath }: UploadDatasetProps): Promise<void> {
-    const fileStream = fs.createReadStream(filePath);
-
-    const {
-      AWS_S3_BUCKET,
-      AWS_S3_ACCESS_KEY_ID,
-      AWS_S3_REGION,
-      AWS_S3_SECRET_ACCESS_KEY,
-    } = this.envServices;
-
-    const uploadParams = {
-      Bucket: AWS_S3_BUCKET,
-      Key: filePath,
-      Body: fileStream,
-    };
-
-    const client = new S3Client({
-      credentials: {
-        accessKeyId: AWS_S3_ACCESS_KEY_ID,
-        secretAccessKey: AWS_S3_SECRET_ACCESS_KEY,
-      },
-      region: AWS_S3_REGION,
+  public async downloadDataset(key: string): Promise<StreamableFile> {
+    const command = new GetObjectCommand({
+      Bucket: this.envServices.AWS_S3_BUCKET,
+      Key: key,
     });
 
+    const fileStream = await this.client.send(command);
+
+    if (fileStream.Body) {
+      return new StreamableFile(fileStream.Body as Readable);
+    } else {
+      throw new DownloadDatasetException();
+    }
+  }
+
+  public async uploadDataset({
+    filePath,
+  }: UploadDatasetProps): Promise<string> {
+    const fileStream = fs.createReadStream(filePath);
+
+    const key = schemas.id.uuid().getValue();
+
     const upload = new Upload({
-      client: client,
-      params: uploadParams,
+      client: this.client,
+      params: {
+        Bucket: this.envServices.AWS_S3_BUCKET,
+        Key: key,
+        Body: fileStream,
+      },
     });
 
     try {
-      const result = await upload.done();
-      console.log(result);
+      await upload.done();
+      return key;
     } catch (error) {
       throw new UploadDatasetException();
     }
