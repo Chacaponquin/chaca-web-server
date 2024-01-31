@@ -59,6 +59,7 @@ export class S3Repository {
 
     try {
       await upload.done();
+      await fs.promises.unlink(filePath);
       return key;
     } catch (error) {
       throw new UploadDatasetException();
