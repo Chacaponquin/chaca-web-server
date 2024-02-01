@@ -9,7 +9,7 @@ import {
 } from "./cases";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
 import { MultiSchema, Schema } from "./value_object/schemas";
-import { S3Repository } from "../infrastructure/s3/core";
+import { DatasetRepository } from "./dataset-repository.service";
 
 interface CreateDatasetProps {
   datasetFields: Array<InputDatasetFieldDTO>;
@@ -20,17 +20,21 @@ interface DownloadProps {
   key: string;
 }
 
+interface UploadDataset {
+  filePath: string;
+}
+
 @Injectable()
 export class DatasetService {
   constructor(
     private readonly schemaOptionsServices: SchemaOptionsService,
-    private readonly repository: S3Repository,
+    private readonly repository: DatasetRepository,
   ) {}
 
   public async downloadDataset({
     key,
   }: DownloadProps): Promise<StreamableFile> {
-    return await this.repository.downloadDataset(key);
+    return await this.repository.downloadDataset({ key });
   }
 
   public createDatasets(datasetsConfig: Array<InputDatasetDTO>) {
@@ -38,11 +42,9 @@ export class DatasetService {
     return useCase.execute(datasetsConfig);
   }
 
-  public async createSingleDocument(
-    datasetFields: Array<InputDatasetFieldDTO>,
-  ) {
+  public async createSingleDocument(fields: Array<InputDatasetFieldDTO>) {
     const useCase = new CreateSingleDocument(this.schemaOptionsServices);
-    return await useCase.execute(datasetFields);
+    return await useCase.execute(fields);
   }
 
   public createDocuments({ count, datasetFields }: CreateDatasetProps) {
@@ -55,7 +57,7 @@ export class DatasetService {
     return serviceCase.execute(datasetFields);
   }
 
-  public async uploadDataset({ filePath }: { filePath: string }) {
+  public async uploadDataset({ filePath }: UploadDataset) {
     return await this.repository.uploadDataset({ filePath: filePath });
   }
 
