@@ -1,6 +1,6 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { UserMessageService } from "../services/user-message.service";
-import { CreateUserMessageDTO } from "../dto/user_message";
+import { CreateUserMessageDTO } from "../dto";
 import { AppModule } from "@modules/app/app.module";
 import { INestApplication } from "@nestjs/common";
 import {

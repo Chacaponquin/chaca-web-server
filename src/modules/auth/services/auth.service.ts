@@ -8,8 +8,6 @@ import {
   CreateSimpleUserDTO,
 } from "@modules/user/dto/create.dto";
 import { User } from "@modules/user/domain/User";
-import { SignInDTO } from "../dto/signIn";
-import { NotFoundUserToLoginException } from "../exceptions";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Injectable()
@@ -20,22 +18,7 @@ export class AuthService {
     private envService: EnvService,
   ) {}
 
-  public async googleSignUp(googleUser: CreateGoogleUserDTO): Promise<string> {
-    const newUser = await this.userService.createGoogleUser(googleUser);
-    return this.generateAccessToken(newUser.id);
-  }
-
-  public async githubSignUp(githubUser: CreateGithubUserDTO): Promise<string> {
-    const newUser = await this.userService.createGithubUser(githubUser);
-    return this.generateAccessToken(newUser.id);
-  }
-
-  async signUp(simpleUser: CreateSimpleUserDTO): Promise<string> {
-    const newUser = await this.userService.createSimpleUser(simpleUser);
-    return this.generateAccessToken(newUser.id);
-  }
-
-  private generateAccessToken(userID: string): string {
+  public generateAccessToken(userID: string): string {
     const payload: JwtPayload = { userID };
     return this.jwtService.sign(payload);
   }
@@ -62,19 +45,5 @@ export class AuthService {
   public getOAuthRedirectURL(oauth: "google" | "github"): string {
     const serverURL = this.envService.SERVER_URL;
     return serverURL + `/auth/${oauth}/redirect`;
-  }
-
-  public async loginUser(userSignInDTO: SignInDTO): Promise<string | null> {
-    const foundUser = await this.userService.findUserByEmailAndPassword(
-      userSignInDTO.email,
-      userSignInDTO.password,
-    );
-
-    if (foundUser) {
-      const token = this.generateAccessToken(foundUser.id);
-      return token;
-    } else {
-      throw new NotFoundUserToLoginException();
-    }
   }
 }

@@ -1,15 +1,14 @@
 import { Injectable, StreamableFile } from "@nestjs/common";
 import { InputDatasetDTO, InputDatasetFieldDTO } from "../dto/dataset";
 import {
+  BuildSchemas,
   ChacaSchemaBuilder,
-  CreateAndExportDatasets,
   CreateDatasets,
   CreateDocuments,
   CreateSingleDocument,
 } from "./cases";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { FileConfigDTO } from "../dto/file";
-import { Schema } from "./value_object/schemas";
+import { MultiSchema, Schema } from "./value_object/schemas";
 import { S3Repository } from "../infrastructure/s3/core";
 
 interface CreateDatasetProps {
@@ -52,19 +51,16 @@ export class DatasetService {
   }
 
   public buildSchema(datasetFields: Array<InputDatasetFieldDTO>): Schema {
-    const useCase = new ChacaSchemaBuilder(this.schemaOptionsServices);
-    return useCase.execute(datasetFields);
+    const serviceCase = new ChacaSchemaBuilder(this.schemaOptionsServices);
+    return serviceCase.execute(datasetFields);
   }
 
-  public async createAndExportDatasets(
-    datasetsConfig: Array<InputDatasetDTO>,
-    fileConfig: FileConfigDTO,
-  ): Promise<string> {
-    const useCase = new CreateAndExportDatasets(
-      this.schemaOptionsServices,
-      this.repository,
-    );
+  public async uploadDataset({ filePath }: { filePath: string }) {
+    return await this.repository.uploadDataset({ filePath: filePath });
+  }
 
-    return await useCase.execute({ datasetsConfig, fileConfig });
+  public buildSchemas(datasetsConfig: Array<InputDatasetDTO>): MultiSchema {
+    const serviceCase = new BuildSchemas(this.schemaOptionsServices);
+    return serviceCase.execute(datasetsConfig);
   }
 }

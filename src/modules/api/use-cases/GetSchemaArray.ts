@@ -1,7 +1,7 @@
 import { CompleteSchemaConfig } from "@modules/api/dto/schema_config";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
 import { SchemaLimit } from "@modules/dataset/services/value_object/schema-config";
-import { SchemaInput } from "../value-object";
+import { SchemaInput } from "../services/value-object";
 
 export class GetSchemaArray {
   constructor(private readonly datasetService: DatasetService) {}

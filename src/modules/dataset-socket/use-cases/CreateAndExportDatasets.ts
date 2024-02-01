@@ -1,11 +1,12 @@
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
-import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
-import { CreateDatasets } from "./CreateDatasets";
 import { schemas as chacaSchemas } from "chaca";
 import { FileConfigDTO } from "@modules/dataset/dto/file";
-import { FileExt } from "../value_object/file-config";
-import { ExportSchemas, MultiSchema } from "../value_object/schemas";
-import { S3Repository } from "@modules/dataset/infrastructure/s3/core";
+import { FileExt } from "@modules/dataset/services/value_object/file-config";
+import {
+  ExportSchemas,
+  MultiSchema,
+} from "@modules/dataset/services/value_object/schemas";
+import { DatasetService } from "@modules/dataset/services/dataset.service";
 
 interface Props {
   datasetsConfig: Array<InputDatasetDTO>;
@@ -13,17 +14,14 @@ interface Props {
 }
 
 export class CreateAndExportDatasets {
-  constructor(
-    private readonly schemaOptionsServices: SchemaOptionsService,
-    private readonly repository: S3Repository,
-  ) {}
+  constructor(private readonly datasetServices: DatasetService) {}
 
   public async execute({ datasetsConfig, fileConfig }: Props): Promise<string> {
-    const createDatasetsCase = new CreateDatasets(this.schemaOptionsServices);
-    const multiGenerateConfig = createDatasetsCase.buildSchemas(datasetsConfig);
+    const multiGenerateConfig =
+      this.datasetServices.buildSchemas(datasetsConfig);
     const path = await this._exportByConfig(multiGenerateConfig, fileConfig);
 
-    const key = await this.repository.uploadDataset({ filePath: path });
+    const key = await this.datasetServices.uploadDataset({ filePath: path });
 
     return key;
   }

@@ -13,12 +13,20 @@ import {
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 import { User } from "@modules/user/domain/User";
 import { ROUTES } from "@modules/app/constants";
+import {
+  CreateGithubUser,
+  CreateGoogleUser,
+  CreateUser,
+  LoginUser,
+} from "../use-cases";
+import { UserService } from "@modules/user/services/user.service";
 
 @Controller(ROUTES.AUTH.ROOT)
 export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly envServices: EnvService,
+    private readonly userServices: UserService,
   ) {}
 
   @Get(ROUTES.AUTH.GOOGLE)
@@ -33,7 +41,8 @@ export class AuthController {
     @Req() req: Request & { user: CreateGoogleUserDTO },
     @Res() res: Response,
   ) {
-    const token = await this.authService.googleSignUp(req.user);
+    const useCase = new CreateGoogleUser(this.userServices, this.authService);
+    const token = await useCase.execute(req.user);
     this.sendAuthCookies(res, token);
   }
 
@@ -49,7 +58,8 @@ export class AuthController {
     @Req() req: Request & { user: CreateGithubUserDTO },
     @Res() res: Response,
   ) {
-    const token = await this.authService.githubSignUp(req.user);
+    const useCase = new CreateGithubUser(this.userServices, this.authService);
+    const token = await useCase.execute(req.user);
     this.sendAuthCookies(res, token);
   }
 
@@ -61,14 +71,14 @@ export class AuthController {
 
   @Post(ROUTES.AUTH.SIGN_UP)
   async signUp(@Body() userSignUpDTO: CreateSimpleUserDTO): Promise<string> {
-    const userToken = await this.authService.signUp(userSignUpDTO);
-    return userToken;
+    const useCase = new CreateUser(this.userServices, this.authService);
+    return await useCase.execute(userSignUpDTO);
   }
 
   @Post(ROUTES.AUTH.SIGN_IN)
   async signIn(@Body() userSignInDTO: SignInDTO) {
-    const token = await this.authService.loginUser(userSignInDTO);
-    return token;
+    const useCase = new LoginUser(this.userServices, this.authService);
+    return await useCase.execute(userSignInDTO);
   }
 
   private sendAuthCookies(response: Response, token: string): void {

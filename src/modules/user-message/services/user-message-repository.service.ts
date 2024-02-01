@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserMessageMongoRepository } from "../infrastructure/mongo/user-message-mongo-repository.service";
-import { CreateUserMessageDTO } from "../dto/user_message";
-import { UserMessage } from "../domain/UserMessage";
+import { CreateUserMessageDTO } from "../dto";
+import { UserMessage } from "../domain";
 
 @Injectable()
 export class UserMessageRepository {

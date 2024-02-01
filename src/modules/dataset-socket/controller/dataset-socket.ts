@@ -7,10 +7,11 @@ import {
 } from "@nestjs/websockets";
 import { Server, Socket } from "socket.io";
 import { SOCKET_EVENTS } from "../constants/SOCKET_EVENTS";
-import { SocketService } from "../services/dataset-socket.service";
 import { CreateDatasetDTO } from "../dto/dataset";
 import { DatasetCreationError } from "@modules/dataset/exceptions/dataset";
 import { DATASETS_ERROR_HTTP_STATUS } from "@modules/dataset/constants/DATASETS_ERROR_HTTP_STATUS";
+import { CreateAndExportDatasets } from "../use-cases";
+import { DatasetService } from "@modules/dataset/services/dataset.service";
 
 @WebSocketGateway({
   cors: {
@@ -18,7 +19,7 @@ import { DATASETS_ERROR_HTTP_STATUS } from "@modules/dataset/constants/DATASETS_
   },
 })
 export class DatasetSocketGateway {
-  constructor(private readonly socketService: SocketService) {}
+  constructor(private readonly datasetServices: DatasetService) {}
 
   @WebSocketServer()
   public server: Server;
@@ -29,14 +30,15 @@ export class DatasetSocketGateway {
     @ConnectedSocket() socket: Socket,
   ) {
     try {
-      const fileName = await this.socketService.createDatasets(
-        body.datasets,
-        body.config,
-      );
+      const useCase = new CreateAndExportDatasets(this.datasetServices);
+
+      const fileName = await useCase.execute({
+        datasetsConfig: body.datasets,
+        fileConfig: body.config,
+      });
 
       socket.emit(SOCKET_EVENTS.GET_FILE_URL, fileName);
     } catch (error) {
-      console.log(error);
       if (error instanceof DatasetCreationError) {
         socket.emit(SOCKET_EVENTS.CREATION_ERROR, {
           content: error.content,

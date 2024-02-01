@@ -1,5 +1,5 @@
+import { GetSchemaArray } from "./GetSchemaArray";
 import { GetSchemaObject } from "./GetSchemaObject";
 import { GetValueBySchemaOption } from "./GetValueBySchemaOption";
-import { GetSchemaArray } from "./GetSchemaArray";
 
-export { GetValueBySchemaOption, GetSchemaObject, GetSchemaArray };
+export { GetSchemaObject, GetSchemaArray, GetValueBySchemaOption };

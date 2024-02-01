@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, StreamableFile } from "@nestjs/common";
+import { Injectable, StreamableFile } from "@nestjs/common";
 import { FILE_CONFIG } from "../constants/FILE_CONFIG";
 import { ALL_FAQ } from "../constants/FAQ";
 import { SchemaOptionsService } from "@modules/schema-options/services/schema-options.service";
