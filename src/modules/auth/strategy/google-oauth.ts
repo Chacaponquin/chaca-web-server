@@ -2,7 +2,7 @@ import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-google-oauth20";
 import { Injectable } from "@nestjs/common";
 import { AuthService } from "../services/auth.service";
-import { CreateGoogleUserDTO } from "@modules/user/dto/create.dto";
+import { CreateGoogleUserDTO } from "@modules/user/dto/create";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Injectable()

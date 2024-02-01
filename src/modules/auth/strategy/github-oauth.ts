@@ -2,7 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 import { Strategy } from "passport-github2";
 import { AuthService } from "../services/auth.service";
-import { CreateGithubUserDTO } from "@modules/user/dto/create.dto";
+import { CreateGithubUserDTO } from "@modules/user/dto/create";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Injectable()

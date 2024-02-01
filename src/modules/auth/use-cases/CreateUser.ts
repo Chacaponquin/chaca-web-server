@@ -1,6 +1,6 @@
 import { UserService } from "@modules/user/services/user.service";
 import { AuthService } from "../services/auth.service";
-import { CreateSimpleUserDTO } from "@modules/user/dto/create.dto";
+import { CreateSimpleUserDTO } from "@modules/user/dto/create";
 
 export class CreateUser {
   constructor(

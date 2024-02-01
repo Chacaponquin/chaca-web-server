@@ -6,7 +6,7 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "../dto/create.dto";
+} from "../dto/create";
 import { GithubUser, GoogleUser, SimpleUser } from "../domain/User";
 import {
   InvalidUserEmailException,

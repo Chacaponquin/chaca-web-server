@@ -6,7 +6,7 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "@modules/user/dto/create.dto";
+} from "@modules/user/dto/create";
 import { User } from "@modules/user/domain/User";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 

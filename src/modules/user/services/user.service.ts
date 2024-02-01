@@ -9,10 +9,10 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "../dto/create.dto";
+} from "../dto/create";
 import { UserRepository } from "./user-repository.service";
 import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
-import { UserPassword } from "../value-object";
+import { CreateSimpleUser, FindUserByEmailAndPassword } from "./cases";
 
 @Injectable()
 export class UserService {
@@ -47,38 +47,20 @@ export class UserService {
   public async createSimpleUser(
     user: CreateSimpleUserDTO,
   ): Promise<SimpleUser> {
-    const password = new UserPassword(user.password).value;
-    const hashPassword = await this.cryptServices.hash(password);
-
-    const newUser = await this.repository.createSimpleUser({
-      ...user,
-      password: hashPassword,
-    });
-
-    return newUser;
+    const useCase = new CreateSimpleUser(this.cryptServices, this.repository);
+    return await useCase.execute(user);
   }
 
   public async findUserByEmailAndPassword(
     email: string,
     password: string,
   ): Promise<SimpleUser | null> {
-    let returnSearch: SimpleUser | null = null;
-    const foundUser = await this.repository.findUserByEmail(email);
+    const serviceCase = new FindUserByEmailAndPassword(
+      this.cryptServices,
+      this.repository,
+    );
 
-    if (foundUser) {
-      if (foundUser instanceof SimpleUser) {
-        const isCorrectPassword = await this.cryptServices.compare(
-          password,
-          foundUser.password,
-        );
-
-        if (isCorrectPassword) {
-          returnSearch = foundUser;
-        }
-      }
-    }
-
-    return returnSearch;
+    return await serviceCase.execute({ email, password });
   }
 
   noUserLimits() {

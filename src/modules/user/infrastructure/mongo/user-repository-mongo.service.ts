@@ -16,7 +16,7 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "@modules/user/dto/create.dto";
+} from "@modules/user/dto/create";
 
 @Injectable()
 export class UserRepositoryMongo {

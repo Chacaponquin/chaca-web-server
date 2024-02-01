@@ -9,7 +9,7 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "@modules/user/dto/create.dto";
+} from "@modules/user/dto/create";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 import { User } from "@modules/user/domain/User";
 import { ROUTES } from "@modules/app/constants";

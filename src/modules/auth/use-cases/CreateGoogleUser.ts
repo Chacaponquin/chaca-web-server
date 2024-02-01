@@ -1,4 +1,4 @@
-import { CreateGoogleUserDTO } from "@modules/user/dto/create.dto";
+import { CreateGoogleUserDTO } from "@modules/user/dto/create";
 import { AuthService } from "../services/auth.service";
 import { UserService } from "@modules/user/services/user.service";
 

@@ -4,7 +4,7 @@ import {
   CreateGithubUserDTO,
   CreateGoogleUserDTO,
   CreateSimpleUserDTO,
-} from "../dto/create.dto";
+} from "../dto/create";
 import { GithubUser, GoogleUser, SimpleUser, User } from "../domain/User";
 import { RepeatUserEmailError } from "../exceptions";
 import { DatasetModelService } from "@modules/dataset-model/services/dataset-model.service";
