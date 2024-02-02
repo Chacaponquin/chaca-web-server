@@ -37,7 +37,7 @@ describe("# User Message Services Test", () => {
         email: "user@gmail.com",
       };
 
-      const message = await service.createUserMessage(params);
+      const message = await service.createMessage(params);
       const foundMessage = await service.findMessageById(message.id);
       expect(foundMessage).not.toBeNull();
     });
@@ -50,7 +50,7 @@ describe("# User Message Services Test", () => {
       };
 
       await expect(
-        async () => await service.createUserMessage(params),
+        async () => await service.createMessage(params),
       ).rejects.toThrow(InvalidUserMessageMessageException);
     });
 
@@ -62,7 +62,7 @@ describe("# User Message Services Test", () => {
       };
 
       await expect(
-        async () => await service.createUserMessage(params),
+        async () => await service.createMessage(params),
       ).rejects.toThrow(InvalidUserMessageTitleException);
     });
 
@@ -74,7 +74,7 @@ describe("# User Message Services Test", () => {
       };
 
       await expect(
-        async () => await service.createUserMessage(params),
+        async () => await service.createMessage(params),
       ).rejects.toThrow(InvalidUserMessageUserEmailException);
     });
 
@@ -86,7 +86,7 @@ describe("# User Message Services Test", () => {
       };
 
       await expect(
-        async () => await service.createUserMessage(params),
+        async () => await service.createMessage(params),
       ).rejects.toThrow(InvalidUserMessageUserEmailException);
     });
   });

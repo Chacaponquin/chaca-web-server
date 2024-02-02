@@ -6,11 +6,11 @@ import { SchemaInput } from "../services/value-object";
 export class GetSchemaArray {
   constructor(private readonly datasetService: DatasetService) {}
 
-  public execute(schemaConfig: CompleteSchemaConfig) {
+  async execute(schemaConfig: CompleteSchemaConfig) {
     const schemaFields = new SchemaInput(schemaConfig.schema).fields();
     const count = new SchemaLimit(schemaConfig.count).value;
     const schema = this.datasetService.buildSchema(schemaFields);
 
-    return schema.genArray(count);
+    return await schema.genArray(count);
   }
 }

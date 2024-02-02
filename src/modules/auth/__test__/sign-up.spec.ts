@@ -1,20 +1,19 @@
+import { Test, TestingModule } from "@nestjs/testing";
+import { AuthController } from "../controller/auth.controller";
+import { UserService } from "@modules/user/services/user.service";
 import { AppModule } from "@modules/app/app.module";
 import { INestApplication } from "@nestjs/common";
-import { Test, TestingModule } from "@nestjs/testing";
-import { AuthService } from "../services/auth.service";
-import { UserService } from "@modules/user/services/user.service";
-import { schemas } from "chaca";
 import { CreateSimpleUserDTO } from "@modules/user/dto/create";
+import { schemas } from "chaca";
 import {
   InvalidUserEmailException,
   InvalidUserPasswordException,
   InvalidusernameException,
 } from "@modules/user/exceptions";
-import { NotFoundUserToLoginException } from "../exceptions";
 
-describe("# Auth Service Tests", () => {
+describe("# Login Tests", () => {
   let app: INestApplication;
-  let authService: AuthService;
+  let authController: AuthController;
   let userService: UserService;
 
   beforeEach(async () => {
@@ -25,60 +24,13 @@ describe("# Auth Service Tests", () => {
     app = module.createNestApplication();
     await app.init();
 
-    authService = app.get(AuthService);
+    authController = app.get(AuthController);
     userService = app.get(UserService);
   });
 
   afterAll(async () => {
     await userService.clean();
     await app.close();
-  });
-
-  describe("Login user", () => {
-    it("Create an user and login with same email and password", async () => {
-      const userPassword = schemas.internet.password().getValue();
-      const userEmail = schemas.internet.email().getValue();
-
-      const userParams: CreateSimpleUserDTO = {
-        email: userEmail,
-        password: userPassword,
-        username: schemas.internet.username().getValue(),
-      };
-
-      const regToken = await authService.signUp(userParams);
-
-      expect(regToken).toBeDefined();
-
-      const token = await authService.loginUser({
-        email: userEmail,
-        password: userPassword,
-      });
-
-      expect(token).toBeDefined();
-    });
-
-    it("Login user with incorrect email. Should throw an error", async () => {
-      const userPassword = schemas.internet.password().getValue();
-      const userEmail = schemas.internet.email().getValue();
-
-      const userParams: CreateSimpleUserDTO = {
-        email: userEmail,
-        password: userPassword,
-        username: schemas.internet.username().getValue(),
-      };
-
-      const regToken = await authService.signUp(userParams);
-
-      expect(regToken).toBeDefined();
-
-      await expect(
-        async () =>
-          await authService.loginUser({
-            email: "user@email.com",
-            password: userPassword,
-          }),
-      ).rejects.toThrow(NotFoundUserToLoginException);
-    });
   });
 
   describe("SignUp simple user", () => {
@@ -89,7 +41,7 @@ describe("# Auth Service Tests", () => {
         username: "Test User",
       };
 
-      const token = await authService.signUp(params);
+      const token = await authController.signUp(params);
 
       expect(token).toBeDefined();
     });
@@ -102,7 +54,7 @@ describe("# Auth Service Tests", () => {
       };
 
       await expect(
-        async () => await authService.signUp(params),
+        async () => await authController.signUp(params),
       ).rejects.toThrow(InvalidusernameException);
     });
 
@@ -114,7 +66,7 @@ describe("# Auth Service Tests", () => {
       };
 
       await expect(
-        async () => await authService.signUp(params),
+        async () => await authController.signUp(params),
       ).rejects.toThrow(InvalidUserPasswordException);
     });
 
@@ -126,7 +78,7 @@ describe("# Auth Service Tests", () => {
       };
 
       await expect(
-        async () => await authService.signUp(params),
+        async () => await authController.signUp(params),
       ).rejects.toThrow(InvalidUserEmailException);
     });
 
@@ -137,7 +89,7 @@ describe("# Auth Service Tests", () => {
         username: schemas.internet.username().getValue(),
       };
 
-      const token = await authService.signUp(params);
+      const token = await authController.signUp(params);
 
       expect(token).toBeDefined();
     });

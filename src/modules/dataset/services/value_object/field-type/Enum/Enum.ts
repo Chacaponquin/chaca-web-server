@@ -1,6 +1,6 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { EnumField, chaca } from "chaca";
-import { ArrayValues } from "./value_object";
+import { ArrayValues } from "./value-object";
 
 export class EnumValueField implements ISchemaField {
   private _values: Array<unknown> = [];

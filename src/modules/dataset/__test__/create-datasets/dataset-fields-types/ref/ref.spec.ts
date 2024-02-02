@@ -1,20 +1,27 @@
+import { AppModule } from "@modules/app/app.module";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { DatasetCreationError } from "@modules/dataset/exceptions/dataset";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
-import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
+import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
 describe("Config enum field for dataset creation", () => {
   let service: DatasetService;
+  let app: INestApplication;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SchemaOptionsModule],
-      exports: [DatasetService],
-      providers: [DatasetService],
+      imports: [AppModule],
     }).compile();
 
-    service = module.get(DatasetService);
+    app = module.createNestApplication();
+    await app.init();
+
+    service = app.get(DatasetService);
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it("Create a ref field that ref a id", async () => {

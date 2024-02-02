@@ -5,10 +5,10 @@ import { DatasetService } from "@modules/dataset/services/dataset.service";
 export class GetSchemaObject {
   constructor(private readonly datasetService: DatasetService) {}
 
-  public execute(schemaConfigInput?: SimpleSchemaConfig) {
+  async execute(schemaConfigInput?: SimpleSchemaConfig) {
     const schemaFields = new SchemaInput(schemaConfigInput).fields();
     const schema = this.datasetService.buildSchema(schemaFields);
 
-    return schema.genObject();
+    return await schema.genObject();
   }
 }

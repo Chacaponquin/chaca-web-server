@@ -1,20 +1,27 @@
+import { AppModule } from "@modules/app/app.module";
 import { DATA_TYPES } from "@modules/dataset/constants/DATA_TYPE";
 import { IncorrectDefinedFieldDatatypeException } from "@modules/dataset/exceptions/field";
 import { DatasetService } from "@modules/dataset/services/dataset.service";
-import { SchemaOptionsModule } from "@modules/schema-options/schema-options.module";
+import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 
 describe("Config enum field for dataset creation", () => {
   let service: DatasetService;
+  let app: INestApplication;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [SchemaOptionsModule],
-      exports: [DatasetService],
-      providers: [DatasetService],
+      imports: [AppModule],
     }).compile();
 
-    service = module.get(DatasetService);
+    app = module.createNestApplication();
+    await app.init();
+
+    service = app.get(DatasetService);
+  });
+
+  afterAll(async () => {
+    await app.close();
   });
 
   it("Pass an empty array of values. Should throw an error", () => {
@@ -25,7 +32,7 @@ describe("Config enum field for dataset creation", () => {
     }).rejects.toThrow(IncorrectDefinedFieldDatatypeException);
   });
 
-  it("Pass an array of values", async () => {
+  it("Pass [1, 2, 3, 4, 5] as values. Should return one of this values", async () => {
     const values = [1, 2, 3, 4, 5];
 
     const data = await service.createSingleDocument([

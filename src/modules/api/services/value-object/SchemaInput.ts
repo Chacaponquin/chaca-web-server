@@ -67,7 +67,7 @@ export class SchemaInput {
         const fieldIsArray = new FieldIsArray(fieldConfig.isArray);
         const fieldPosibleNull = new FieldPossibleNull(fieldConfig.posibleNull);
         const fieldDatatype = this._mapSchemaConfigToDataType(
-          fieldConfig.fieldType,
+          fieldConfig.type,
           fieldConfig.params,
         );
 
@@ -111,14 +111,14 @@ export class SchemaInput {
 
     // sequential
     else if (fieldType.type === "sequential") {
-      const config = new SequentialValueField(fieldType.params);
+      const config = new SequentialValueField(fieldType.params.values);
 
       return { type: DATA_TYPES.SEQUENTIAL, values: config.values };
     }
 
     // enum
     else if (fieldType.type === "enum") {
-      const config = new EnumValueField(fieldType.params);
+      const config = new EnumValueField(fieldType.params.values);
 
       return { type: DATA_TYPES.ENUM, values: config.values };
     }

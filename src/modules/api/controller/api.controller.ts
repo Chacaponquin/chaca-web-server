@@ -18,15 +18,15 @@ export class ApiController {
   ) {}
 
   @Post(ROUTES.API.SCHEMA)
-  public schemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
+  async schemaByConfig(@Body() schemaConfig: SimpleSchemaConfig) {
     const useCase = new GetSchemaObject(this.datasetServices);
-    return useCase.execute(schemaConfig);
+    return await useCase.execute(schemaConfig);
   }
 
   @Post(ROUTES.API.SCHEMA_ARRAY)
-  public schemaArrayByConfig(@Body() schemaConfig: CompleteSchemaConfig) {
+  async schemaArrayByConfig(@Body() schemaConfig: CompleteSchemaConfig) {
     const useCase = new GetSchemaArray(this.datasetServices);
-    return useCase.execute(schemaConfig);
+    return await useCase.execute(schemaConfig);
   }
 
   @Get(ROUTES.API.MODULE_OPTION)

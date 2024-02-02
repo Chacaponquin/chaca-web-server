@@ -7,7 +7,10 @@ export class FieldType {
 
   constructor(type?: string, params?: SchemaFieldParams) {
     this.validateType(type);
-    this._params = params;
+
+    if (params) {
+      this._params = params;
+    }
   }
 
   private validateType(type?: string): void {

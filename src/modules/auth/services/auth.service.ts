@@ -1,22 +1,12 @@
 import { Injectable } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { ReturnUser, JwtPayload } from "../interfaces/auth";
-import { UserService } from "@modules/user/services/user.service";
-import {
-  CreateGithubUserDTO,
-  CreateGoogleUserDTO,
-  CreateSimpleUserDTO,
-} from "@modules/user/dto/create";
 import { User } from "@modules/user/domain/User";
 import { EnvService } from "@modules/app/modules/env/services/env.service";
 
 @Injectable()
 export class AuthService {
-  constructor(
-    private jwtService: JwtService,
-    private userService: UserService,
-    private envService: EnvService,
-  ) {}
+  constructor(private jwtService: JwtService, private envService: EnvService) {}
 
   public generateAccessToken(userID: string): string {
     const payload: JwtPayload = { userID };
