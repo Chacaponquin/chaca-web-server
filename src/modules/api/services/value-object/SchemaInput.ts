@@ -111,9 +111,16 @@ export class SchemaInput {
 
     // sequential
     else if (fieldType.type === "sequential") {
-      const config = new SequentialValueField(fieldType.params.values);
+      const config = new SequentialValueField({
+        values: fieldType.params.values,
+        loop: fieldType.params.loop,
+      });
 
-      return { type: DATA_TYPES.SEQUENTIAL, values: config.values };
+      return {
+        type: DATA_TYPES.SEQUENTIAL,
+        values: config.values,
+        loop: config.loop,
+      };
     }
 
     // enum

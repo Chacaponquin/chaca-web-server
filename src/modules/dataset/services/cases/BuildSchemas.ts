@@ -7,7 +7,7 @@ import { RepeatDatasetNameException } from "@modules/dataset/exceptions/dataset"
 import { InputDatasetDTO } from "@modules/dataset/dto/dataset";
 
 export class BuildSchemas {
-  private builder = new ChacaSchemaBuilder(this.schemaOptionsServices);
+  private readonly builder = new ChacaSchemaBuilder(this.schemaOptionsServices);
 
   constructor(private readonly schemaOptionsServices: SchemaOptionsService) {}
 

@@ -93,7 +93,10 @@ export class ChacaSchemaBuilder {
 
     // sequential
     else if (dataType.type === DATA_TYPES.SEQUENTIAL) {
-      const field = new SequentialValueField(dataType.values);
+      const field = new SequentialValueField({
+        values: dataType.values,
+        loop: dataType.loop,
+      });
 
       return field;
     }

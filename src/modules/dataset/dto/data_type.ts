@@ -45,6 +45,7 @@ export type SequenceDataType = {
 export type SequentialDataType = {
   type: DATA_TYPES.SEQUENTIAL;
   values: Array<unknown>;
+  loop: boolean;
 };
 
 export type EnumDataType = {

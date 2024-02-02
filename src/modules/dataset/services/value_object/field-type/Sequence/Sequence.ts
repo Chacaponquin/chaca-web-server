@@ -1,8 +1,8 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { SequenceField, chaca } from "chaca";
-import { StartsWith, Step } from "./value_object";
+import { StartsWith, Step } from "./value-object";
 
-interface SequenceProps {
+interface Props {
   startsWith?: number;
   step?: number;
 }
@@ -11,7 +11,7 @@ export class SequenceValueField implements ISchemaField {
   private _startsWith: number;
   private _step: number;
 
-  constructor(props: SequenceProps) {
+  constructor(props: Props) {
     if (typeof props === "object" && props !== null) {
       const { startsWith, step } = props;
 

@@ -1,17 +1,30 @@
 import { ISchemaField } from "@modules/dataset/interfaces/field_value.interface";
 import { SequentialField, chaca } from "chaca";
-import { ArrayValues } from "./value_object";
+import { ArrayValues } from "./value-object";
+
+interface Props {
+  values?: Array<unknown>;
+  loop?: boolean;
+}
 
 export class SequentialValueField implements ISchemaField {
   private _values: Array<unknown> = [];
-  private loop = false;
+  private _loop = false;
 
-  constructor(values?: Array<unknown>) {
+  constructor({ values, loop }: Props) {
     this._values = new ArrayValues(values).values();
+
+    if (loop) {
+      this._loop = loop;
+    }
   }
 
   get values() {
     return this._values;
+  }
+
+  get loop() {
+    return this._loop;
   }
 
   getField(): SequentialField {

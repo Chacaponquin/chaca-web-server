@@ -7,7 +7,7 @@ export const COMPLETE_SCHEMA = {
 
   // array field config
   posts: {
-    fieldType: "id.uuid",
+    type: "id.uuid",
     isArray: {
       min: 1,
       max: 10,
@@ -16,7 +16,7 @@ export const COMPLETE_SCHEMA = {
 
   // nested schema field config
   socialMedia: {
-    fieldType: "schema",
+    type: "schema",
     params: {
       facebook: "internet.url",
       instagram: "internet.url",
