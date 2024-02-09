@@ -1,69 +1,134 @@
 import { SchemaOption } from "@modules/schema-options/domain";
-import { schemas } from "chaca";
+import { chaca } from "chaca";
+import { VIDEOS_DEFINITIONS } from "./constants";
 
 export const VideoOptions: SchemaOption[] = [
   new SchemaOption({
     name: "Animal",
-    schemaField: () => schemas.video.animal(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["animal"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Architecture",
-    schemaField: () => schemas.video.architecture(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["architecture"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Art",
-    schemaField: () => schemas.video.art(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["art"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Event",
-    schemaField: () => schemas.video.event(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["event"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Fashion",
-    schemaField: () => schemas.video.fashion(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["fashion"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Food",
-    schemaField: () => schemas.video.food(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["food"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Health",
-    schemaField: () => schemas.video.health(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["health"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "History",
-    schemaField: () => schemas.video.history(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["history"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Nature",
-    schemaField: () => schemas.video.nature(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["nature"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "People",
-    schemaField: () => schemas.video.people(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["people"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Spiritual",
-    schemaField: () => schemas.video.spiritual(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["spirituality"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Sport",
-    schemaField: () => schemas.video.sport(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["sport"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Street",
-    schemaField: () => schemas.video.street(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["street"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Travel",
-    schemaField: () => schemas.video.travel(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["travel"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "3D",
-    schemaField: () => schemas.video.threeDimension(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["3d"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Wallpaper",
-    schemaField: () => schemas.video.wallpaper(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(VIDEOS_DEFINITIONS["wallpaper"]),
+      )();
+    },
   }),
 ];

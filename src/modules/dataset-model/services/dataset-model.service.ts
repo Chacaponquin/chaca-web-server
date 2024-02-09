@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { CreateModelDTO } from "../dto/createModel.dto";
 import { DatasetModelRepository } from "./dataset-model-repository.service";
-import { DatasetModel } from "../domain/DatasetModel";
+import { DatasetModel } from "../domain";
 
 @Injectable()
 export class DatasetModelService {

@@ -4,6 +4,7 @@ FROM node:18.7.0
 
 WORKDIR /app
 COPY package*.json ./
+RUN npm set repository https://registry.yarn.pkg.com
 RUN npm install
 COPY . . 
 ENV PORT=8000

@@ -1,6 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { DatasetModelMongoRepository } from "../infrastructure/mongo/dataset-model-mongo-repository.service";
-import { DatasetModel } from "../domain/DatasetModel";
+import { DatasetModel } from "../domain";
 import { CreateModelDTO } from "../dto/createModel.dto";
 
 @Injectable()

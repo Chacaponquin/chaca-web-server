@@ -1,4 +1,4 @@
-import { DatasetModel } from "@modules/dataset-model/domain/DatasetModel";
+import { DatasetModel } from "@modules/dataset-model/domain";
 import {
   NORMAL_USER_LIMITS,
   SUPER_USER_LIMITS,

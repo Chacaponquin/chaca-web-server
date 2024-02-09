@@ -1,81 +1,156 @@
 import { SchemaOption } from "@modules/schema-options/domain";
-import { schemas } from "chaca";
+import { schemas, chaca } from "chaca";
+import { IMAGES_DEFINITIONS } from "./constants";
 
 export const ImageOptions: SchemaOption[] = [
   new SchemaOption({
     name: "Animal",
-    schemaField: () => schemas.image.animal(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["animal"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Architecture",
-    schemaField: () => schemas.image.architecture(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["architecture"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Art",
-    schemaField: () => schemas.image.art(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["art"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Event",
-    schemaField: () => schemas.image.event(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["event"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Fashion",
-    schemaField: () => schemas.image.fashion(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["fashion"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Film",
-    schemaField: () => schemas.image.film(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["film"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Food",
-    schemaField: () => schemas.image.food(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["food"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Health",
-    schemaField: () => schemas.image.health(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["health"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "History",
-    schemaField: () => schemas.image.history(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["history"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "House",
-    schemaField: () => schemas.image.house(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["house"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Nature",
-    schemaField: () => schemas.image.nature(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["nature"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "People",
-    schemaField: () => schemas.image.people(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["people"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Spiritual",
-    schemaField: () => schemas.image.spiritual(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["spirituality"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Sport",
-    schemaField: () => schemas.image.sport(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["sport"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Street",
-    schemaField: () => schemas.image.street(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["street"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Travel",
-    schemaField: () => schemas.image.travel(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["travel"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "3D",
-    schemaField: () => schemas.image.threeDimension(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["3d"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Wallpaper",
-    schemaField: () => schemas.image.wallpaper(),
+    schemaField() {
+      return chaca.schemaField(() =>
+        chaca.utils.oneOfArray(IMAGES_DEFINITIONS["wallpaper"]),
+      )();
+    },
   }),
   new SchemaOption({
     name: "Animate Avatar",
-    schemaField: () => schemas.image.animateAvatar(),
+    schemaField() {
+      return schemas.image.animateAvatar();
+    },
   }),
 ];
