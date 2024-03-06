@@ -1,11 +1,15 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS";
-import mongoose from "mongoose";
+import mongoose, { Document } from "mongoose";
 import { LOGIN_METHOD } from "../../../constants/LOGIN_METHOD.enum";
 import { UserEmail } from "@modules/user/value-object";
 
-@Schema({ timestamps: true })
-export class User {
+@Schema({
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+})
+class User {
   @Prop({
     required: true,
     type: mongoose.SchemaTypes.String,
@@ -44,9 +48,7 @@ export class User {
   })
   methodLogin: LOGIN_METHOD;
 }
-const UserSchema = SchemaFactory.createForClass(User);
 
-UserSchema.set("toObject", { virtuals: true });
-UserSchema.set("toJSON", { virtuals: true });
+export const UserSchema = SchemaFactory.createForClass(User);
 
-export { UserSchema };
+export type IUser = User & Document;

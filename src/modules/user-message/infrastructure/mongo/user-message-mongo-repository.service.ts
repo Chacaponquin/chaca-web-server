@@ -1,6 +1,6 @@
 import { UserMessage } from "@modules/user-message/domain";
 import { CreateUserMessageDTO } from "@modules/user-message/dto";
-import { IUserMessage } from "@modules/user-message/infrastructure/mongo/model/user-message.interface";
+import { IUserMessage } from "@modules/user-message/infrastructure/mongo/schema";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants/DB_MODELS";
