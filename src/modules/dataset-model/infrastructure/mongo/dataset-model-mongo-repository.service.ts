@@ -3,7 +3,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { DB_MOELS } from "@shared/constants";
 import { Model } from "mongoose";
 import { DatasetModel } from "@modules/dataset-model/domain";
-import { CreateModelDTO } from "@modules/dataset-model/dto/createModel.dto";
+import { CreateModelDTO } from "@modules/dataset-model/dto/create";
 import { IDatasetModel } from "./schema";
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Get, Post, Controller, Req, Body, Res } from "@nestjs/common";
 import { UseGuards } from "@nestjs/common/decorators/core/use-guards.decorator";
 import { AuthGuard } from "@nestjs/passport";
-import { SignInDTO } from "../dto/signIn";
+import { SignInDTO } from "../dto/sign-in";
 import { ReturnUser } from "../interfaces/auth";
 import { AuthService } from "../services/auth.service";
 import { Response, Request } from "express";
