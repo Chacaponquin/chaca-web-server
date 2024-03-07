@@ -2,7 +2,7 @@ import { UserMessageUserEmail } from "@modules/user-message/value-object";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import mongoose, { Document } from "mongoose";
 
-@Schema()
+@Schema({ toObject: { virtuals: true }, toJSON: { virtuals: true } })
 class UserMessage {
   @Prop({ required: true, type: mongoose.SchemaTypes.String })
   title: string;

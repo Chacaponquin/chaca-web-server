@@ -1,10 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { DB_MOELS } from "@shared/constants/DB_MODELS";
+import { DB_MOELS } from "@shared/constants";
 import { Model } from "mongoose";
-import { IDatasetModel } from "./interfaces/model.interface";
 import { DatasetModel } from "@modules/dataset-model/domain";
 import { CreateModelDTO } from "@modules/dataset-model/dto/createModel.dto";
+import { IDatasetModel } from "./schema";
 
 @Injectable()
 export class DatasetModelMongoRepository {
@@ -19,7 +19,7 @@ export class DatasetModelMongoRepository {
 
   async getAll(): Promise<Array<DatasetModel>> {
     const allModels = await this.model.find();
-    return allModels.map((m) => this.mapToModel(m));
+    return allModels.map((m) => this.map(m));
   }
 
   async createModel(createModelDTO: CreateModelDTO): Promise<DatasetModel> {
@@ -34,7 +34,7 @@ export class DatasetModelMongoRepository {
     });
 
     try {
-      const returnModel = this.mapToModel(newModel);
+      const returnModel = this.map(newModel);
       await newModel.save();
 
       return returnModel;
@@ -44,7 +44,7 @@ export class DatasetModelMongoRepository {
     }
   }
 
-  public mapToModel(mongoModel: IDatasetModel): DatasetModel {
+  public map(mongoModel: IDatasetModel): DatasetModel {
     return new DatasetModel({
       id: mongoModel.id,
       description: mongoModel.description,
@@ -57,6 +57,6 @@ export class DatasetModelMongoRepository {
 
   public async findById(modelId: string): Promise<DatasetModel | null> {
     const found = await this.model.findById(modelId);
-    return found === null ? null : this.mapToModel(found);
+    return found === null ? null : this.map(found);
   }
 }
